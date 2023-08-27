@@ -1,0 +1,31 @@
+body{
+    background-color: #f1f1f1;
+    margin: 0;
+}
+/*Diseño de navbar horizontal*/
+
+.navbar{
+    background-color: rgb(21, 87, 145);
+}
+
+/*Menu vertical estilo*/
+.menuV{
+    background:rgb(39, 52, 69);
+    width: 16rem;
+    height: 100vh;
+    color: white;
+    padding: 18px;
+}
+
+/*Opciones*/
+.btn{
+    width:13.5rem;
+    height:3rem;
+    color:white;
+    border:solid 1px white;
+}
+
+.title{
+    margin-left: 20px;
+    width: 62rem;
+}

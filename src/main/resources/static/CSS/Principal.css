@@ -1,0 +1,48 @@
+/*Estilo del la pagina de inicio que se le muestra al usuario*/
+body{
+    background-color: rgb(213, 219, 231);
+}
+
+.contenido{
+    background-color:rgb(245, 245, 245);
+    box-shadow: -5px 4px  18px 4px rgb(112, 117, 124);
+    border-radius:3.5px;
+}
+
+h2{
+    color: rgb(45, 89, 114);
+}
+
+label{
+      color: rgb(45, 89, 114);
+}
+.IMG{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.Perfil{
+      width:6rem;
+}
+
+.form-control{
+    border: solid 1px gray;
+}
+
+.btn{
+   background-color:rgb(50, 81, 197);
+   color:white;
+}
+
+.btn:hover{
+    background-color: rgb(45, 89, 114);
+    color: white;
+}
+
+.bg{
+   background-color:rgb(62, 96, 217);
+   background-image:url(../IMG/Logo3.png);
+   background-position: center center;
+   background-size: cover;
+   background-repeat: no-repeat;
+}
