@@ -8,6 +8,10 @@ body{
     background-color: rgb(21, 87, 145);
 }
 
+.LogoDashboard{
+      width:3rem;
+}
+
 /*Menu vertical estilo*/
 .menuV{
     background:rgb(39, 52, 69);
@@ -19,13 +23,25 @@ body{
 
 /*Opciones*/
 .btn{
+    background-color:#4a6a7d;
     width:13.5rem;
     height:3rem;
     color:white;
     border:solid 1px white;
 }
 
+.btn:hover{
+   background-color:#98afbd;
+    color: #1f282c;
+}
+
 .title{
     margin-left: 20px;
     width: 62rem;
+}
+
+.Montos{
+   display:flex;
+   flex-direction:row;
+   gap:34px;
 }

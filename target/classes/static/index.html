@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sistema Contable</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <link rel="stylesheet" href="CSS/Principal.css">
+  <link rel="stylesheet" href="../static/CSS/Principal.css">
 </head>
 <body>
 
@@ -16,29 +16,31 @@
             <div class="col contenido p-4 rounded-end">
               <h2 class="text-center py-4">BIENVENIDO</h2>
                 <div class="IMG mb-4">
-                <img class="Perfil" src="IMG/PerfilUsuario.png" alt="Perfil">
+                <img class="Perfil" src="../static/IMG/PerfilUsuario.png" alt="Perfil">
                 </div>
               <!--Datos requeridos para ingresar al sistema-->
-                <form action="#" class="action">
+                <form action="/Dashboard" method="post" class="action">
                     <!--Input para el usuario-->
                     <div class="form-group mx-sm-4 mb-4">
                         <label for="validationCustomUsername" class="form-label ">Usuario</label>
-                        <input type="text" class="form-control" id="validationCustomUsername">
+                        <input type="text" class="form-control" id="validationCustomUsername" name="username">
                     </div>
                     <!--Input para la contraseña-->
                     <div class="form-group mx-sm-4 mb-4">
                         <label for="validationPassword" class="form-label ">Contraseña</label>
-                        <input type="password" class="form-control" id="validationPassword" name="Password">
+                        <input type="password" class="form-control" id="validationPassword" name="password">
+                    </div>
+
+                    <!--Button de ingreso-->
+                    <div class="d-grid mx-sm-4 mb-3">
+                        <button class="btn " type="submit" id="Ingresar">Ingresar</button>
                     </div>
                 </form>
-                <!--Button de ingreso-->
-                <div class="d-grid mx-sm-4 mb-3">
-                    <button class="btn " type="button" Ingresar>Ingresar</button>
-                </div>
+
             </div>
 
-           <!--Logo-->
-           <div class="col logo bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"></div>
+            <!--Logo-->
+            <div class="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"></div>
          </div>
        </div>
 

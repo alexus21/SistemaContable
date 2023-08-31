@@ -39,10 +39,10 @@ label{
     color: white;
 }
 
-.logo{
-   /*background-color:rgb(62, 96, 217);*/
-   background-image:url(IMG/Logo.jpeg);
+.bg{
+   background-color:rgb(62, 96, 217);
+   background-image:url(../IMG/Logo3.png);
+   background-position: center center;
    background-size: cover;
-   background-position: center;
    background-repeat: no-repeat;
 }
