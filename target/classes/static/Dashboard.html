@@ -5,16 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <link rel="stylesheet" href="CSS/Panel.css">
+    <!--Permite el uso de iconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../static/CSS/Panel.css">
 </head>
 <body>
 
         <!--navbar horizontal-->
          <nav class="navbar">
               <div class="container-fluid">
-                 <h2 class="text-light">LOGO</h2>
+                  <span class="text-light"><img class="LogoDashboard" src="../static/IMG/Logo.png" alt="Logo">FINANCE</span>
                  <!--Nombre de usuario-->
-                 <h2 class="text-light">Usuario</h2>
+                 <h2 class="text-light"><i class="fa-solid fa-user"></i> Usuario</h2>
               </div>
         </nav>
 
@@ -23,22 +25,79 @@
           <div class="menuV">
               <br>
               <div class="mb-2">
-                  <button class="btn">Inicio</button>
+                  <button class="btn"><i class="fa-solid fa-house"></i> Inicio </button>
               </div>
               <div class="mb-2">
-                  <button class="btn">Opcion</button>
+                  <button class="btn"><i class="fa-solid fa-calendar-days"></i>  Libro diario </button>
               </div>
               <div class="mb-2">
-                  <button class="btn">Opcion</button>
+                  <button class="btn"><i class="fa-solid fa-building-columns"></i> Libro Mayor </button>
               </div>
               <div class="mb-2">
-                  <button class="btn">Opcion</button>
+                  <button class="btn"><i class="fa-solid fa-coins"></i> Balance </button>
+              </div>
+              <!--Button de ingreso usando un modal-->
+              <div class="mb-2">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      <i class="fa-solid fa-pen-to-square"></i> Ingresar Partida
+                  </button>
+              </div>
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h1 class="modal-title fs-5 text-black" id="exampleModalLabel">Registro de partidas</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form action="#" method="get">
+                                  <div class="mb-3 text-black">
+                                      <label for="fechas">Fecha:</label>
+                                      <input class="form-control" type="datetime-local" id="fechas">
+                                  </div>
+                                  <div class="mb-3 text-black">
+                                      <label for="cuenta" class="form-label">Cuenta:</label>
+                                      <input type="text" class="form-control" id="cuenta" placeholder="N° de cuenta">
+                                  </div>
+                                  <div class="mb-3 text-black">
+                                      <label for="descripcion" class="form-label">Descripción: </label>
+                                      <input type="text" class="form-control" id="descripcion" placeholder="Descripción del proceso">
+                                  </div>
+                                  <h5 class="text-black">Ingresar Monto</h5>
+                                  <div class="Montos text-black">
+                                      <div class="form-check opcion mb-3">
+                                          <input class="form-check-input" type="radio" name="exampleRadios1" id="exampleRadios1" value="option1" checked>
+                                          <label class="form-check-label" for="exampleRadios1">
+                                              Debe
+                                          </label>
+                                      </div>
+                                      <div class="form-check mb-3">
+                                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" checked>
+                                          <label class="form-check-label" for="exampleRadios2">
+                                              Haber
+                                          </label>
+                                      </div>
+                                  </div>
+                                  <div class="mb-3 text-black">
+                                      <input type="text" class="form-control" id="Monto" placeholder="Monto">
+                                  </div>
+
+                              </form>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                  <i class="fa-solid fa-circle-xmark"></i> Cancelar
+                              </button>
+                              <button type="button" class="btn btn-primary">
+                                  <i class="fa-solid fa-floppy-disk"></i> Registrar partida
+                              </button>
+                          </div>
+                      </div>
+                  </div>
               </div>
               <div class="mb-2">
-                  <button class="btn">Opcion</button>
-              </div>
-              <div class="mb-2">
-                  <button class="btn">Salir</button>
+                  <button class="btn"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
               </div>
           </div>
 
