@@ -222,8 +222,9 @@ public class Login extends javax.swing.JFrame {
         }
         else{
             if(LoginQuery.ValidateLogin(username, password)){
+                this.dispose();
                 mainForm.setVisible(true);
-                loginForm.dispose();
+                
             }else{
                 JOptionPane.showMessageDialog(null,
                         "Datos incorrectos",
