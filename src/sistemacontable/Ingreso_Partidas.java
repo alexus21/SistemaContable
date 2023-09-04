@@ -6,17 +6,40 @@ package sistemacontable;
 
 import com.toedter.calendar.JDateChooser;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author PC
  */
 public class Ingreso_Partidas extends javax.swing.JFrame {
 
+    private DefaultTableModel model = null;
+
+    public boolean isNumber(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");
+    }
+
+
+
+    private void resetData(){
+
+        model = new DefaultTableModel(null, new String [] {
+                "Fecha", "Cuenta", "Descripcion", "Parcial", "Debe", "Haber"
+        });
+
+        jTable2.setModel(model);
+    }
+
     /**
      * Creates new form Ingreso_Partidas
      */
     public Ingreso_Partidas() {
         initComponents();
+        resetData();
     }
 
     /**
@@ -33,7 +56,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jDateChooser1 = new org.netbeans.modules.form.InvalidComponent();
+        jDateChooser1 = new JDateChooser();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
@@ -70,7 +93,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        jDateChooser1.null;
+        //jDateChooser1.null;
 
         jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Descripción", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
 
@@ -198,8 +221,42 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
 
     private void btnRegistryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistryActionPerformed
         btnRegistry.setFocusCycleRoot(false);
-        
-        
+        if (jTextField1.getText().trim().isEmpty() || jTextField2.getText().trim().isEmpty() ||
+                jTextField3.getText().trim().isEmpty() || jTextField4.getText().trim().isEmpty() ||
+                jTextField5.getText().trim().isEmpty()) return;
+
+        if (!isNumber(jTextField4.getText()) || !isNumber(jTextField5.getText())){
+            JOptionPane.showMessageDialog(null, "Ingresa valores numéricos en el deber y en el haber");
+            return;
+        }
+
+        String [] data = {"", jTextField2.getText().trim(), jTextField1.getText().trim(), jTextField3.getText().trim(),
+                jTextField4.getText().trim(), jTextField5.getText().trim()};
+
+        model.addRow(data);
+
+
+        int rowsCount = model.getRowCount();
+        int columnsCount = model.getColumnCount();
+        List<String []> rows = new ArrayList<>();
+
+        for (int i = 0; i < rowsCount; i++) {
+            String [] filaActual = new String[columnsCount];
+            for (int j = 0; j < columnsCount; j++) {
+                filaActual[j] = (String) model.getValueAt(i, j);
+            }
+            rows.add(filaActual);
+        }
+
+        for (int i = 0; i < rows.size(); i++) {
+            for (int j = 0; j < rows.get(i).length; j++) {
+
+                System.out.println(model.getColumnName(j) + ": " + rows.get(i)[j]);
+            }
+            System.out.println();
+        }
+
+
     }//GEN-LAST:event_btnRegistryActionPerformed
 
     /**
@@ -240,7 +297,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnRegistry;
-    private org.netbeans.modules.form.InvalidComponent jDateChooser1;
+    private JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
