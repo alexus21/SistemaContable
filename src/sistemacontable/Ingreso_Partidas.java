@@ -5,6 +5,7 @@
 package sistemacontable;
 
 import com.toedter.calendar.JDateChooser;
+import dbconnection.queries.Create;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -57,11 +58,11 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jDateChooser1 = new JDateChooser();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txtDescription = new javax.swing.JTextField();
+        txtAccountTitle = new javax.swing.JTextField();
+        txtPartial = new javax.swing.JTextField();
+        txtDebit = new javax.swing.JTextField();
+        txtCredit = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
         btnRegistry = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -93,17 +94,15 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        //jDateChooser1.null;
+        txtDescription.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Descripción", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Descripción", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
+        txtAccountTitle.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cuenta", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
 
-        jTextField2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cuenta", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
+        txtPartial.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parcial", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
 
-        jTextField3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parcial", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
+        txtDebit.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Debe", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
 
-        jTextField4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Debe", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
-
-        jTextField5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Haber", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
+        txtCredit.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Haber", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
 
         btnCancelar.setBackground(new java.awt.Color(71, 102, 121));
         btnCancelar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -144,15 +143,15 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtAccountTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPartial, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDebit, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,11 +175,11 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtAccountTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPartial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDebit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(67, 67, 67)
@@ -220,21 +219,23 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnRegistryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistryActionPerformed
-        btnRegistry.setFocusCycleRoot(false);
-        if (jTextField1.getText().trim().isEmpty() || jTextField2.getText().trim().isEmpty() ||
-                jTextField3.getText().trim().isEmpty() || jTextField4.getText().trim().isEmpty() ||
-                jTextField5.getText().trim().isEmpty()) return;
+        btnRegistry.setFocusPainted(false);
+        if (txtAccountTitle.getText().trim().isEmpty() || txtPartial.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Error: faltan campos por llenar", "Error", JOptionPane.WARNING_MESSAGE);
+        }
 
-        if (!isNumber(jTextField4.getText()) || !isNumber(jTextField5.getText())){
+        if (!isNumber(txtPartial.getText())){
             JOptionPane.showMessageDialog(null, "Ingresa valores numéricos en el deber y en el haber");
             return;
         }
 
-        String [] data = {"", jTextField2.getText().trim(), jTextField1.getText().trim(), jTextField3.getText().trim(),
-                jTextField4.getText().trim(), jTextField5.getText().trim()};
+        String [] data = {"", txtAccountTitle.getText().trim(), txtDescription.getText().trim(), txtPartial.getText().trim(),
+                txtDebit.getText().trim(), txtCredit.getText().trim()};
 
         model.addRow(data);
-
+        for (int i = 0; i < data.length; i++){
+            System.out.println("Data: " + data[i]);
+        }
 
         int rowsCount = model.getRowCount();
         int columnsCount = model.getColumnCount();
@@ -248,6 +249,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
             rows.add(filaActual);
         }
 
+
         for (int i = 0; i < rows.size(); i++) {
             for (int j = 0; j < rows.get(i).length; j++) {
 
@@ -256,6 +258,14 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
             System.out.println();
         }
 
+        Create c = new Create();
+        c.saveDaily(data);
+
+        txtPartial.setText("");
+        txtDescription.setText("");
+        txtCredit.setText("");
+        txtAccountTitle.setText("");
+        txtDebit.setText("");
 
     }//GEN-LAST:event_btnRegistryActionPerformed
 
@@ -305,10 +315,10 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField txtAccountTitle;
+    private javax.swing.JTextField txtCredit;
+    private javax.swing.JTextField txtDebit;
+    private javax.swing.JTextField txtDescription;
+    private javax.swing.JTextField txtPartial;
     // End of variables declaration//GEN-END:variables
 }
