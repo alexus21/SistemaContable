@@ -30,32 +30,6 @@ public class LoginQuery {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            if(rs != null){
-                try{
-                    rs.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
-
-            if(statement != null){
-                try{
-                    statement.close();
-                }
-                catch(SQLException e){
-                    e.printStackTrace();
-                }
-            }
-            if(connection != null){
-                try{
-                    connection.close();
-                }
-                catch(SQLException e){
-                    e.printStackTrace();
-                }
-            }
-        }
         return loginSuccess;
     }
 }
