@@ -4,6 +4,7 @@
  */
 package sistemacontable;
 
+import java.awt.BorderLayout;
 import java.awt.Frame;
 import javax.swing.JOptionPane;
 
@@ -59,6 +60,8 @@ public class Principal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnMinimizar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        Container = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -218,6 +221,30 @@ public class Principal extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(213, 219, 231));
         jPanel4.setName("PanelContedor1"); // NOI18N
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel5.setText("BIENVENIDO");
+
+        javax.swing.GroupLayout ContainerLayout = new javax.swing.GroupLayout(Container);
+        Container.setLayout(ContainerLayout);
+        ContainerLayout.setHorizontalGroup(
+            ContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContainerLayout.createSequentialGroup()
+                .addGap(339, 339, 339)
+                .addComponent(jLabel5)
+                .addContainerGap(378, Short.MAX_VALUE))
+        );
+        ContainerLayout.setVerticalGroup(
+            ContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContainerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(545, 545, 545))
+        );
+
+        jPanel4.add(Container, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 580));
+
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 870, 580));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -260,6 +287,15 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiarioActionPerformed
         btnDiario.setFocusPainted(false);
+        //Instancia delpanel de libro diario
+        Libro_Diario diario = new Libro_Diario();
+        diario.setSize(870, 570);
+        diario.setLocation(0, 0);
+        
+        Container.removeAll();
+        Container.add(diario, BorderLayout.CENTER);
+        Container.revalidate();
+        Container.repaint();
     }//GEN-LAST:event_btnDiarioActionPerformed
 
     //Button para poder minimizar 
@@ -269,6 +305,10 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         btnInicio.setFocusPainted(false);
+        Container.removeAll();
+        Container.add(jLabel5, BorderLayout.CENTER);
+        Container.revalidate();
+        Container.repaint();
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMayorActionPerformed
@@ -322,6 +362,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Container;
     private javax.swing.JButton btnBalance;
     private javax.swing.JButton btnDiario;
     private javax.swing.JButton btnIngresar;
@@ -333,6 +374,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
