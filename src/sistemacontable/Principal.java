@@ -6,6 +6,7 @@ package sistemacontable;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.Point;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,12 +25,12 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         
-   addMouseListener(new java.awt.event.MouseAdapter() {
+   BarraTitulo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formMousePressed(evt);
             }
         });
-           addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+    BarraTitulo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 formMouseDragged(evt);
             }
@@ -53,7 +54,7 @@ public class Principal extends javax.swing.JFrame {
         btnDiario = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnIngresar = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        BarraTitulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -186,25 +187,25 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 260, 580));
 
-        jPanel3.setBackground(new java.awt.Color(21, 87, 145));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        BarraTitulo.setBackground(new java.awt.Color(21, 87, 145));
+        BarraTitulo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Logo1.png"))); // NOI18N
-        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 50));
+        BarraTitulo.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 50));
 
         jLabel2.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("FINANCE");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 16, 90, 20));
+        BarraTitulo.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 16, 90, 20));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/usuarioPrincipal.png"))); // NOI18N
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 0, -1, 50));
+        BarraTitulo.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 0, -1, 50));
 
         jLabel3.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Usuario");
         jLabel3.setName("lblUSerName"); // NOI18N
-        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 20, 80, 20));
+        BarraTitulo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 20, 80, 20));
 
         btnMinimizar.setBackground(new java.awt.Color(21, 87, 145));
         btnMinimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/minimizar-signo.png"))); // NOI18N
@@ -214,9 +215,9 @@ public class Principal extends javax.swing.JFrame {
                 btnMinimizarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnMinimizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 10, 40, 30));
+        BarraTitulo.add(btnMinimizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 10, 40, 30));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1130, 50));
+        jPanel1.add(BarraTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1130, 50));
 
         jPanel4.setBackground(new java.awt.Color(213, 219, 231));
         jPanel4.setName("PanelContedor1"); // NOI18N
@@ -315,16 +316,19 @@ public class Principal extends javax.swing.JFrame {
         btnMayor.setFocusPainted(false);
     }//GEN-LAST:event_btnMayorActionPerformed
 
+      //Para poder mover la ventana Principal
        private void formMousePressed(java.awt.event.MouseEvent evt) {
-        mouseX = evt.getX();
-        mouseY = evt.getY();
-        windowX = getX();
-        windowY = getY();
+       Point p = evt.getLocationOnScreen();
+       mouseX = p.x - BarraTitulo.getX();
+       mouseY = p.y - BarraTitulo.getY();
+       windowX = getX();
+       windowY = getY();
     }
         private void formMouseDragged(java.awt.event.MouseEvent evt) {
-        int deltaX = evt.getXOnScreen() - mouseX;
-        int deltaY = evt.getYOnScreen() - mouseY;
-        setLocation(windowX + deltaX, windowY + deltaY);
+         Point p = evt.getLocationOnScreen();
+         int deltaX = p.x - mouseX;
+         int deltaY = p.y - mouseY;
+         setLocation(windowX + deltaX, windowY + deltaY);
     }
     /**
      * @param args the command line arguments
@@ -362,6 +366,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel BarraTitulo;
     private javax.swing.JPanel Container;
     private javax.swing.JButton btnBalance;
     private javax.swing.JButton btnDiario;
@@ -377,7 +382,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     // End of variables declaration//GEN-END:variables
 }
