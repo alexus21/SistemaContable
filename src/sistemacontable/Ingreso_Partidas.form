@@ -75,7 +75,7 @@
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jScrollPane2" min="-2" pref="719" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jDateChooser1" min="-2" pref="107" max="-2" attributes="0"/>
+                                      <Component id="txtFecha" min="-2" pref="101" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="txtAccountTitle" min="-2" pref="107" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
@@ -114,16 +114,15 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jSeparator1" min="-2" pref="11" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jDateChooser1" alignment="0" min="-2" pref="59" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtDescription" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtAccountTitle" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtPartial" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtDebit" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCredit" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtDescription" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtAccountTitle" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtPartial" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtDebit" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtCredit" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFecha" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
@@ -171,17 +170,6 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="org.netbeans.modules.form.InvalidComponent" name="jDateChooser1">
-              <Properties>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Fecha">
-                      <Font PropertyName="font" name="Times New Roman" size="14" style="1"/>
-                    </TitledBorder>
-                  </Border>
-                </Property>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JTextField" name="txtDescription">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -285,6 +273,17 @@
                   <Font name="Times New Roman" size="24" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="REGISTRO DE PARTIDAS"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtFecha">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="Fecha:">
+                      <Font PropertyName="font" name="Times New Roman" size="14" style="1"/>
+                    </TitledBorder>
+                  </Border>
+                </Property>
               </Properties>
             </Component>
           </SubComponents>

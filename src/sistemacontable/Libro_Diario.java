@@ -107,7 +107,7 @@ public class Libro_Diario extends javax.swing.JPanel {
     private void cargarDatosDesdeBaseDeDatos() {
         try {
             // Establece la conexión a la base de datos (Asegúrate de configurar correctamente los parámetros de conexión)
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_catalogoDeCuentas", "postgres", "Melendez");
+            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_catalogoDeCuentas", "postgres", "Arbaiza044");
             // Ejecuta una consulta SQL para obtener los datos
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM public.\"tbl_dailyBook\"");
@@ -133,9 +133,9 @@ public class Libro_Diario extends javax.swing.JPanel {
             }
 
             // Cierra la conexión y otros recursos
-            rs.close();
+         /*   rs.close();
             stmt.close();
-            conn.close();
+            conn.close();*/
         } catch (Exception e) {
             e.printStackTrace();
         }

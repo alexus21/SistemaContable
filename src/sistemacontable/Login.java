@@ -4,7 +4,7 @@
  */
 package sistemacontable;
 
-import dbconnection.queries.LoginQuery;
+import dbconnectionQueries.LoginQuery;
 
 import javax.swing.*;
 

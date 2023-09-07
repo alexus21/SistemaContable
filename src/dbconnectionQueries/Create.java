@@ -1,4 +1,4 @@
-package dbconnection.queries;
+package dbconnectionQueries;
 
 import dbconnection.DatabaseConnection;
 
@@ -47,9 +47,9 @@ public class Create {
                 }
             }
 
-            if(statement != null){
+          /*  if(statement != null){
                 try{
-                    statement.close();
+                  //  statement.close();
                 }
                 catch(SQLException e){
                     e.printStackTrace();
@@ -57,12 +57,12 @@ public class Create {
             }
             if(connection != null){
                 try{
-                    connection.close();
+                   // connection.close();
                 }
                 catch(SQLException e){
                     e.printStackTrace();
                 }
-            }
+            }*/
         }
     }
 

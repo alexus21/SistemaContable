@@ -1,4 +1,4 @@
-package dbconnection.queries;
+package dbconnectionQueries;
 
 import dbconnection.DatabaseConnection;
 
