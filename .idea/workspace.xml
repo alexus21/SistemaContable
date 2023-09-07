@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eeec0a43-b83f-4365-9597-cbf38b6cc8d8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/built-jar.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/built-jar.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/dbconnectionQueries/Select.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/dbconnectionQueries/Select.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/SistemaContable.jar" beforeDir="false" afterPath="$PROJECT_DIR$/dist/SistemaContable.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbconnectionQueries/Select.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbconnectionQueries/Select.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sistemacontable/Ingreso_Partidas.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Ingreso_Partidas.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sistemacontable/Ingreso_Partidas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Ingreso_Partidas.java" afterDir="false" />
-    </list>
+    <list default="true" id="eeec0a43-b83f-4365-9597-cbf38b6cc8d8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
