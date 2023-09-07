@@ -5,59 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eeec0a43-b83f-4365-9597-cbf38b6cc8d8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/jcalendar_1_4.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/postgresql_42_6_0.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/built-jar.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/built-jar.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/dbconnection/DatabaseConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/dbconnection/DatabaseConnection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/dbconnection/queries/LoginQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/dbconnection/queries/LoginQuery.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/dbconnection/queries/Select.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/dbconnection/queries/Select.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/dbconnection/queries/create.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/dbconnection/queries/create.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/dbconnection/queries/delete.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/dbconnection/queries/delete.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/dbconnection/queries/update.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/dbconnection/queries/update.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/dbconnectionQueries/Select.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/dbconnectionQueries/Select.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Ingreso_Partidas.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Libro_Diario.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Libro_Diario.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Login$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Login$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Login$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Login$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Login$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Login$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Login.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal$9.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/sistemacontable/Principal.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/sistemacontable/Principal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbproject/private/private.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbconnection/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbconnection/DatabaseConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbconnection/queries/Create.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbconnectionQueries/Create.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbconnection/queries/LoginQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbconnectionQueries/LoginQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbconnection/queries/Select.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbconnectionQueries/Select.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbconnection/queries/delete.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbconnectionQueries/delete.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbconnection/queries/update.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbconnectionQueries/update.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/SistemaContable.jar" beforeDir="false" afterPath="$PROJECT_DIR$/dist/SistemaContable.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dbconnectionQueries/Select.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbconnectionQueries/Select.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sistemacontable/Ingreso_Partidas.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Ingreso_Partidas.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sistemacontable/Ingreso_Partidas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Ingreso_Partidas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sistemacontable/Libro_Diario.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Libro_Diario.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sistemacontable/Libro_Diario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Libro_Diario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sistemacontable/Login.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Login.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sistemacontable/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sistemacontable/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sistemacontable/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,33 +28,34 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2Uyk58LXpYGsOq6k3l9oM9W5IlH" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "alexus21",
     "last_opened_file_path": "C:/Users/alexu/OneDrive/Documentos/Universidad/Ciclo VI/Sistemas Contables/SistemaContablePresentacion/SistemaContable",
+    "node.js.selected.package.tslint": "(autodetect)",
     "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="SistemaContable" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -110,5 +72,8 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

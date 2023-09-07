@@ -8,12 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Select {
+    Connection connection = null;
+    PreparedStatement statement = null;
 
-    public static void ShowUsers() {
-        Connection connection = null;
-        PreparedStatement statement = null;
+
+    public void ShowUsers() {
         ResultSet resultSet = null;
-
         try {
             // Establecer la conexión a la base de datos
             connection = DatabaseConnection.getInstance().getConnection();;
@@ -34,21 +34,21 @@ public class Select {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Cerrar recursos
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        }
+    }
+
+    public ResultSet getAccounts(String selected){
+        ResultSet rs = null;
+        try{
+            connection = DatabaseConnection.getInstance().getConnection();
+            String myQuery = "SELECT * FROM tbl_cuentasde"+selected;
+            statement = connection.prepareStatement(myQuery);
+            rs = statement.executeQuery();
+            return rs;
+
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
