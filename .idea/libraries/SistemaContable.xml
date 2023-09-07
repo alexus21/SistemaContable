@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SistemaContable">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/SistemaContable.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -45,7 +45,20 @@ public class Select {
             statement = connection.prepareStatement(myQuery);
             rs = statement.executeQuery();
             return rs;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public ResultSet getAccountCode(String selected){
+        ResultSet rs = null;
+        try{
+            connection = DatabaseConnection.getInstance().getConnection();
+            String myQuery = "SELECT * FROM tbl_cuentasde"+selected;
+            statement = connection.prepareStatement(myQuery);
+            rs = statement.executeQuery();
+            return rs;
         }
         catch (SQLException e) {
             throw new RuntimeException(e);

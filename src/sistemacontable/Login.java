@@ -211,9 +211,6 @@ public class Login extends javax.swing.JFrame {
         char[] passwordChars = txtPasword.getPassword();
         String password = new String(passwordChars);
 
-        System.out.println(username);
-        System.out.println(password);
-
         if(username.isEmpty() || password.isEmpty()){
             JOptionPane.showMessageDialog(null,
                     "Ingresa tus credenciales",
