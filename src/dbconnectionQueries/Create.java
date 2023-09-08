@@ -15,13 +15,12 @@ public class Create {
         PreparedStatement statement = null;
         ResultSet rs = null;
 
-        String myQuery = "INSERT INTO \"tbl_dailyBook\"(" +
+        String myQuery = "INSERT INTO \"tbl_dailybook\"(" +
                 "fecha, " +
                 "cuenta, " +
-                "descripcion," +
-                "parcial," +
+                "codigo," +
                 "debe, " +
-                "haber) VALUES(?, ?, ?, ?, ?, ?)";
+                "haber) VALUES(?, ?, ?, ?, ?)";
 
         try {
             connection = DatabaseConnection.getInstance().getConnection();
@@ -34,35 +33,12 @@ public class Create {
                 statement.setString(j, row);
             }
 
-            rs = statement.executeQuery();
+            // Ejecutar la consulta de inserción utilizando executeUpdate
+            int rowsAffected = statement.executeUpdate();
+            System.out.println(rowsAffected + " filas afectadas por la inserción.");
         }
         catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if(rs != null){
-                try{
-                    rs.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
-
-          /*  if(statement != null){
-                try{
-                  //  statement.close();
-                }
-                catch(SQLException e){
-                    e.printStackTrace();
-                }
-            }
-            if(connection != null){
-                try{
-                   // connection.close();
-                }
-                catch(SQLException e){
-                    e.printStackTrace();
-                }
-            }*/
         }
     }
 

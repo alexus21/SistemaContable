@@ -2,10 +2,8 @@ package dbconnectionQueries;
 
 import dbconnection.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 
 public class Select {
 
@@ -15,7 +13,8 @@ public class Select {
         ResultSet resultSet = null;
         try {
             // Establecer la conexión a la base de datos
-            connection = DatabaseConnection.getInstance().getConnection();;
+            connection = DatabaseConnection.getInstance().getConnection();
+            ;
 
             // Consulta SQL para obtener la lista de usuarios
             String sql = "SELECT username, password FROM users";
@@ -36,18 +35,17 @@ public class Select {
         }
     }
 
-    public ResultSet getAccounts(String selected){
+    public ResultSet getAccounts(String selected) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
-        try{
+        try {
             connection = DatabaseConnection.getInstance().getConnection();
-            String myQuery = "SELECT * FROM tbl_cuentasde"+selected;
+            String myQuery = "SELECT * FROM tbl_cuentasde" + selected;
             statement = connection.prepareStatement(myQuery);
             rs = statement.executeQuery();
             return rs;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -58,12 +56,29 @@ public class Select {
         ResultSet rs = null;
         try {
             connection = DatabaseConnection.getInstance().getConnection();
-            String myQuery = "SELECT codigo FROM tbl_cuentasde"+selected + " WHERE nombre = ?";
+            String myQuery = "SELECT codigo FROM tbl_cuentasde" + selected + " WHERE nombre = ?";
             statement = connection.prepareStatement(myQuery);
             statement.setString(1, accountName);
             rs = statement.executeQuery();
             return rs;
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet loadDailyBook() {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            // Establece la conexión a la base de datos (Asegúrate de configurar correctamente los parámetros de conexión)
+            connection = DatabaseConnection.getInstance().getConnection();
+            // Ejecuta una consulta SQL para obtener los datos
+            String myQuery = "SELECT * FROM public.\"tbl_dailybook\"";
+            statement = connection.prepareStatement(myQuery);
+            rs = statement.executeQuery();
+            return rs;
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
