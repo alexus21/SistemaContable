@@ -8,11 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Select {
-    Connection connection = null;
-    PreparedStatement statement = null;
-
 
     public void ShowUsers() {
+        Connection connection = null;
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             // Establecer la conexión a la base de datos
@@ -38,6 +37,8 @@ public class Select {
     }
 
     public ResultSet getAccounts(String selected){
+        Connection connection = null;
+        PreparedStatement statement = null;
         ResultSet rs = null;
         try{
             connection = DatabaseConnection.getInstance().getConnection();
@@ -51,16 +52,18 @@ public class Select {
         }
     }
 
-    public ResultSet getAccountCode(String selected){
+    public ResultSet getAccountCode(String selected, String accountName) {
+        Connection connection = null;
+        PreparedStatement statement = null;
         ResultSet rs = null;
-        try{
+        try {
             connection = DatabaseConnection.getInstance().getConnection();
-            String myQuery = "SELECT * FROM tbl_cuentasde"+selected;
+            String myQuery = "SELECT codigo FROM tbl_cuentasde"+selected + " WHERE nombre = ?";
             statement = connection.prepareStatement(myQuery);
+            statement.setString(1, accountName);
             rs = statement.executeQuery();
             return rs;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

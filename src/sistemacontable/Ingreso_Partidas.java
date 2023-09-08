@@ -15,10 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -233,28 +231,77 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewAccountActionPerformed
-        String date = jDateChooser.getDateFormatString();
-        String accountTitle = (String) jComboSelectAccountTitle.getSelectedItem();
-        String debit = JOptionPane.showInputDialog(null, "Debe: ", "Ingrese la cantidad en debe", JOptionPane.PLAIN_MESSAGE);
-        String credit = JOptionPane.showInputDialog(null, "Haber: ", "Ingrese la cantidad en haber", JOptionPane.PLAIN_MESSAGE);
+        Select s = new Select();
+        DefaultTableModel myModel = (DefaultTableModel) jTableDaily.getModel();
 
-    }//GEN-LAST:event_btnNewAccountActionPerformed
+        // Crea un formato de fecha personalizado
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd, MMMM, yyyy");
 
-    private void btnAddNewRowActionPerformed(java.awt.event.ActionEvent evt) {
-        DefaultTableModel model = (DefaultTableModel) jTableDaily.getModel();
+        // Formatea la fecha como una cadena en el formato deseado
+        String formattedDate = dateFormat.format(jDateChooser.getDate());
+        Object selectedObject = jcomboSelectAccountType.getSelectedItem();
+        String selected = selectedObject.toString();
+        String account = (String) jComboSelectAccountTitle.getSelectedItem();
+        String code = "";
+        ResultSet rs = s.getAccountCode(selected.toLowerCase(), account.toUpperCase().trim());
 
-        // Crea una nueva fila con valores iniciales vacíos, incluyendo componentes
-        Object[] newRow = new Object[]{
-                "",
-                "",
-                "",
-                "",
-                ""
-        };
+        String debit = JOptionPane.showInputDialog(null,
+                "Debe: ",
+                "Ingrese la cantidad en debe",
+                JOptionPane.PLAIN_MESSAGE);
 
-        // Agrega la nueva fila al modelo de la tabla
-        model.addRow(newRow);
-        jTableDaily.setRowHeight(30);
+        String credit = JOptionPane.showInputDialog(null,
+                "Haber: ",
+                "Ingrese la cantidad en haber",
+                JOptionPane.PLAIN_MESSAGE);
+
+        if(!Objects.equals(formattedDate, "") && (!Objects.equals(debit, "") || !Objects.equals(credit, ""))){
+            try {
+                while (rs.next()) {
+                    code = rs.getString(1);
+                    if(Objects.equals(debit, "")){
+                        // Crea una nueva fila con valores iniciales vacíos, incluyendo componentes
+                        Object[] newRow = new Object[]{
+                                formattedDate,
+                                account.trim(),
+                                code,
+                                "0",
+                                credit
+                        };
+                        // Agrega la nueva fila al modelo de la tabla
+                        myModel.addRow(newRow);
+                        jTableDaily.setRowHeight(30);
+                    }
+
+                    if(Objects.equals(credit, "")){
+                        // Crea una nueva fila con valores iniciales vacíos, incluyendo componentes
+                        Object[] newRow = new Object[]{
+                                formattedDate,
+                                account.trim(),
+                                code,
+                                debit,
+                                "0"
+                        };
+                        // Agrega la nueva fila al modelo de la tabla
+                        myModel.addRow(newRow);
+                        jTableDaily.setRowHeight(30);
+                    }
+
+                    jDateChooser.setDate(null);
+                    jcomboSelectAccountType.setSelectedIndex(0);
+                    jComboSelectAccountTitle.setEnabled(false);
+                    btnNewAccount.setEnabled(false);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null,
+                    "Faltan campos por llenar",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void jcomboSelectAccountTypeActionPerformed(java.awt.event.ActionEvent evt) {
@@ -310,18 +357,15 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         btnNewAccount.setEnabled(true);
     }
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         this.dispose();
     }
 
-    private void btnRegistryActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    void btnRegistryActionPerformed(java.awt.event.ActionEvent evt) {
         btnRegistry.setFocusPainted(false);
 
 
-        DefaultTableModel defaultTableModel = new DefaultTableModel();
-        
-        
 
 //        model.addRow(data);
 //        for (int i = 0; i < data.length; i++){
