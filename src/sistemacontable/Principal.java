@@ -277,7 +277,7 @@ public class Principal extends javax.swing.JFrame {
         int confirmation = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea cerrar el formulario?", "Cerrar Formulario", JOptionPane.YES_NO_OPTION);
         //Verificando la decision del usuario
         if(confirmation == JOptionPane.YES_OPTION){
-            this.dispose();
+            System.exit(0);
         }
     
     }//GEN-LAST:event_btnSalirActionPerformed

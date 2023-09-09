@@ -4,6 +4,8 @@
  */
 package sistemacontable;
 
+import dbconnectionQueries.Select;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -50,10 +52,7 @@ public class Libro_Diario extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Fecha", "Cuenta", "Parcial", "Debe", "Haber"
@@ -106,36 +105,23 @@ public class Libro_Diario extends javax.swing.JPanel {
 
     private void cargarDatosDesdeBaseDeDatos() {
         try {
-            // Establece la conexión a la base de datos (Asegúrate de configurar correctamente los parámetros de conexión)
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_catalogoDeCuentas", "postgres", "Melendez");
-            // Ejecuta una consulta SQL para obtener los datos
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM public.\"tbl_dailyBook\"");
-            System.out.print(rs);
+            Select s = new Select();
+            ResultSet rs = s.loadDailyBook();
 
-            // Crea un modelo de tabla personalizado para almacenar los datos
             DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
-            
-            // Limpia la tabla actual
-            tableModel.setRowCount(0);
-
             // Llena la tabla con los datos de la base de datos
+            int i = 0;
             while (rs.next()) {
                 Object[] fila = {
-                    rs.getString("Fecha"),
-                    rs.getString("Cuenta"),
-                    rs.getString("Descripcion"),
-                    rs.getString("Parcial"),
-                    rs.getString("Debe"),
-                    rs.getString("Haber")
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getString(5)
                 };
                 tableModel.addRow(fila);
+                jTable1.setRowHeight(30);
             }
-
-            // Cierra la conexión y otros recursos
-            rs.close();
-            stmt.close();
-            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

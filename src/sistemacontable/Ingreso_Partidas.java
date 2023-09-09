@@ -5,12 +5,22 @@
 package sistemacontable;
 
 import com.toedter.calendar.JDateChooser;
-import dbconnection.queries.Create;
+import dbconnection.DatabaseConnection;
+import dbconnectionQueries.Create;
+import dbconnectionQueries.Select;
+import java.awt.Component;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -29,10 +39,10 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     private void resetData(){
 
         model = new DefaultTableModel(null, new String [] {
-                "Fecha", "Cuenta", "Descripcion", "Parcial", "Debe", "Haber"
+                "Fecha", "Cuenta", "Código", "Debe", "Haber"
         });
 
-        jTable2.setModel(model);
+        jTableDaily.setModel(model);
     }
 
     /**
@@ -56,17 +66,14 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jDateChooser1 = new JDateChooser();
-        txtDescription = new javax.swing.JTextField();
-        txtAccountTitle = new javax.swing.JTextField();
-        txtPartial = new javax.swing.JTextField();
-        txtDebit = new javax.swing.JTextField();
-        txtCredit = new javax.swing.JTextField();
+        jTableDaily = new javax.swing.JTable();
         btnCancelar = new javax.swing.JButton();
         btnRegistry = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
+        jDateChooser = new com.toedter.calendar.JDateChooser();
+        jcomboSelectAccountType = new javax.swing.JComboBox<>();
+        jComboSelectAccountTitle = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registro de partidas");
@@ -81,28 +88,15 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
 
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTableDaily.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Cuenta", "Descripcion", "Parcial", "Debe", "Haber"
+                "Fecha", "Titulo", "Codigo", "Debe", "Haber"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
-
-        txtDescription.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Descripción", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
-
-        txtAccountTitle.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cuenta", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
-
-        txtPartial.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parcial", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
-
-        txtDebit.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Debe", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
-
-        txtCredit.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Haber", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
+        jScrollPane2.setViewportView(jTableDaily);
 
         btnCancelar.setBackground(new java.awt.Color(71, 102, 121));
         btnCancelar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -120,6 +114,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         btnRegistry.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
         btnRegistry.setText("Registrar");
+        btnRegistry.setEnabled(false);
         btnRegistry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistryActionPerformed(evt);
@@ -129,67 +124,80 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setText("REGISTRO DE PARTIDAS");
 
+        jDateChooser.setBackground(new java.awt.Color(71, 102, 121));
+        jDateChooser.setForeground(new java.awt.Color(255, 255, 255));
+
+        jcomboSelectAccountType.setBackground(new java.awt.Color(71, 102, 121));
+        jcomboSelectAccountType.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jcomboSelectAccountType.setForeground(new java.awt.Color(255, 255, 255));
+        jcomboSelectAccountType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar tipo de cuenta", "Activo", "Pasivo", "Patrimonio", "Cierre" }));
+        jcomboSelectAccountType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcomboSelectAccountTypeActionPerformed(evt);
+            }
+        });
+
+        jComboSelectAccountTitle.setBackground(new java.awt.Color(71, 102, 121));
+        jComboSelectAccountTitle.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jComboSelectAccountTitle.setForeground(new java.awt.Color(255, 255, 255));
+        jComboSelectAccountTitle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar cuenta" }));
+        jComboSelectAccountTitle.setEnabled(false);
+        jComboSelectAccountTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboSelectAccountTitleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(53, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 719, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtAccountTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPartial, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDebit, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRegistry, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 897, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(310, 310, 310)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 970, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(310, 310, 310)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(jcomboSelectAccountType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboSelectAccountTitle, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 838, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRegistry)
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(1, 1, 1))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel1)
+                .addGap(12, 12, 12)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(6, 6, 6)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jcomboSelectAccountType, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(jComboSelectAccountTitle))
+                .addGap(6, 6, 6)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtAccountTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtPartial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtDebit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
+                        .addGap(238, 238, 238)
                         .addComponent(btnRegistry, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(38, 38, 38))
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 970, 450));
@@ -204,71 +212,162 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    private void btnRegistryActionPerformed(java.awt.event.ActionEvent evt) {
+        Select s = new Select();
+        DefaultTableModel myModel = (DefaultTableModel) jTableDaily.getModel();
 
-    private void btnRegistryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistryActionPerformed
-        btnRegistry.setFocusPainted(false);
-        if (txtAccountTitle.getText().trim().isEmpty() || txtPartial.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Error: faltan campos por llenar", "Error", JOptionPane.WARNING_MESSAGE);
+        // Crea un formato de fecha personalizado
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd, MMMM, yyyy");
+
+        // Formatea la fecha como una cadena en el formato deseado
+        String formattedDate = dateFormat.format(jDateChooser.getDate());
+        Object selectedObject = jcomboSelectAccountType.getSelectedItem();
+        String selected = selectedObject.toString();
+        String account = (String) jComboSelectAccountTitle.getSelectedItem();
+        String code = "";
+        ResultSet rs = s.getAccountCode(selected.toLowerCase(), account.toUpperCase().trim());
+
+        String debit = JOptionPane.showInputDialog(null,
+                "Debe: ",
+                "Ingrese la cantidad en debe",
+                JOptionPane.PLAIN_MESSAGE);
+
+        String credit = JOptionPane.showInputDialog(null,
+                "Haber: ",
+                "Ingrese la cantidad en haber",
+                JOptionPane.PLAIN_MESSAGE);
+
+        if(!Objects.equals(formattedDate, "") && (!Objects.equals(debit, "") || !Objects.equals(credit, ""))){
+            try {
+                while (rs.next()) {
+                    code = rs.getString(1);
+                    if(Objects.equals(debit, "")){
+                        // Crea una nueva fila con valores iniciales vacíos, incluyendo componentes
+                        Object[] newRow = new Object[]{
+                                formattedDate,
+                                account.trim(),
+                                code,
+                                "0",
+                                credit
+                        };
+                        // Agrega la nueva fila al modelo de la tabla
+                        myModel.addRow(newRow);
+                        jTableDaily.setRowHeight(30);
+                    }
+
+                    if(Objects.equals(credit, "")){
+                        // Crea una nueva fila con valores iniciales vacíos, incluyendo componentes
+                        Object[] newRow = new Object[]{
+                                formattedDate,
+                                account.trim(),
+                                code,
+                                debit,
+                                "0"
+                        };
+                        // Agrega la nueva fila al modelo de la tabla
+                        myModel.addRow(newRow);
+                        jTableDaily.setRowHeight(30);
+                    }
+
+                    int rowCount = model.getRowCount();
+                    int colCount = model.getColumnCount();
+
+                    if (rowCount > 0) { // Asegúrate de que haya al menos una fila en la tabla
+                        // Crear un arreglo unidimensional de tipo String para almacenar los datos de la última fila
+                        String[] tableData = new String[colCount];
+
+                        for (int col = 0; col < colCount; col++) {
+                            Object cellValue = model.getValueAt(rowCount - 1, col); // Obtén el valor de la última fila
+                            tableData[col] = String.valueOf(cellValue);
+                        }
+
+                        // Luego, puedes enviar tableData a c.saveDaily
+                        Create c = new Create();
+                        c.saveDaily(tableData);
+                    }
+
+                    jDateChooser.setDate(null);
+                    jcomboSelectAccountType.setSelectedIndex(0);
+                    jComboSelectAccountTitle.setEnabled(false);
+                    btnRegistry.setEnabled(false);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+        else{
+            JOptionPane.showMessageDialog(null,
+                    "Faltan campos por llenar",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-        if (!isNumber(txtPartial.getText())){
-            JOptionPane.showMessageDialog(null, "Ingresa valores numéricos en el deber y en el haber");
+    private void jcomboSelectAccountTypeActionPerformed(java.awt.event.ActionEvent evt) {
+        if (jcomboSelectAccountType.getSelectedIndex() != 0) {
+            Object selectedObject = jcomboSelectAccountType.getSelectedItem();
+            String selected = selectedObject.toString();
+            Select s = new Select();
+            ResultSet queryResult = s.getAccounts(selected);
+
+            // Habilita el JComboBox
+            jComboSelectAccountTitle.setEnabled(true);
+            // Borra los elementos existentes en el JComboBox
+            jComboSelectAccountTitle.removeAllItems();
+
+            try {
+                while (queryResult.next()) {
+                    // Agrega los elementos al JComboBox utilizando getString(2) para obtener el valor de la primera columna
+                    String originalText = queryResult.getString(2);
+                    if (queryResult.getString(1).length() == 2) {
+                        originalText = "   " + originalText; // Agrega dos espacios iniciales
+                        String capitalizedText = originalText.substring(0, 4).toUpperCase() + originalText.substring(4).toLowerCase();
+                        jComboSelectAccountTitle.addItem(capitalizedText);
+                    }
+                    else if (queryResult.getString(1).length() >= 4) {
+                        originalText = "     " + originalText; // Agrega dos espacios iniciales
+                        String capitalizedText = originalText.substring(0, 6).toUpperCase() + originalText.substring(6).toLowerCase();
+                        jComboSelectAccountTitle.addItem(capitalizedText);
+                    }
+                    else {
+                        String capitalizedText = originalText.substring(0, 1).toUpperCase() + originalText.substring(1).toLowerCase();
+                        jComboSelectAccountTitle.addItem(capitalizedText);
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            // Deshabilita el JComboBox y borra los elementos
+            jComboSelectAccountTitle.setEnabled(false);
+            jComboSelectAccountTitle.removeAllItems();
+            btnRegistry.setEnabled(false);
+            btnRegistry.setEnabled(false);
+        }
+    }
+
+    private void jComboSelectAccountTitleActionPerformed(ActionEvent evt) {
+        if(jComboSelectAccountTitle.getSelectedIndex() == 0){
+            btnRegistry.setEnabled(false);
+            btnRegistry.setEnabled(false);
             return;
         }
+        btnRegistry.setEnabled(true);
+        btnRegistry.setEnabled(true);
+    }
 
-        String [] data = {"", txtAccountTitle.getText().trim(), txtDescription.getText().trim(), txtPartial.getText().trim(),
-                txtDebit.getText().trim(), txtCredit.getText().trim()};
-
-        model.addRow(data);
-        for (int i = 0; i < data.length; i++){
-            System.out.println("Data: " + data[i]);
-        }
-
-        int rowsCount = model.getRowCount();
-        int columnsCount = model.getColumnCount();
-        List<String []> rows = new ArrayList<>();
-
-        for (int i = 0; i < rowsCount; i++) {
-            String [] filaActual = new String[columnsCount];
-            for (int j = 0; j < columnsCount; j++) {
-                filaActual[j] = (String) model.getValueAt(i, j);
-            }
-            rows.add(filaActual);
-        }
-
-
-        for (int i = 0; i < rows.size(); i++) {
-            for (int j = 0; j < rows.get(i).length; j++) {
-
-                System.out.println(model.getColumnName(j) + ": " + rows.get(i)[j]);
-            }
-            System.out.println();
-        }
-
-        Create c = new Create();
-        c.saveDaily(data);
-
-        txtPartial.setText("");
-        txtDescription.setText("");
-        txtCredit.setText("");
-        txtAccountTitle.setText("");
-        txtDebit.setText("");
-
-    }//GEN-LAST:event_btnRegistryActionPerformed
-
+    void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        this.dispose();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -295,7 +394,6 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Ingreso_Partidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -307,18 +405,15 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnRegistry;
-    private JDateChooser jDateChooser1;
+    private javax.swing.JComboBox<String> jComboSelectAccountTitle;
+    private com.toedter.calendar.JDateChooser jDateChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField txtAccountTitle;
-    private javax.swing.JTextField txtCredit;
-    private javax.swing.JTextField txtDebit;
-    private javax.swing.JTextField txtDescription;
-    private javax.swing.JTextField txtPartial;
+    private javax.swing.JTable jTableDaily;
+    private javax.swing.JComboBox<String> jcomboSelectAccountType;
     // End of variables declaration//GEN-END:variables
 }
