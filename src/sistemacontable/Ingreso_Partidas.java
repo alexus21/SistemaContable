@@ -279,6 +279,11 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         // Crea un formato de fecha personalizado
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd, MMMM, yyyy");
 
+        if(jDateChooser.getDate() == null){
+            JOptionPane.showMessageDialog(null, "Seleccione una fecha", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         // Formatea la fecha como una cadena en el formato deseado
         String formattedDate = dateFormat.format(jDateChooser.getDate());
         Object selectedObject = jcomboSelectAccountType.getSelectedItem();
@@ -296,6 +301,11 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
                 "Haber: ",
                 "Ingrese la cantidad en haber",
                 JOptionPane.PLAIN_MESSAGE);
+
+        if(dateFormat.format(jDateChooser.getDate()).equals("")){
+            JOptionPane.showMessageDialog(null, "Seleccione una fecha", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         if(!Objects.equals(formattedDate, "") && (!Objects.equals(debit, "") || !Objects.equals(credit, ""))){
             try {
