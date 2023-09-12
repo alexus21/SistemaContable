@@ -234,7 +234,7 @@ public class Login extends javax.swing.JFrame {
                         "Datos incorrectos",
                         "Error",
                         JOptionPane.WARNING_MESSAGE);
-                loginForm.CleanUp();
+                txtPasword.setText("");
             }
         }
     }
@@ -253,11 +253,6 @@ public class Login extends javax.swing.JFrame {
             eventoBoton();
         }
     }//GEN-LAST:event_txtPaswordKeyPressed
-
-    void CleanUp(){
-        txtUser.setText("");
-        txtPasword.setText("");
-    }
 
     /**
      * @param args the command line arguments
