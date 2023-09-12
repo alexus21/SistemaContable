@@ -5,6 +5,8 @@
 package sistemacontable;
 
 import dbconnectionQueries.LoginQuery;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
@@ -63,6 +65,11 @@ public class Login extends javax.swing.JFrame {
         txtPasword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPaswordActionPerformed(evt);
+            }
+        });
+        txtPasword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPaswordKeyPressed(evt);
             }
         });
 
@@ -201,7 +208,7 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+    private void eventoBoton(){
         btnIngresar.setFocusPainted(false);
 
         Principal mainForm = new Principal();
@@ -230,12 +237,22 @@ public class Login extends javax.swing.JFrame {
                 loginForm.CleanUp();
             }
         }
+    }
+    
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        eventoBoton();
 
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void txtPaswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPaswordActionPerformed
+
+    private void txtPaswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPaswordKeyPressed
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+            eventoBoton();
+        }
+    }//GEN-LAST:event_txtPaswordKeyPressed
 
     void CleanUp(){
         txtUser.setText("");

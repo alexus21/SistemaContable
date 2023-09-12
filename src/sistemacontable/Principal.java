@@ -284,6 +284,14 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBalanceActionPerformed
         btnBalance.setFocusPainted(false);
+        Balance b = new Balance();
+        b.setSize(870, 570);
+        b.setLocation(0, 0);
+        
+        Container.removeAll();
+        Container.add(b, BorderLayout.CENTER);
+        Container.revalidate();
+        Container.repaint();
     }//GEN-LAST:event_btnBalanceActionPerformed
 
     private void btnDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiarioActionPerformed
@@ -314,6 +322,14 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMayorActionPerformed
         btnMayor.setFocusPainted(false);
+        LIbroMAyor mayor = new LIbroMAyor(); 
+        mayor.setSize(870, 570);
+        mayor.setLocation(0, 0);
+        
+        Container.removeAll();
+        Container.add(mayor, BorderLayout.CENTER);
+        Container.revalidate();
+        Container.repaint();
     }//GEN-LAST:event_btnMayorActionPerformed
 
       //Para poder mover la ventana Principal
