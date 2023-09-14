@@ -8,7 +8,8 @@ import com.toedter.calendar.JDateChooser;
 import dbconnection.DatabaseConnection;
 import dbconnectionQueries.Create;
 import dbconnectionQueries.Select;
-import java.awt.Component;
+
+import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -28,6 +29,8 @@ import javax.swing.table.TableCellRenderer;
  */
 public class Ingreso_Partidas extends javax.swing.JFrame {
 
+    // JPopupMenu para mostrar el texto completo
+
     private DefaultTableModel model = null;
 
     public boolean isNumber(String str) {
@@ -35,6 +38,36 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     }
 
 
+
+    static class CustomComboBoxRenderer extends DefaultListCellRenderer {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            String text = (String) value;
+            int maxLength = 65; // Longitud máxima deseada para la vista en el combo box
+            if (text.length() > maxLength) {
+                text = text.substring(0, maxLength) + "..."; // Acorta el texto y agrega puntos suspensivos
+            }
+            return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
+        }
+    }
+
+    private void showTextComboBox(int maxLength){
+        new Thread(() -> {
+            String selectedItem = (String) jComboSelectAccountTitle.getSelectedItem();
+            assert selectedItem != null;
+            if (selectedItem.length() > maxLength) {
+                jPopupMenu1.removeAll();
+                jPopupMenu1.add(new JLabel(selectedItem));
+                jPopupMenu1.show(jComboSelectAccountTitle, 0, jComboSelectAccountTitle.getHeight());
+            }
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+    }
 
     private void resetData(){
 
@@ -51,6 +84,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     public Ingreso_Partidas() {
         initComponents();
         resetData();
+        jComboSelectAccountTitle.setRenderer(new CustomComboBoxRenderer());
     }
 
     /**
@@ -62,6 +96,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -424,6 +459,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         }
         btnRegistry.setEnabled(true);
         btnRegistry.setEnabled(true);
+        showTextComboBox(65);
     }
 
     void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
@@ -476,6 +512,7 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTableDaily;
