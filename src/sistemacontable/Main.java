@@ -38,7 +38,7 @@ public class Main {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                new Login().setVisible(true);
             }
         });
 

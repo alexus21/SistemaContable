@@ -5,6 +5,7 @@
 package sistemacontable;
 
 import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 import dbconnection.DatabaseConnection;
 import dbconnectionQueries.Create;
 import dbconnectionQueries.Select;
@@ -88,6 +89,8 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
 
         java.util.Date date = new java.util.Date();
         jDateChooser.setDate(date);
+        JTextFieldDateEditor editor = (JTextFieldDateEditor) jDateChooser.getDateEditor();
+        editor.setEditable(false);
     }
 
     /**
