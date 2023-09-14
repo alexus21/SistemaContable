@@ -85,6 +85,9 @@ public class Ingreso_Partidas extends javax.swing.JFrame {
         initComponents();
         resetData();
         jComboSelectAccountTitle.setRenderer(new CustomComboBoxRenderer());
+
+        java.util.Date date = new java.util.Date();
+        jDateChooser.setDate(date);
     }
 
     /**
