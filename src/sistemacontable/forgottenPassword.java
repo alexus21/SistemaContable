@@ -152,11 +152,13 @@ public class forgottenPassword extends javax.swing.JFrame {
         if(!s.getUsername(oldUsername) && !oldUsername.equals("admin")){
             JOptionPane.showMessageDialog(null, "Error: usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
             txtGetOldUsername.setText("");
+            txtGetOldUsername.setText("");
             return;
         }
 
         if(newUsername.equalsIgnoreCase("admin")){
             JOptionPane.showMessageDialog(null, "Error: nombre de usuario no permitido", "Error", JOptionPane.ERROR_MESSAGE);
+            txtGetNewUsername.setText("");
             return;
         }
 
