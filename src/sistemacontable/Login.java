@@ -227,13 +227,13 @@ public class Login extends javax.swing.JFrame {
     private void eventoBoton(){
         btnIngresar.setFocusPainted(false);
 
-        Select s = new Select();
-        Principal mainForm = new Principal();
-        sistemacontable.Login loginForm = new sistemacontable.Login();
-
         String username = txtUser.getText().trim();
         char[] passwordChars = txtPasword.getPassword();
         String password = new String(passwordChars);
+
+        Select s = new Select();
+        Principal mainForm = new Principal(username);
+        sistemacontable.Login loginForm = new sistemacontable.Login();
 
         if(username.isEmpty() || password.isEmpty()){
             JOptionPane.showMessageDialog(null, "Error: ingresa tus credenciales", "Error", JOptionPane.ERROR_MESSAGE);
