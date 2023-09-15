@@ -4,6 +4,7 @@
  */
 package sistemacontable;
 
+import datavalidations.Validations;
 import dbconnectionQueries.Create;
 import dbconnectionQueries.Select;
 import passwordEncryption.Hashing;
@@ -11,6 +12,8 @@ import passwordEncryption.Hashing;
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -141,57 +144,23 @@ public class forgottenPassword extends javax.swing.JFrame {
         String newUsername = txtGetNewUsername.getText().trim();
         String firstPassword = txtGetPassword.getText().trim();
         String secondPassword = txtRetypePassword.getText().trim();
-        Select s = new Select();
         Create c = new Create();
         Login l = new Login();
 
-        if(oldUsername.isEmpty() || newUsername.isEmpty() || firstPassword.isEmpty() || secondPassword.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Error: rellene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        if(Validations.validateUsername(newUsername, oldUsername) && Validations.validatePasswords(firstPassword, secondPassword)){
+            // Genera un nuevo salt (valor aleatorio) para esta contraseña.
+            byte[] salt = Hashing.generateSalt();
 
-        if(s.getUsername(newUsername)){
-            JOptionPane.showMessageDialog(null, "Error: este usuario ya existe", "Error", JOptionPane.ERROR_MESSAGE);
-            cleanUpFields();
-            return;
-        }
-
-        if(!s.getUsername(oldUsername) && !oldUsername.equals("admin")){
-            JOptionPane.showMessageDialog(null, "Error: usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
-            cleanUpFields();
-            return;
-        }
-
-        if(newUsername.equalsIgnoreCase("admin")){
-            JOptionPane.showMessageDialog(null, "Error: nombre de usuario no permitido", "Error", JOptionPane.ERROR_MESSAGE);
-            cleanUpFields();
-            return;
-        }
-
-        if(firstPassword.length() < 8 || secondPassword.length() < 8){
-            JOptionPane.showMessageDialog(null, "Error: la clave de usuario debe tener al menos 8 caracteres", "Error", JOptionPane.ERROR_MESSAGE);
-            cleanUpFields();
-            return;
-        }
-
-        if(!firstPassword.equals(secondPassword)){
-            JOptionPane.showMessageDialog(null, "Error: las claves no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
-            cleanUpFields();
-            return;
-        }
-
-        // Genera un nuevo salt (valor aleatorio) para esta contraseña.
-        byte[] salt = Hashing.generateSalt();
-
-        try {
-            // Aplica el proceso de hash a la contraseña y la almacena de manera segura en la base de datos junto con el salt.
-            String password = Hashing.HashPassword(firstPassword, salt);
-            c.saveUser(newUsername, password, salt);
-            JOptionPane.showMessageDialog(null, "Actualizado correctamente", "Atención", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            l.setVisible(true);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new RuntimeException(e);
+            try {
+                // Aplica el proceso de hash a la contraseña y la almacena de manera segura en la base de datos junto con el salt.
+                String password = Hashing.HashPassword(firstPassword, salt);
+                c.saveUser(newUsername, password, salt);
+                JOptionPane.showMessageDialog(null, "Actualizado correctamente", "Atención", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                l.setVisible(true);
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
