@@ -162,6 +162,8 @@ public class forgottenPassword extends javax.swing.JFrame {
                 throw new RuntimeException(e);
             }
         }
+
+        cleanUpFields();
     }
 
     void cleanUpFields(){
