@@ -2,7 +2,6 @@ package dbconnectionQueries;
 
 import dbconnection.DatabaseConnection;
 
-import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
 public class Select {
@@ -81,5 +80,67 @@ public class Select {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean getUsername(String username){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+
+        try{
+            connection = DatabaseConnection.getInstance().getConnection();
+            String myQuery = "SELECT username FROM users where username = ?";
+            statement = connection.prepareStatement(myQuery);
+            statement.setString(1, username);
+            rs = statement.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public String getStoredPassword(String username){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        byte[] salt = new byte[0];
+
+        try{
+            connection = DatabaseConnection.getInstance().getConnection();
+            String myQuery = "SELECT password FROM users where username = ?";
+            statement = connection.prepareStatement(myQuery);
+            statement.setString(1, username);
+            rs = statement.executeQuery();
+            if(rs.next()){
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
+    }
+
+    public byte[] getSalt(String username){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        byte[] salt = new byte[0];
+
+        try{
+            connection = DatabaseConnection.getInstance().getConnection();
+            String myQuery = "SELECT salt FROM users where username = ?";
+            statement = connection.prepareStatement(myQuery);
+            statement.setString(1, username);
+            rs = statement.executeQuery();
+            if(rs.next()){
+                return rs.getBytes(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return salt;
     }
 }
