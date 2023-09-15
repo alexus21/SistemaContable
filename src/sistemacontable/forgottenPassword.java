@@ -50,7 +50,8 @@ public class forgottenPassword extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 102, 102));
-        jLabel1.setText("¿Has olvidado tu contraseña?");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Actualización de datos");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/contrasena.png"))); // NOI18N
 
@@ -115,9 +116,9 @@ public class forgottenPassword extends javax.swing.JFrame {
                 .addComponent(txtGetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtRetypePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
+                .addGap(43, 43, 43))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -135,7 +136,7 @@ public class forgottenPassword extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {                                          
         String oldUsername = txtGetOldUsername.getText().trim();
         String newUsername = txtGetNewUsername.getText().trim();
         String firstPassword = txtGetPassword.getText().trim();
@@ -144,38 +145,47 @@ public class forgottenPassword extends javax.swing.JFrame {
         Create c = new Create();
         Login l = new Login();
 
-        if(firstPassword.isEmpty() || secondPassword.isEmpty()){
+        if(oldUsername.isEmpty() || newUsername.isEmpty() || firstPassword.isEmpty() || secondPassword.isEmpty()){
             JOptionPane.showMessageDialog(null, "Error: rellene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(s.getUsername(newUsername)){
+            JOptionPane.showMessageDialog(null, "Error: este usuario ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+            cleanUpFields();
             return;
         }
 
         if(!s.getUsername(oldUsername) && !oldUsername.equals("admin")){
             JOptionPane.showMessageDialog(null, "Error: usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
-            txtGetOldUsername.setText("");
-            txtGetOldUsername.setText("");
+            cleanUpFields();
             return;
         }
 
         if(newUsername.equalsIgnoreCase("admin")){
             JOptionPane.showMessageDialog(null, "Error: nombre de usuario no permitido", "Error", JOptionPane.ERROR_MESSAGE);
-            txtGetNewUsername.setText("");
+            cleanUpFields();
+            return;
+        }
+
+        if(firstPassword.length() < 8 || secondPassword.length() < 8){
+            JOptionPane.showMessageDialog(null, "Error: la clave de usuario debe tener al menos 8 caracteres", "Error", JOptionPane.ERROR_MESSAGE);
+            cleanUpFields();
             return;
         }
 
         if(!firstPassword.equals(secondPassword)){
-            txtGetPassword.setText("");
-            txtRetypePassword.setText("");
             JOptionPane.showMessageDialog(null, "Error: las claves no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+            cleanUpFields();
             return;
         }
 
         // Genera un nuevo salt (valor aleatorio) para esta contraseña.
         byte[] salt = Hashing.generateSalt();
-        String password = "";
-        try {
 
+        try {
             // Aplica el proceso de hash a la contraseña y la almacena de manera segura en la base de datos junto con el salt.
-            password = Hashing.HashPassword(firstPassword, salt);
+            String password = Hashing.HashPassword(firstPassword, salt);
             c.saveUser(newUsername, password, salt);
             JOptionPane.showMessageDialog(null, "Actualizado correctamente", "Atención", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
@@ -183,8 +193,14 @@ public class forgottenPassword extends javax.swing.JFrame {
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }
+    }
 
-    }//GEN-LAST:event_btnUpdateActionPerformed
+    void cleanUpFields(){
+        txtGetOldUsername.setText("");
+        txtGetNewUsername.setText("");
+        txtGetPassword.setText("");
+        txtRetypePassword.setText("");
+    }
 
     /**
      * @param args the command line arguments
