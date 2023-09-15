@@ -41,4 +41,22 @@ public class Create {
         }
     }
 
+    public void saveUser(String username, String password, byte[] salt){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String myQuery = "INSERT INTO users(username, password, salt) VALUES (?, ?, ?)";
+
+        try {
+            connection = DatabaseConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(myQuery);
+            statement.setString(1, username);
+            statement.setString(2, password);
+            statement.setBytes(3, salt); // Usamos setBytes para el campo salt
+            statement.executeUpdate(); // Cambiamos a executeUpdate
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // Cerrar la conexión, el statement y el resultSet si es necesario
+        }
+    }
 }

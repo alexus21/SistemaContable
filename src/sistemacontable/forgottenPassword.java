@@ -4,6 +4,14 @@
  */
 package sistemacontable;
 
+import dbconnectionQueries.Create;
+import dbconnectionQueries.Select;
+import passwordEncryption.Hashing;
+
+import javax.swing.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 /**
  *
  * @author PC
@@ -29,10 +37,11 @@ public class forgottenPassword extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtRetypePassword = new javax.swing.JPasswordField();
+        txtGetNewUsername = new javax.swing.JTextField();
+        txtGetPassword = new javax.swing.JPasswordField();
         btnUpdate = new javax.swing.JButton();
+        txtGetOldUsername = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cambio de contraseña");
@@ -45,55 +54,67 @@ public class forgottenPassword extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/contrasena.png"))); // NOI18N
 
-        jTextField2.setBackground(new java.awt.Color(213, 219, 231));
-        jTextField2.setForeground(new java.awt.Color(0, 51, 51));
-        jTextField2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102), 2), "Confirmar contraseña:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 51, 51))); // NOI18N
+        txtRetypePassword.setBackground(new java.awt.Color(213, 219, 231));
+        txtRetypePassword.setForeground(new java.awt.Color(0, 51, 51));
+        txtRetypePassword.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102), 2), "Confirmar contraseña:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 51, 51))); // NOI18N
 
-        jTextField3.setBackground(new java.awt.Color(213, 219, 231));
-        jTextField3.setForeground(new java.awt.Color(0, 51, 51));
-        jTextField3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102), 2), "Usuario:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 51, 51))); // NOI18N
+        txtGetNewUsername.setBackground(new java.awt.Color(213, 219, 231));
+        txtGetNewUsername.setForeground(new java.awt.Color(0, 51, 51));
+        txtGetNewUsername.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102), 2), "Nuevo nombre de usuario:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 51, 51))); // NOI18N
 
-        jTextField4.setBackground(new java.awt.Color(213, 219, 231));
-        jTextField4.setForeground(new java.awt.Color(0, 51, 51));
-        jTextField4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102), 2), "Contraseña nueva:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 51, 51))); // NOI18N
+        txtGetPassword.setBackground(new java.awt.Color(213, 219, 231));
+        txtGetPassword.setForeground(new java.awt.Color(0, 51, 51));
+        txtGetPassword.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102), 2), "Contraseña nueva:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 51, 51))); // NOI18N
 
         btnUpdate.setBackground(new java.awt.Color(50, 81, 197));
         btnUpdate.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Actualizar");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        txtGetOldUsername.setBackground(new java.awt.Color(213, 219, 231));
+        txtGetOldUsername.setForeground(new java.awt.Color(0, 51, 51));
+        txtGetOldUsername.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102), 2), "Nombre de usuario anterior:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 51, 51))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(172, 172, 172)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(55, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRetypePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addComponent(txtGetNewUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                        .addComponent(txtGetPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtGetOldUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)))
                 .addGap(47, 47, 47))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(171, 171, 171)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
+                .addGap(44, 44, 44)
+                .addComponent(txtGetOldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtGetNewUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtGetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtRetypePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
@@ -113,6 +134,57 @@ public class forgottenPassword extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        String oldUsername = txtGetOldUsername.getText().trim();
+        String newUsername = txtGetNewUsername.getText().trim();
+        String firstPassword = txtGetPassword.getText().trim();
+        String secondPassword = txtRetypePassword.getText().trim();
+        Select s = new Select();
+        Create c = new Create();
+        Login l = new Login();
+
+        if(firstPassword.isEmpty() || secondPassword.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Error: rellene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(!s.getUsername(oldUsername) && !oldUsername.equals("admin")){
+            JOptionPane.showMessageDialog(null, "Error: usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+            txtGetOldUsername.setText("");
+            txtGetOldUsername.setText("");
+            return;
+        }
+
+        if(newUsername.equalsIgnoreCase("admin")){
+            JOptionPane.showMessageDialog(null, "Error: nombre de usuario no permitido", "Error", JOptionPane.ERROR_MESSAGE);
+            txtGetNewUsername.setText("");
+            return;
+        }
+
+        if(!firstPassword.equals(secondPassword)){
+            txtGetPassword.setText("");
+            txtRetypePassword.setText("");
+            JOptionPane.showMessageDialog(null, "Error: las claves no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Genera un nuevo salt (valor aleatorio) para esta contraseña.
+        byte[] salt = Hashing.generateSalt();
+        String password = "";
+        try {
+
+            // Aplica el proceso de hash a la contraseña y la almacena de manera segura en la base de datos junto con el salt.
+            password = Hashing.HashPassword(firstPassword, salt);
+            c.saveUser(newUsername, password, salt);
+            JOptionPane.showMessageDialog(null, "Actualizado correctamente", "Atención", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            l.setVisible(true);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,8 +226,9 @@ public class forgottenPassword extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField txtGetNewUsername;
+    private javax.swing.JTextField txtGetOldUsername;
+    private javax.swing.JTextField txtGetPassword;
+    private javax.swing.JTextField txtRetypePassword;
     // End of variables declaration//GEN-END:variables
 }

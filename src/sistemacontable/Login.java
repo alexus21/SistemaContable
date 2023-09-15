@@ -5,8 +5,13 @@
 package sistemacontable;
 
 import dbconnectionQueries.LoginQuery;
+import dbconnectionQueries.Select;
+import passwordEncryption.Hashing;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.swing.*;
 
@@ -222,6 +227,7 @@ public class Login extends javax.swing.JFrame {
     private void eventoBoton(){
         btnIngresar.setFocusPainted(false);
 
+        Select s = new Select();
         Principal mainForm = new Principal();
         sistemacontable.Login loginForm = new sistemacontable.Login();
 
@@ -230,24 +236,35 @@ public class Login extends javax.swing.JFrame {
         String password = new String(passwordChars);
 
         if(username.isEmpty() || password.isEmpty()){
-            JOptionPane.showMessageDialog(null,
-                    "Ingresa tus credenciales",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error: ingresa tus credenciales", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        else{
-            if(LoginQuery.ValidateLogin(username, password)){
+
+        if(username.equals("admin") && password.equals("Pa55w0rD")){
+            JOptionPane.showMessageDialog(null, "Actualiza tus credenciales", "Atención", JOptionPane.INFORMATION_MESSAGE);
+            forgottenPassword fp = new forgottenPassword();
+            this.dispose();
+            fp.setVisible(true);
+            return;
+        }
+
+        if(!s.getUsername(username)){
+            JOptionPane.showMessageDialog(null, "Error: usuario no encontrado", "Atención", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        try {
+            if(s.getUsername(username) && Hashing.VerifyPassword(password, s.getStoredPassword(username), Hashing.getSalt(username))){
                 this.dispose();
                 mainForm.setVisible(true);
-                
-            }else{
-                JOptionPane.showMessageDialog(null,
-                        "Datos incorrectos",
-                        "Error",
-                        JOptionPane.WARNING_MESSAGE);
-                txtPasword.setText("");
+                return;
             }
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
         }
+
+        JOptionPane.showMessageDialog(null, "Error: usuario o clave incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+        txtPasword.setText("");
     }
     
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed

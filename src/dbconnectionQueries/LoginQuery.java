@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class LoginQuery {
 
-    public static boolean ValidateLogin(String username, String password){
+    public static boolean ValidateLogin(String username, String password, byte[] salt){
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
