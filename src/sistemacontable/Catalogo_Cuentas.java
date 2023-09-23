@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
+import dbconnection.DatabaseConnection;
 
 /**
  *
@@ -23,30 +24,19 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
     
     //Variable que nos ayuda con la conexion 
     public static Connection con;
+
+     // Instancia de DatabaseConnection
+     DatabaseConnection data = DatabaseConnection.getInstance();
     
     public Catalogo_Cuentas() {
         initComponents();
+        // Obténemos la conexión a la base de datos
+        con = data.getConnection();
         //Llamando a los metodos 
-        Conectar();
         Activos();
         Pasivos();
         Patrimonio();
         Cierre();
-    }
-    
-        //***************************************************************************
-    //Metodo que nos permite conectarnos a la base de datos 
-    public void Conectar(){
-        
-         String url = "jdbc:postgresql://localhost:5432/db_catalogoDeCuentas";
-        try {
-            con= DriverManager.getConnection(url,"postgres", "Arbaiza044");
-            System.out.println("ESTAMOS CONECTADOS  A LA DB");
-        } catch (SQLException ex) {
-            
-            System.out.println("ERROR AL REALIZAR LA CONEXION -> "+ex);
-        }
-        
     }
     
      //Metodos que nos permiten visualizar los datos en nuestras tablas 
