@@ -226,6 +226,8 @@ public class Principal extends javax.swing.JFrame {
         jPanel4.setName("PanelContedor1"); // NOI18N
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Container.setBackground(new java.awt.Color(213, 219, 231));
+
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 102, 102));
         jLabel5.setText("BIENVENIDO");
@@ -247,7 +249,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(545, 545, 545))
         );
 
-        jPanel4.add(Container, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 580));
+        jPanel4.add(Container, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 870, 580));
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 870, 580));
 
@@ -269,8 +271,16 @@ public class Principal extends javax.swing.JFrame {
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         //abriendo el formulario de ingreso 
         btnIngresar.setFocusPainted(false);
-        Ingreso_Partidas verForm = new Ingreso_Partidas ();
-        verForm.setVisible(true);
+        /*Ingreso_Partidas verForm = new Ingreso_Partidas ();
+        verForm.setVisible(true);*/
+        IngresoPar in = new IngresoPar();
+        in.setSize(870, 570);
+        in.setLocation(0, 0);
+        
+        Container.removeAll();
+        Container.add(in, BorderLayout.CENTER);
+        Container.revalidate();
+        Container.repaint();
         
     }//GEN-LAST:event_btnIngresarActionPerformed
 

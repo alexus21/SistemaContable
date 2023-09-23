@@ -379,9 +379,14 @@
           </Layout>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="Container">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="e7" green="db" red="d5" type="rgb"/>
+                </Property>
+              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="0" y="0" width="870" height="580"/>
+                  <AbsoluteConstraints x="10" y="0" width="870" height="580"/>
                 </Constraint>
               </Constraints>
 
