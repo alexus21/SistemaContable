@@ -32,8 +32,6 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
     
     public Catalogo_Cuentas() {
         initComponents();
-        // Cargar vista por defecto
-        showAccounts("activo", tableActivos);
     }
 
     void showAccounts(String accountType, JTable table){
