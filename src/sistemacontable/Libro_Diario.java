@@ -55,7 +55,7 @@ public class Libro_Diario extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Fecha", "Cuenta", "Parcial", "Debe", "Haber"
+                "Fecha", "Cuenta", "Código", "Debe", "Haber"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
