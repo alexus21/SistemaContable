@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author PC
@@ -71,7 +72,12 @@ public class IngresoPar extends javax.swing.JPanel {
 
         model = new DefaultTableModel(null, new String[]{
                 "Fecha", "Cuenta", "Código", "Debe", "Haber"
-        });
+        }){
+            @Override
+            public boolean isCellEditable (int row, int column) {
+                return false;
+            }
+        };
 
         jTableDaily.setModel(model);
     }
@@ -105,7 +111,7 @@ public class IngresoPar extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableDaily = new javax.swing.JTable();
         btnCancelar = new javax.swing.JButton();
-        btnCancelar1 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         btnRegistry = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
@@ -151,17 +157,17 @@ public class IngresoPar extends javax.swing.JPanel {
         });
         jPanel3.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 340, 150, 40));
 
-        btnCancelar1.setBackground(new java.awt.Color(71, 102, 121));
-        btnCancelar1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        btnCancelar1.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cancelar.png"))); // NOI18N
-        btnCancelar1.setText("Guardar");
-        btnCancelar1.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setBackground(new java.awt.Color(71, 102, 121));
+        btnGuardar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cancelar.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelar1ActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnCancelar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(702, 408, 150, 40));
+        jPanel3.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(702, 408, 150, 40));
 
         btnRegistry.setBackground(new java.awt.Color(71, 102, 121));
         btnRegistry.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -219,6 +225,7 @@ public class IngresoPar extends javax.swing.JPanel {
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 6, -1, 28));
 
         buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setSelected(true);
         jRadioButton1.setText("Deber");
         jPanel2.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
 
@@ -283,7 +290,7 @@ public class IngresoPar extends javax.swing.JPanel {
                     myModel.addRow(nuevaFila);
                     jTableDaily.setRowHeight(30);
 
-                    int rowCount = model.getRowCount();
+                    /*int rowCount = model.getRowCount();
                     int colCount = model.getColumnCount();
 
                     if (rowCount > 0) { // Asegúrate de que haya al menos una fila en la tabla
@@ -298,7 +305,7 @@ public class IngresoPar extends javax.swing.JPanel {
                         // Luego, puedes enviar tableData a c.saveDaily
                         Create c = new Create();
                         c.saveDaily(tableData);
-                    }
+                    }*/
 
                     jDateChooser.setDate(null);
                     jcomboSelectAccountType.setSelectedIndex(0);
@@ -373,14 +380,71 @@ public class IngresoPar extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jComboSelectAccountTitleActionPerformed
 
-    private void btnCancelar1ActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancelar1ActionPerformed
+    private static List<String []> obtenerRegistros(JTable table){
+        List<String []> lista = new ArrayList<>();
+
+        for (int i = 0; i < table.getRowCount(); i++) {
+            String [] data = new String[table.getColumnCount()];
+            for (int j = 0; j < table.getColumnCount(); j++) {
+                data[j] = (String) table.getValueAt(i, j);
+            }
+            lista.add(data);
+        }
+        return lista;
+    }
+
+    private double totalPorCuentas(TipoCuenta tipoCuenta, List<String []> lista){
+        return switch (tipoCuenta){
+            case DEBER -> lista.stream().mapToDouble(item -> Integer.parseInt(item[3])).sum();
+            case HABER -> lista.stream().mapToDouble(item -> Integer.parseInt(item[4])).sum();
+        };
+    }
+
+    private double[] totalPorCuentas(List<String []> lista){
+        double sum1 = 0, sum2 = 0;
+
+        for (String[] value : lista) {
+            sum1 += Integer.parseInt(value[3]);
+            sum2 += Integer.parseInt(value[4]);
+        }
+
+        return new double[]{sum1, sum2};
+    }
+
+    private void btnGuardarActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (jTableDaily.getRowCount() == 0){
+            return;
+        }
+
+        List<String[]> lista = obtenerRegistros(jTableDaily);
+        /*for (int i = 0; i < lista.size(); i++) {
+            for (int j = 0; j < lista.get(i).length; j++) {
+                System.out.print(((String [])(lista.get(i)))[j] + " - ");
+            }
+            System.out.println();
+        }*/
+
+
+
+        double[] sumas = totalPorCuentas(lista);
+
+        if (sumas[0] != sumas[1]){
+            JOptionPane.showMessageDialog(null, "La sumatoria de las cuentas debe ser igual", "", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        for (String[] strings : lista) {
+            new Create().saveDaily(strings);
+        }
+
+        resetData();
+
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnCancelar1;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRegistry;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> jComboSelectAccountTitle;
