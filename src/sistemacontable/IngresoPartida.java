@@ -93,6 +93,7 @@ public class IngresoPartida extends javax.swing.JPanel {
 
         java.util.Date date = new java.util.Date();
         jDateChooser.setDate(date);
+        jDateChooser.setMaxSelectableDate(date);
         JTextFieldDateEditor editor = (JTextFieldDateEditor) jDateChooser.getDateEditor();
         editor.setEditable(false);
     }
