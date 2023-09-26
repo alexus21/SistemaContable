@@ -12,6 +12,7 @@ import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -21,7 +22,8 @@ import java.util.List;
 /**
  * @author PC
  */
-public class IngresoPar extends javax.swing.JPanel {
+public class IngresoPartida extends javax.swing.JPanel {
+    
 
     // JPopupMenu para mostrar el texto completo
 
@@ -85,7 +87,7 @@ public class IngresoPar extends javax.swing.JPanel {
     /**
      * Creates new form IngresoPar
      */
-    public IngresoPar () {
+    public IngresoPartida () {
         initComponents();
         resetData();
 
@@ -235,6 +237,11 @@ public class IngresoPar extends javax.swing.JPanel {
 
         jTextField1.setBackground(new java.awt.Color(213, 219, 231));
         jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dato"));
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
         jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 90, 60));
 
         jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 60, 156, -1));
@@ -243,7 +250,11 @@ public class IngresoPar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
+        boolean option = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas cancelar la operación?", "",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION;
+        if (option){
+            resetData();
+        }
 
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -449,6 +460,15 @@ public class IngresoPar extends javax.swing.JPanel {
         resetData();
 
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        char c = evt.getKeyChar();
+        String currentText = jTextField1.getText();
+
+        if (!((c >= '0' && c <= '9') || (c == '.' && currentText.indexOf('.') == -1) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)) {
+            evt.consume(); // Consume el evento si no es un número, si ya hay un punto o si es una tecla de borrado
+        }
+    }//GEN-LAST:event_jTextField1KeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -288,7 +288,7 @@ public class Principal extends javax.swing.JFrame {
         btnIngresar.setFocusPainted(false);
         /*Ingreso_Partidas verForm = new Ingreso_Partidas ();
         verForm.setVisible(true);*/
-        IngresoPar in = new IngresoPar();
+        IngresoPartida in = new IngresoPartida();
         in.setSize(870, 570);
         in.setLocation(0, 0);
         
