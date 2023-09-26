@@ -395,7 +395,7 @@ public class IngresoPar extends javax.swing.JPanel {
 
     private double totalPorCuentas(TipoCuenta tipoCuenta, List<String []> lista){
         return switch (tipoCuenta){
-            case DEBER -> lista.stream().mapToDouble(item -> Integer.parseInt(item[3])).sum();
+            case DEBER -> lista.stream().mapToDouble(item -> Integer.parseInt(item[3])).sum(); 
             case HABER -> lista.stream().mapToDouble(item -> Integer.parseInt(item[4])).sum();
         };
     }
@@ -404,8 +404,8 @@ public class IngresoPar extends javax.swing.JPanel {
         double sum1 = 0, sum2 = 0;
 
         for (String[] value : lista) {
-            sum1 += Integer.parseInt(value[3]);
-            sum2 += Integer.parseInt(value[4]);
+            sum1 += Double.parseDouble(value[3]);
+            sum2 += Double.parseDouble(value[4]);
         }
 
         return new double[]{sum1, sum2};
