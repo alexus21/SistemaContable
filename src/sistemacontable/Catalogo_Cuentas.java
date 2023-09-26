@@ -82,6 +82,7 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableCierre = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(213, 219, 231));
 
@@ -307,6 +308,19 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("CIERRE", jPanel4);
 
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 820, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 424, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("CIERRE", jPanel5);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -370,15 +384,16 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable tableActivos;
-    private javax.swing.JTable tableCierre;
-    private javax.swing.JTable tablePasivos;
-    private javax.swing.JTable tablePatrimonio;
+    public javax.swing.JTable tableActivos;
+    public javax.swing.JTable tableCierre;
+    public javax.swing.JTable tablePasivos;
+    public javax.swing.JTable tablePatrimonio;
     // End of variables declaration//GEN-END:variables
 }

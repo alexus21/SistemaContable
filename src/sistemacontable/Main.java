@@ -46,9 +46,5 @@ public class Main {
 //               new Principal("").setVisible(true);
             }
         });
-
-        
-
-//        Select.ShowUsers();
     }
 }
