@@ -55,9 +55,17 @@ public class Libro_Diario extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Fecha", "Cuenta", "Parcial", "Debe", "Haber"
+                "Fecha", "Cuenta", "Código", "Debe", "Haber"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

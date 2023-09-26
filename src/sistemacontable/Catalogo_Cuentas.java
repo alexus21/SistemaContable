@@ -5,12 +5,14 @@
 package sistemacontable;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Objects;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import dbconnection.DatabaseConnection;
+import dbconnectionQueries.Select;
 
 /**
  *
@@ -26,112 +28,31 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
     public static Connection con;
 
      // Instancia de DatabaseConnection
-     DatabaseConnection data = DatabaseConnection.getInstance();
+
     
     public Catalogo_Cuentas() {
         initComponents();
-        // Obténemos la conexión a la base de datos
-        con = data.getConnection();
-        //Llamando a los metodos 
-        Activos();
-        Pasivos();
-        Patrimonio();
-        Cierre();
     }
-    
-     //Metodos que nos permiten visualizar los datos en nuestras tablas 
-    public void Activos(){
-        
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo = (DefaultTableModel)tableActivos.getModel();       
-        modelo.getDataVector().removeAllElements();
-    
-        tableActivos.updateUI();
+
+    void showAccounts(String accountType, JTable table){
+        Select s = new Select();
+        DefaultTableModel myTableModel;
+
+        myTableModel = (DefaultTableModel)table.getModel();
+        myTableModel.getDataVector().removeAllElements();
+
+        table.updateUI();
+        ResultSet rs = s.getAccounts(accountType);
+
         try {
-            Statement smt = con.createStatement();
-            String consulta = "SELECT * FROM tbl_cuentasdeactivo ";
-            ResultSet resultado= smt.executeQuery(consulta);
-            while(resultado.next()){
-                modelo.addRow(new Object[]{resultado.getInt("codigo"),resultado.getString("nombre")});
-               
+            while(rs.next()){
+                myTableModel.addRow(new Object[]{rs.getInt("codigo"),rs.getString("nombre")});
             }
-            tableActivos.setModel(modelo);
-           
-            
-        } catch (SQLException ex) {         
-            System.out.println("ERROR AL EJECUTAR LA CONSULTA ->"+ex);
+            table.setModel(myTableModel);
+        } catch (SQLException ex) {
+            System.out.println("ERROR AL EJECUTAR LA CONSULTA: " + ex);
         }
     }
-    
-    //--------------------------------------------------------------------------------------
-        public void Pasivos(){
-        
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo = (DefaultTableModel)tablePasivos.getModel();       
-        modelo.getDataVector().removeAllElements();
-    
-        tablePasivos.updateUI();
-        try {
-            Statement smt = con.createStatement();
-            String consulta = "SELECT * FROM tbl_cuentasdepasivo ";
-            ResultSet resultado= smt.executeQuery(consulta);
-            while(resultado.next()){
-                modelo.addRow(new Object[]{resultado.getInt("codigo"),resultado.getString("nombre")});
-               
-            }
-            tablePasivos.setModel(modelo);
-           
-            
-        } catch (SQLException ex) {         
-            System.out.println("ERROR AL EJECUTAR LA CONSULTA ->"+ex);
-        }
-    }
-   //--------------------------------------------------------------------------------------
-           public void Patrimonio(){
-        
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo = (DefaultTableModel)tablePatrimonio.getModel();       
-        modelo.getDataVector().removeAllElements();
-    
-        tablePatrimonio.updateUI();
-        try {
-            Statement smt = con.createStatement();
-            String consulta = "SELECT * FROM tbl_cuentasdepatrimonio ";
-            ResultSet resultado= smt.executeQuery(consulta);
-            while(resultado.next()){
-                modelo.addRow(new Object[]{resultado.getInt("codigo"),resultado.getString("nombre")});
-               
-            }
-            tablePatrimonio.setModel(modelo);
-           
-            
-        } catch (SQLException ex) {         
-            System.out.println("ERROR AL EJECUTAR LA CONSULTA ->"+ex);
-        }
-    } 
-     //--------------------------------------------------------------------------------------
-        public void Cierre(){
-        
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo = (DefaultTableModel)tableCierre.getModel();       
-        modelo.getDataVector().removeAllElements();
-    
-        tableCierre.updateUI();
-        try {
-            Statement smt = con.createStatement();
-            String consulta = "SELECT * FROM tbl_cuentasdecierre ";
-            ResultSet resultado= smt.executeQuery(consulta);
-            while(resultado.next()){
-                modelo.addRow(new Object[]{resultado.getInt("codigo"),resultado.getString("nombre")});
-               
-            }
-            tableCierre.setModel(modelo);
-           
-            
-        } catch (SQLException ex) {         
-            System.out.println("ERROR AL EJECUTAR LA CONSULTA ->"+ex);
-        }
-    } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -161,6 +82,7 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableCierre = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(213, 219, 231));
 
@@ -172,6 +94,11 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
         jSeparator1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102), 2));
 
         jTabbedPane1.setBackground(new java.awt.Color(213, 219, 231));
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(213, 219, 231));
 
@@ -189,7 +116,15 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
             new String [] {
                 "Codigo", "Nombre"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane5.setViewportView(tableActivos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -234,7 +169,15 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
             new String [] {
                 "Codigo", "Nombre"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tablePasivos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -279,7 +222,15 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
             new String [] {
                 "Codigo", "Nombre"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(tablePatrimonio);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -321,7 +272,15 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
             new String [] {
                 "Codigo", "Nombre"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane4.setViewportView(tableCierre);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -348,6 +307,19 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
         );
 
         jTabbedPane1.addTab("CIERRE", jPanel4);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 820, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 424, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("CIERRE", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -379,7 +351,28 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        int index = jTabbedPane1.getSelectedIndex();
+        String accountType = jTabbedPane1.getTitleAt(index);
+
+        if(accountType.equals("ACTIVOS")){
+            showAccounts("activo", tableActivos);
+            return;
+        }
+        if(accountType.equals("PASIVOS")){
+            showAccounts("pasivo", tablePasivos);
+            return;
+        }
+        if(accountType.equals("PATRIMONIO")){
+            showAccounts("patrimonio", tablePatrimonio);
+            return;
+        }
+        if(accountType.equals("CIERRE")){
+            showAccounts("cierre", tableCierre);
+            return;
+        }
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -391,6 +384,7 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
