@@ -120,12 +120,21 @@ public class Libro_Diario extends javax.swing.JPanel {
             // Llena la tabla con los datos de la base de datos
             int i = 0;
             while (rs.next()) {
+                String fecha = rs.getString(1);
+                String cuenta = rs.getString(2);
+                String codigo = rs.getString(3);
+                String debe = rs.getString(4);
+                String haber = rs.getString(5);
+                
+                if(haber != null && Double.parseDouble(haber)>0){
+                    cuenta = "      "+ cuenta;
+                }
                 Object[] fila = {
-                    rs.getString(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4),
-                    rs.getString(5)
+                    fecha,
+                    cuenta,
+                    codigo,
+                    debe,
+                    haber
                 };
                 tableModel.addRow(fila);
                 jTable1.setRowHeight(30);
