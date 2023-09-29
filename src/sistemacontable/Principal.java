@@ -92,7 +92,7 @@ public class Principal extends javax.swing.JFrame {
         btnMayor.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btnMayor.setForeground(new java.awt.Color(255, 255, 255));
         btnMayor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/banco.png"))); // NOI18N
-        btnMayor.setText(" Libro Mayor");
+        btnMayor.setText(" Libro mayor");
         btnMayor.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
         btnMayor.setName("btnLMayor"); // NOI18N
         btnMayor.addActionListener(new java.awt.event.ActionListener() {
@@ -145,7 +145,7 @@ public class Principal extends javax.swing.JFrame {
         btnIngresar.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btnIngresar.setForeground(new java.awt.Color(255, 255, 255));
         btnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/editar.png"))); // NOI18N
-        btnIngresar.setText(" Ingresar Partida");
+        btnIngresar.setText(" Ingresar partida");
         btnIngresar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
         btnIngresar.setName("btnIngresarPartida"); // NOI18N
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
@@ -350,7 +350,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMayorActionPerformed
         btnMayor.setFocusPainted(false);
-        LIbroMAyor mayor = new LIbroMAyor(); 
+        LIbroMayor mayor = new LIbroMayor(); 
         mayor.setSize(870, 570);
         mayor.setLocation(0, 0);
         

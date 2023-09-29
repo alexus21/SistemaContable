@@ -6,11 +6,7 @@ package sistemacontable;
 
 import dbconnectionQueries.Select;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -169,7 +165,7 @@ public class Libro_Diario extends javax.swing.JPanel {
 
             DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
             // Llena la tabla con los datos de la base de datos
-            int i = 0;
+//            int i = 0;
             while (rs.next()) {
                 String fecha = rs.getString(1);
                 String cuenta = rs.getString(2);
