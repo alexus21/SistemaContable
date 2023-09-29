@@ -60,8 +60,40 @@ public class Select {
         ResultSet rs = null;
         try{
             connection = DatabaseConnection.getInstance().getConnection();
-            String myQuery = "SELECT * FROM tbl_dailybook ORDER BY cuenta ASC";
+            String myQuery = "SELECT * FROM tbl_dailybook ORDER BY cuenta";
             statement = connection.prepareStatement(myQuery);
+            rs = statement.executeQuery();
+            return rs;
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet getSumFromDebit(String account){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try{
+            connection = DatabaseConnection.getInstance().getConnection();
+            String myQuery = "SELECT SUM(debe) FROM tbl_dailybook WHERE cuenta = ?";
+            statement = connection.prepareStatement(myQuery);
+            statement.setString(1, account);
+            rs = statement.executeQuery();
+            return rs;
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet getSumFromCredit(String account){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try{
+            connection = DatabaseConnection.getInstance().getConnection();
+            String myQuery = "SELECT SUM(haber) FROM tbl_dailybook WHERE cuenta = ?";
+            statement = connection.prepareStatement(myQuery);
+            statement.setString(1, account);
             rs = statement.executeQuery();
             return rs;
         }catch(Exception e){

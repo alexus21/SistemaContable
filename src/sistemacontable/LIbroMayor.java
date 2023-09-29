@@ -218,17 +218,66 @@ public class LIbroMayor extends javax.swing.JPanel {
                 myModel.setValueAt("", fila, columnCredit);
             }
         }
+
+        getSum();
     }
 
     //Agregar suma de columnas hasta que la cuenta cambie:
-    private double getSum(){
+    private void getSum() {
+        Select s = new Select();
+        DefaultTableModel myModel = (DefaultTableModel) jTableGeneral.getModel();
+        DefaultTableModel myResultsModel = (DefaultTableModel) jTableResults.getModel();
 
         double sumDebit = 0;
         double sumCredit = 0;
 
-        return 0;
+        final int columnAccount = 1;
+        final int columnDebit = 2;
+
+        System.out.println("N filas: " + myModel.getRowCount());
+
+        for (int n = 0; n < myModel.getRowCount(); n++) {
+            String currentValue = (String) myModel.getValueAt(n, columnAccount);
+            ResultSet rsDebit = s.getSumFromDebit(currentValue);
+            ResultSet rsCredit = s.getSumFromCredit(currentValue);
+
+            if (n < myModel.getRowCount() - 1) {
+                System.out.println(currentValue);
+                try{
+                    while(rsDebit.next()){
+                        sumDebit = rsDebit.getDouble(1);
+                    }
+
+                    while(rsCredit.next()){
+                        sumCredit = rsCredit.getDouble(1);
+                    }
+                }catch (Exception e){
+                    throw new RuntimeException(e);
+                }
+
+                double balance = sumDebit - sumCredit;
+
+                if (n < myResultsModel.getRowCount()) {
+                    myResultsModel.setValueAt(currentValue, n, columnAccount);
+                    myResultsModel.setValueAt(balance, n, columnDebit);
+                } else {
+                    myResultsModel.addRow(new Object[]{currentValue, balance});
+                }
+            }
+        }
+
+        cleanUpResultsTable();
     }
 
+    private void cleanUpResultsTable(){
+        DefaultTableModel myResultsModel = (DefaultTableModel) jTableResults.getModel();
+
+        for(int n = 0; n < myResultsModel.getRowCount(); n++){
+            if(myResultsModel.getValueAt(n,0) == ""){
+                myResultsModel.removeRow(n);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
