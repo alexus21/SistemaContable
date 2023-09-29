@@ -278,19 +278,17 @@ public class LIbroMayor extends javax.swing.JPanel {
 
         // Definir las columnas utilizadas en el proceso
         final int columnAccount = 1;
-        final int columnDebit = 2;
+        final int columnResult = 2;
 
         // Recorrer las filas de la tabla jTableGeneral
         for (int n = 0; n < myModel.getRowCount(); n++) {
             // Obtener el valor de la celda en la columna de cuentas
             String currentValue = (String) myModel.getValueAt(n, columnAccount);
+            if(!currentValue.isEmpty()){
+                // Obtener el resultado de la suma de débitos y créditos para la cuenta actual
+                ResultSet rsDebit = s.getSumFromDebit(currentValue);
+                ResultSet rsCredit = s.getSumFromCredit(currentValue);
 
-            // Obtener el resultado de la suma de débitos y créditos para la cuenta actual
-            ResultSet rsDebit = s.getSumFromDebit(currentValue);
-            ResultSet rsCredit = s.getSumFromCredit(currentValue);
-
-            // Procesar los resultados de las consultas
-            if (n < myModel.getRowCount() - 1) {
                 try {
                     while (rsDebit.next()) {
                         sumDebit = rsDebit.getDouble(1);
@@ -299,19 +297,19 @@ public class LIbroMayor extends javax.swing.JPanel {
                     while (rsCredit.next()) {
                         sumCredit = rsCredit.getDouble(1);
                     }
+
+                    // Calcular el saldo
+                    double balance = sumDebit - sumCredit;
+
+                    // Actualizar los valores en el modelo de datos de la tabla jTableResults
+                    if (n < myResultsModel.getRowCount()) {
+                        myResultsModel.setValueAt(currentValue, n, 0);
+                        myResultsModel.setValueAt(balance, n, 1);
+                    } else {
+                        myResultsModel.addRow(new Object[]{currentValue, balance});
+                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
-                }
-
-                // Calcular el saldo
-                double balance = sumDebit - sumCredit;
-
-                // Actualizar los valores en el modelo de datos de la tabla jTableResults
-                if (n < myResultsModel.getRowCount()) {
-                    myResultsModel.setValueAt(currentValue, n, columnAccount);
-                    myResultsModel.setValueAt(balance, n, columnDebit);
-                } else {
-                    myResultsModel.addRow(new Object[]{currentValue, balance});
                 }
             }
         }
@@ -329,7 +327,7 @@ public class LIbroMayor extends javax.swing.JPanel {
         DefaultTableModel myResultsModel = (DefaultTableModel) jTableResults.getModel();
 
         for(int n = 0; n < myResultsModel.getRowCount(); n++){
-            if(myResultsModel.getValueAt(n,0) == ""){
+            if(myResultsModel.getValueAt(n,0).equals("")){
                 myResultsModel.removeRow(n);
             }
         }

@@ -91,7 +91,7 @@ public class Select {
         ResultSet rs = null;
         try{
             connection = DatabaseConnection.getInstance().getConnection();
-            String myQuery = "SELECT SUM(CAST(debe AS numeric)) FROM tbl_dailybook WHERE cuenta = ?";
+            String myQuery = "SELECT SUM(CAST(haber AS numeric)) FROM tbl_dailybook WHERE cuenta = ?";
             statement = connection.prepareStatement(myQuery);
             statement.setString(1, account);
             rs = statement.executeQuery();
