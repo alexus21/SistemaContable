@@ -2,7 +2,6 @@ package dbconnectionQueries;
 
 import dbconnection.DatabaseConnection;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 
 public class Select {
@@ -55,13 +54,13 @@ public class Select {
         }
     }
 
-    public ResultSet loadAccounts(){
+    public ResultSet loadAccountsToGeneralBook(){
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         try{
             connection = DatabaseConnection.getInstance().getConnection();
-            String myQuery = "SELECT * FROM tbl_dailybook ORDER BY fecha DESC";
+            String myQuery = "SELECT * FROM tbl_dailybook ORDER BY cuenta ASC";
             statement = connection.prepareStatement(myQuery);
             rs = statement.executeQuery();
             return rs;

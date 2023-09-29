@@ -307,6 +307,7 @@ public class IngresoPartida extends javax.swing.JPanel {
                     jcomboSelectAccountType.setSelectedIndex(0);
                     jComboSelectAccountTitle.setEnabled(false);
                     btnRegistry.setEnabled(false);
+                    btnGuardar.setEnabled(true);
                 }
             }catch (SQLException sqlException){
                 System.out.println(sqlException.getMessage());
@@ -422,15 +423,6 @@ public class IngresoPartida extends javax.swing.JPanel {
         }
 
         List<String[]> lista = obtenerRegistros(jTableDaily);
-        /*for (int i = 0; i < lista.size(); i++) {
-            for (int j = 0; j < lista.get(i).length; j++) {
-                System.out.print(((String [])(lista.get(i)))[j] + " - ");
-            }
-            System.out.println();
-        }*/
-
-
-
         double[] sumas = totalPorCuentas(lista);
 
         if (sumas[0] != sumas[1]){

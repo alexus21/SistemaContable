@@ -35,8 +35,13 @@ public class LIbroMayor extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableGeneral = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableResults = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(213, 219, 231));
 
@@ -51,11 +56,11 @@ public class LIbroMayor extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Cuenta", "Fecha", "Debe", "Haber", "Resultado"
+                "Fecha", "Cuenta", "Debe", "Haber"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -63,6 +68,56 @@ public class LIbroMayor extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(jTableGeneral);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Libro Mayor", jPanel3);
+
+        jTableResults.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cuenta", "Resultado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTableResults);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Resultados", jPanel2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -76,10 +131,10 @@ public class LIbroMayor extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(324, 324, 324)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 355, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jTabbedPane1)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -90,7 +145,7 @@ public class LIbroMayor extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -109,7 +164,7 @@ public class LIbroMayor extends javax.swing.JPanel {
     private void loadAccounts(){
         try{
             Select s = new Select();
-            ResultSet rs = s.loadAccounts();
+            ResultSet rs = s.loadAccountsToGeneralBook();
             DefaultTableModel myModel = (DefaultTableModel) jTableGeneral.getModel();
 
             while(rs.next()){
@@ -117,36 +172,74 @@ public class LIbroMayor extends javax.swing.JPanel {
                 String cuenta = rs.getString(2);
                 String debe = rs.getString(4);
                 String haber = rs.getString(5);
-                String result = String.valueOf(getSum(debe, haber));
 
                 Object[] newRow = {
                         fecha,
                         cuenta,
                         debe,
-                        haber,
-                        result
+                        haber
                 };
 
                 myModel.addRow(newRow);
                 jTableGeneral.setRowHeight(30);
             }
 
+            if(jTableGeneral.getColumnCount() > 0){
+                cleanUpSameAccountTitle(myModel);
+            }
         }catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
+    private void cleanUpSameAccountTitle(DefaultTableModel myModel) {
+        final int columnAccount = 1;
+        final int columnDebit = 2;
+        final int columnCredit = 3;
+
+        String valorAnteriorAccount = "";
+
+        for (int fila = 0; fila < myModel.getRowCount(); fila++) {
+            Object valorAccount = myModel.getValueAt(fila, columnAccount);
+            Object valorDebit = myModel.getValueAt(fila, columnDebit);
+            Object valorCredit = myModel.getValueAt(fila, columnCredit);
+
+            if (valorAccount.equals(valorAnteriorAccount)) {
+                myModel.setValueAt("", fila, columnAccount);
+            } else {
+                valorAnteriorAccount = valorAccount.toString();
+            }
+
+            if (valorDebit.equals("0")) {
+                myModel.setValueAt("", fila, columnDebit);
+            }
+
+            if (valorCredit.equals("0")) {
+                myModel.setValueAt("", fila, columnCredit);
+            }
+        }
+    }
+
     //Agregar suma de columnas hasta que la cuenta cambie:
-    private double getSum(String debe, String haber){
-        return Double.parseDouble(debe) - Double.parseDouble(haber);
+    private double getSum(){
+
+        double sumDebit = 0;
+        double sumCredit = 0;
+
+        return 0;
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableGeneral;
+    private javax.swing.JTable jTableResults;
     // End of variables declaration//GEN-END:variables
 }
