@@ -161,18 +161,31 @@ public class LIbroMayor extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadAccounts(){
-        try{
+    /**
+     * Carga datos de cuentas en la tabla jTableGeneral a partir de una consulta a la base de datos.
+     * Después de cargar los datos, se ajusta la altura de las filas y se realiza una limpieza de títulos de cuentas duplicados y celdas de débito/crédito con valor "0".
+     *
+     * Nota: Se espera que jTableGeneral tenga las columnas "fecha", "cuenta", "debe" y "haber" en ese orden.
+     */
+    private void loadAccounts() {
+        try {
+            // Crear una instancia de la clase Select para realizar consultas
             Select s = new Select();
+
+            // Obtener un conjunto de resultados (ResultSet) con los datos de cuentas
             ResultSet rs = s.loadAccountsToGeneralBook();
+
+            // Obtener el modelo de datos de la tabla jTableGeneral
             DefaultTableModel myModel = (DefaultTableModel) jTableGeneral.getModel();
 
-            while(rs.next()){
+            // Recorrer los resultados y agregarlos a la tabla
+            while (rs.next()) {
                 String fecha = rs.getString(1);
                 String cuenta = rs.getString(2);
                 String debe = rs.getString(4);
                 String haber = rs.getString(5);
 
+                // Crear un nuevo arreglo de objetos con los valores
                 Object[] newRow = {
                         fecha,
                         cuenta,
@@ -180,83 +193,120 @@ public class LIbroMayor extends javax.swing.JPanel {
                         haber
                 };
 
+                // Agregar la nueva fila al modelo de datos de la tabla jTableGeneral
                 myModel.addRow(newRow);
+
+                // Ajustar la altura de las filas en la tabla
                 jTableGeneral.setRowHeight(30);
             }
 
-            if(jTableGeneral.getColumnCount() > 0){
+            // Verificar si la tabla tiene columnas y realizar la limpieza de datos si es necesario
+            if (jTableGeneral.getColumnCount() > 0) {
                 cleanUpSameAccountTitle(myModel);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
+            // Capturar y lanzar una excepción en caso de error
             throw new RuntimeException(e);
         }
     }
 
+
+    /**
+     * Realiza operaciones de limpieza en un modelo de datos de tabla, eliminando títulos de cuenta duplicados y celdas de débito/crédito con valor "0".
+     * Después de la limpieza, se invoca el método `getSum()` para calcular los saldos actualizados.
+     *
+     * @param myModel El modelo de datos de la tabla a limpiar.
+     */
     private void cleanUpSameAccountTitle(DefaultTableModel myModel) {
+        // Definir las columnas utilizadas en el modelo de datos
         final int columnAccount = 1;
         final int columnDebit = 2;
         final int columnCredit = 3;
 
+        // Variable para almacenar el valor de cuenta anterior
         String valorAnteriorAccount = "";
 
+        // Recorrer las filas del modelo de datos de la tabla
         for (int fila = 0; fila < myModel.getRowCount(); fila++) {
+            // Obtener los valores de las celdas en las columnas relevantes
             Object valorAccount = myModel.getValueAt(fila, columnAccount);
             Object valorDebit = myModel.getValueAt(fila, columnDebit);
             Object valorCredit = myModel.getValueAt(fila, columnCredit);
 
+            // Verificar si el valor de cuenta actual es igual al valor de cuenta anterior
             if (valorAccount.equals(valorAnteriorAccount)) {
+                // Si son iguales, eliminar el título de cuenta en la celda
                 myModel.setValueAt("", fila, columnAccount);
             } else {
+                // Si son diferentes, actualizar el valor de cuenta anterior
                 valorAnteriorAccount = valorAccount.toString();
             }
 
+            // Verificar si el valor de débito es "0" y eliminarlo si es el caso
             if (valorDebit.equals("0")) {
                 myModel.setValueAt("", fila, columnDebit);
             }
 
+            // Verificar si el valor de crédito es "0" y eliminarlo si es el caso
             if (valorCredit.equals("0")) {
                 myModel.setValueAt("", fila, columnCredit);
             }
         }
 
+        // Calcular los saldos actualizados después de la limpieza
         getSum();
     }
 
+
     //Agregar suma de columnas hasta que la cuenta cambie:
+    /**
+     * Calcula el saldo de cuentas a partir de datos en una tabla y muestra los resultados en otra.
+     */
     private void getSum() {
+        // Crear una instancia del objeto Select
         Select s = new Select();
+
+        // Obtener el modelo de datos de la tabla jTableGeneral
         DefaultTableModel myModel = (DefaultTableModel) jTableGeneral.getModel();
+
+        // Obtener el modelo de datos de la tabla jTableResults
         DefaultTableModel myResultsModel = (DefaultTableModel) jTableResults.getModel();
 
+        // Inicializar variables para almacenar la suma de débitos y créditos
         double sumDebit = 0;
         double sumCredit = 0;
 
+        // Definir las columnas utilizadas en el proceso
         final int columnAccount = 1;
         final int columnDebit = 2;
 
-        System.out.println("N filas: " + myModel.getRowCount());
-
+        // Recorrer las filas de la tabla jTableGeneral
         for (int n = 0; n < myModel.getRowCount(); n++) {
+            // Obtener el valor de la celda en la columna de cuentas
             String currentValue = (String) myModel.getValueAt(n, columnAccount);
+
+            // Obtener el resultado de la suma de débitos y créditos para la cuenta actual
             ResultSet rsDebit = s.getSumFromDebit(currentValue);
             ResultSet rsCredit = s.getSumFromCredit(currentValue);
 
+            // Procesar los resultados de las consultas
             if (n < myModel.getRowCount() - 1) {
-                System.out.println(currentValue);
-                try{
-                    while(rsDebit.next()){
+                try {
+                    while (rsDebit.next()) {
                         sumDebit = rsDebit.getDouble(1);
                     }
 
-                    while(rsCredit.next()){
+                    while (rsCredit.next()) {
                         sumCredit = rsCredit.getDouble(1);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
+                // Calcular el saldo
                 double balance = sumDebit - sumCredit;
 
+                // Actualizar los valores en el modelo de datos de la tabla jTableResults
                 if (n < myResultsModel.getRowCount()) {
                     myResultsModel.setValueAt(currentValue, n, columnAccount);
                     myResultsModel.setValueAt(balance, n, columnDebit);
@@ -266,11 +316,14 @@ public class LIbroMayor extends javax.swing.JPanel {
             }
         }
 
+        // Realizar limpieza de la tabla jTableResults
         cleanUpResultsTable();
-        // Crear una instancia del renderizador personalizado
+
+        // Crear una instancia del renderizador personalizado para la columna de débitos en jTableResults
         RenderGeneralBookColourResults colorRenderer = new RenderGeneralBookColourResults();
         jTableResults.getColumnModel().getColumn(1).setCellRenderer(colorRenderer);
     }
+
 
     private void cleanUpResultsTable(){
         DefaultTableModel myResultsModel = (DefaultTableModel) jTableResults.getModel();
