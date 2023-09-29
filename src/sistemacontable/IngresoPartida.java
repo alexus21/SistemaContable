@@ -165,6 +165,7 @@ public class IngresoPartida extends javax.swing.JPanel {
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cancelar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
+        btnGuardar.setEnabled(false);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -279,14 +280,14 @@ public class IngresoPartida extends javax.swing.JPanel {
         String code = "";
         ResultSet rs = s.getAccountCode(selected.toLowerCase(), account.toUpperCase().trim());
 
-        String efectivo = jTextField1.getText();
+        String cantidadIngresada = jTextField1.getText();
 
         if (dateFormat.format(jDateChooser.getDate()).isEmpty()) {
             JOptionPane.showMessageDialog(null, "Seleccione una fecha", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (!Objects.equals(formattedDate, "") && !Objects.equals(efectivo, "")){
+        if (!Objects.equals(formattedDate, "") && !Objects.equals(cantidadIngresada, "")){
             try {
                 while (rs.next()){
                     code = rs.getString(1);
@@ -295,29 +296,12 @@ public class IngresoPartida extends javax.swing.JPanel {
                             formattedDate,
                             account.trim(),
                             code,
-                            jRadioButton1.isSelected() ? efectivo : "0",
-                            jRadioButton3.isSelected() ? efectivo : "0"
+                            jRadioButton1.isSelected() ? cantidadIngresada : "0",
+                            jRadioButton3.isSelected() ? cantidadIngresada : "0"
                     };
 
                     myModel.addRow(nuevaFila);
                     jTableDaily.setRowHeight(30);
-
-                    /*int rowCount = model.getRowCount();
-                    int colCount = model.getColumnCount();
-
-                    if (rowCount > 0) { // Asegúrate de que haya al menos una fila en la tabla
-                        // Crear un arreglo unidimensional de tipo String para almacenar los datos de la última fila
-                        String[] tableData = new String[colCount];
-
-                        for (int col = 0; col < colCount; col++) {
-                            Object cellValue = model.getValueAt(rowCount - 1, col); // Obtén el valor de la última fila
-                            tableData[col] = String.valueOf(cellValue);
-                        }
-
-                        // Luego, puedes enviar tableData a c.saveDaily
-                        Create c = new Create();
-                        c.saveDaily(tableData);
-                    }*/
 
                     jDateChooser.setDate(null);
                     jcomboSelectAccountType.setSelectedIndex(0);
@@ -375,7 +359,7 @@ public class IngresoPartida extends javax.swing.JPanel {
             jComboSelectAccountTitle.setEnabled(false);
             jComboSelectAccountTitle.removeAllItems();
             btnRegistry.setEnabled(false);
-            btnRegistry.setEnabled(false);
+            btnGuardar.setEnabled(false);
             jComboSelectAccountTitle.setRenderer((list, value, index, isSelected, cellHasFocus) -> null);
         }
     }//GEN-LAST:event_jcomboSelectAccountTypeActionPerformed
@@ -383,11 +367,11 @@ public class IngresoPartida extends javax.swing.JPanel {
     private void jComboSelectAccountTitleActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSelectAccountTitleActionPerformed
         if (jComboSelectAccountTitle.getSelectedIndex() == 0) {
             btnRegistry.setEnabled(false);
-            btnRegistry.setEnabled(false);
+            btnGuardar.setEnabled(false);
             return;
         }
         btnRegistry.setEnabled(true);
-        btnRegistry.setEnabled(true);
+        btnGuardar.setEnabled(true);
         showTextComboBox(50);
 
     }//GEN-LAST:event_jComboSelectAccountTitleActionPerformed

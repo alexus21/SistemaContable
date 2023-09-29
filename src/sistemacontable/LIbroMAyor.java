@@ -4,17 +4,23 @@
  */
 package sistemacontable;
 
+import dbconnectionQueries.Select;
+
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+
 /**
  *
  * @author EstudianteFMO
  */
-public class LIbroMAyor extends javax.swing.JPanel {
+public class LIbroMayor extends javax.swing.JPanel {
 
     /**
      * Creates new form LIbroMAyor
      */
-    public LIbroMAyor() {
+    public LIbroMayor() {
         initComponents();
+        loadAccounts();
     }
 
     /**
@@ -29,6 +35,8 @@ public class LIbroMAyor extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableGeneral = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(213, 219, 231));
 
@@ -38,17 +46,40 @@ public class LIbroMAyor extends javax.swing.JPanel {
 
         jSeparator1.setForeground(new java.awt.Color(0, 102, 102));
 
+        jTableGeneral.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cuenta", "Fecha", "Debe", "Haber", "Resultado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTableGeneral);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(324, 324, 324)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(361, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(324, 324, 324)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 355, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -58,7 +89,9 @@ public class LIbroMAyor extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(514, 514, 514))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -73,10 +106,47 @@ public class LIbroMAyor extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadAccounts(){
+        try{
+            Select s = new Select();
+            ResultSet rs = s.loadAccounts();
+            DefaultTableModel myModel = (DefaultTableModel) jTableGeneral.getModel();
+
+            while(rs.next()){
+                String fecha = rs.getString(1);
+                String cuenta = rs.getString(2);
+                String debe = rs.getString(4);
+                String haber = rs.getString(5);
+                String result = String.valueOf(getSum(debe, haber));
+
+                Object[] newRow = {
+                        fecha,
+                        cuenta,
+                        debe,
+                        haber,
+                        result
+                };
+
+                myModel.addRow(newRow);
+                jTableGeneral.setRowHeight(30);
+            }
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Agregar suma de columnas hasta que la cuenta cambie:
+    private double getSum(String debe, String haber){
+        return Double.parseDouble(debe) - Double.parseDouble(haber);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTableGeneral;
     // End of variables declaration//GEN-END:variables
 }

@@ -350,7 +350,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMayorActionPerformed
         btnMayor.setFocusPainted(false);
-        LIbroMAyor mayor = new LIbroMAyor(); 
+        LIbroMayor mayor = new LIbroMayor(); 
         mayor.setSize(870, 570);
         mayor.setLocation(0, 0);
         
