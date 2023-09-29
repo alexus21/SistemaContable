@@ -267,6 +267,9 @@ public class LIbroMayor extends javax.swing.JPanel {
         }
 
         cleanUpResultsTable();
+        // Crear una instancia del renderizador personalizado
+        RenderGeneralBookColourResults colorRenderer = new RenderGeneralBookColourResults();
+        jTableResults.getColumnModel().getColumn(1).setCellRenderer(colorRenderer);
     }
 
     private void cleanUpResultsTable(){
@@ -277,6 +280,8 @@ public class LIbroMayor extends javax.swing.JPanel {
                 myResultsModel.removeRow(n);
             }
         }
+
+        jTableResults.setRowHeight(30);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
