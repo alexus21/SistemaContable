@@ -5,6 +5,7 @@
 package sistemacontable;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import javax.swing.JOptionPane;
@@ -350,12 +351,17 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMayorActionPerformed
         btnMayor.setFocusPainted(false);
-        LIbroMayor mayor = new LIbroMayor(); 
-        mayor.setSize(870, 570);
-        mayor.setLocation(0, 0);
+        
+        Mayor nuevo = new Mayor();
+        
+        Point posicion = Container.getLocation();
+        Dimension dim = Container.getSize();
+        
+        nuevo.setSize(dim.width - 20, dim.height);
         
         Container.removeAll();
-        Container.add(mayor, BorderLayout.CENTER);
+        Container.add(nuevo);
+        Container.setSize(nuevo.getSize());
         Container.revalidate();
         Container.repaint();
     }//GEN-LAST:event_btnMayorActionPerformed
