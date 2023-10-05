@@ -32,6 +32,10 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
     
     public Catalogo_Cuentas() {
         initComponents();
+        tableActivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableCierre.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablePasivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablePatrimonio.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     void showAccounts(String accountType, JTable table){

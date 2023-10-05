@@ -7,12 +7,13 @@ package sistemacontable;
 import dbconnectionQueries.Select1;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -40,39 +41,36 @@ public class Mayor extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
 
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1, 10, 10));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        jScrollPane1.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                jScrollPane1MouseWheelMoved(evt);
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        });
 
-        jPanel1.add(jScrollPane2);
-
+        jPanel1.setLayout(new java.awt.GridLayout(0, 2, 10, 10));
         jScrollPane1.setViewportView(jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jScrollPane1MouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_jScrollPane1MouseWheelMoved
+        // Cambia la velocidad multiplicando el valor del evento por un factor
+        int scrollAmount = evt.getWheelRotation() * 30; // Ajusta el factor según tus preferencias
+
+        // Obtiene la posición actual de desplazamiento y aplica el nuevo desplazamiento
+        JScrollBar verticalScrollBar = jScrollPane1.getVerticalScrollBar();
+        verticalScrollBar.setValue(verticalScrollBar.getValue() + scrollAmount);
+    }//GEN-LAST:event_jScrollPane1MouseWheelMoved
 
     
 private void createAndShowGUI() {
@@ -84,16 +82,32 @@ private void createAndShowGUI() {
             if (rs.next()){
                 do {
                     JTable table = createTable(rs.getString("cuenta"));
+
+                    // Crear un renderizador personalizado para centrar los datos
+                    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+                    // Aplicar el renderizador a todas las columnas
+                    for (int i = 0; i < table.getColumnCount(); i++) {
+                        table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+                    }
+
+                    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                     if (table.getRowCount() != 0){
                         JScrollPane scrollPane = new JScrollPane(table);
 
                         // Configura el tamaño preferido del área visible de la tabla
                         table.setPreferredScrollableViewportSize(table.getPreferredSize());
+                        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+
 
                         jPanel1.add(scrollPane);
                     }
                 }while (rs.next());
             }
+
+
         }catch (SQLException ignored){
         } catch (Exception ex) {
             Logger.getLogger(Mayor.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,13 +150,10 @@ private void createAndShowGUI() {
                     }
                     if (haber != 0){
                         listaHaber.add(haber);
-                        System.out.println("entro");
+
                     }
                 }while (rs.next());
             }
-
-            System.out.println(listaDeber.size());
-            System.out.println(listaHaber.size());
 
             int mayor = Math.max(listaDeber.size(), listaHaber.size());
 
@@ -153,6 +164,8 @@ private void createAndShowGUI() {
                 public boolean isCellEditable (int row, int column) {
                     return false;
                 }
+
+
             };
 
             model.addRow(new Object[]{"Debe", "Haber"});
@@ -162,17 +175,40 @@ private void createAndShowGUI() {
                 model.addRow(strings);
             }
 
-            System.out.println("Numero de filas: " + model.getRowCount());
-            System.out.println("Numero de valores en haber y deber: " + listaHaber.size() + " - " + listaDeber.size());
 
-            for (int i = 0; i < listaDeber.size(); i++) model.setValueAt(String.valueOf(listaDeber.get(i)), i+1, 0);
-            for (int i = 0; i < listaHaber.size(); i++) model.setValueAt(String.valueOf(listaHaber.get(i)), i+1, 1);
+            for (int i = 0; i < listaDeber.size(); i++) model.setValueAt("$" + listaDeber.get(i), i+1, 0);
+            for (int i = 0; i < listaHaber.size(); i++) model.setValueAt("$" + listaHaber.get(i), i+1, 1);
+
+            model.addRow(new Object[]{"Suma", "Suma"});
+
+            double totalDeber, totalHaber;
+            DecimalFormat format = new DecimalFormat("#.00");
+
+            totalDeber = listaDeber.stream().mapToDouble(aDouble -> aDouble).sum();
+            totalHaber = listaHaber.stream().mapToDouble(aDouble -> aDouble).sum();
+
+            model.addRow(new Object[]{"$" + format.format(totalDeber), "$" + format.format(totalHaber)});
+
+            double diferencia = Math.abs(totalDeber - totalHaber);
+
+            if (totalDeber > totalHaber){
+                model.addRow(new Object[]{"Total", ""});
+                model.addRow(new Object[]{"$" + format.format(diferencia), ""});
+            }else if (totalHaber > totalDeber){
+                model.addRow(new Object[]{"", "Total"});
+                model.addRow(new Object[]{"", "$" + format.format(diferencia)});
+            }else{
+                model.addRow(new Object[]{"Total", "Total"});
+                model.addRow(new Object[]{"$00.00", "$00.00"});
+            }
+
+
 
 
             return new JTable(model);
 
-        }catch (Exception ignored){
-            System.err.println(ignored);
+        }catch (Exception exception){
+            System.err.println(exception.getMessage());
         }
             throw new RuntimeException();
     }
@@ -180,7 +216,5 @@ private void createAndShowGUI() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

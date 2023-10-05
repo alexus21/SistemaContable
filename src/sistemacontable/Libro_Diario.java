@@ -7,6 +7,7 @@ package sistemacontable;
 import dbconnectionQueries.Select;
 
 import java.sql.ResultSet;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,6 +22,7 @@ public class Libro_Diario extends javax.swing.JPanel {
     public Libro_Diario() {
         initComponents();
         cargarDatosDesdeBaseDeDatos();
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     /**
