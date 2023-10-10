@@ -7,18 +7,17 @@ package sistemacontable.registrodepartidas;
 import com.toedter.calendar.JTextFieldDateEditor;
 import dbconnectionQueries.Create;
 import dbconnectionQueries.Select;
+import sistemacontable.libromayor.TipoCuenta;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import sistemacontable.libromayor.TipoCuenta;
 
 /**
  * @author PC
@@ -76,10 +75,10 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         model = new DefaultTableModel(null, new String[]{
                 "Fecha", "Cuenta", "Código", "Debe", "Haber"
         }){
-            @Override
-            public boolean isCellEditable (int row, int column) {
-                return false;
-            }
+//            @Override
+//            public boolean isCellEditable (int row, int column) {
+//                return false;
+//            }
         };
 
         jTableDaily.setModel(model);
@@ -123,8 +122,10 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         jcomboSelectAccountType = new javax.swing.JComboBox<>();
         jComboSelectAccountTitle = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldLookForItem = new javax.swing.JTextField();
         btnLookUpFor = new javax.swing.JButton();
+        btnAddNewRegistry = new javax.swing.JButton();
+        btnCancellLookingFor = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -160,7 +161,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(jTableDaily);
 
-        jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 680, 420));
+        jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 680, 420));
 
         btnCancelar.setBackground(new java.awt.Color(71, 102, 121));
         btnCancelar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -172,7 +173,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                 btnCancelarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 430, 150, 40));
+        jPanel3.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 450, 150, 40));
 
         btnGuardar.setBackground(new java.awt.Color(71, 102, 121));
         btnGuardar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -185,7 +186,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 500, 150, 40));
+        jPanel3.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 510, 150, 40));
 
         btnRegistry.setBackground(new java.awt.Color(71, 102, 121));
         btnRegistry.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -198,7 +199,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                 btnRegistryActionPerformed(evt);
             }
         });
-        jPanel3.add(btnRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 380, 150, 40));
+        jPanel3.add(btnRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 390, 150, 40));
 
         jSeparator1.setForeground(new java.awt.Color(0, 102, 102));
         jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 48, 990, 10));
@@ -238,14 +239,9 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(213, 219, 231));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField1.setBackground(new java.awt.Color(213, 219, 231));
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar cuenta o codigo"));
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField1KeyTyped(evt);
-            }
-        });
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 50));
+        jTextFieldLookForItem.setBackground(new java.awt.Color(213, 219, 231));
+        jTextFieldLookForItem.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar cuenta o codigo"));
+        jPanel2.add(jTextFieldLookForItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 60));
 
         jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 60, 156, -1));
 
@@ -253,14 +249,35 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnLookUpFor.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnLookUpFor.setForeground(new java.awt.Color(255, 255, 255));
         btnLookUpFor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
-        btnLookUpFor.setText("Buscar");
-        btnLookUpFor.setEnabled(false);
         btnLookUpFor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLookUpForActionPerformed(evt);
             }
         });
-        jPanel3.add(btnLookUpFor, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 120, 150, 40));
+        jPanel3.add(btnLookUpFor, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 130, 70, 40));
+
+        btnAddNewRegistry.setBackground(new java.awt.Color(71, 102, 121));
+        btnAddNewRegistry.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnAddNewRegistry.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddNewRegistry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
+        btnAddNewRegistry.setText("Nuevo asiento");
+        btnAddNewRegistry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddNewRegistryActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnAddNewRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 270, 150, 40));
+
+        btnCancellLookingFor.setBackground(new java.awt.Color(71, 102, 121));
+        btnCancellLookingFor.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnCancellLookingFor.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancellLookingFor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cancelar.png"))); // NOI18N
+        btnCancellLookingFor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancellLookingForActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnCancellLookingFor, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 130, 70, 40));
 
         add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 865, 567));
     }// </editor-fold>//GEN-END:initComponents
@@ -294,7 +311,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         String code = "";
         ResultSet rs = s.getAccountCode(selected.toLowerCase(), account.toUpperCase().trim());
 
-        String cantidadIngresada = jTextField1.getText();
+        String cantidadIngresada = jTextFieldLookForItem.getText();
 
         if (dateFormat.format(jDateChooser.getDate()).isEmpty()) {
             JOptionPane.showMessageDialog(null, "Seleccione una fecha", "Error", JOptionPane.ERROR_MESSAGE);
@@ -310,8 +327,6 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                             formattedDate,
                             account.trim(),
                             code,
-//                            jRadioButton1.isSelected() ? cantidadIngresada : "0",
-//                            jRadioButton3.isSelected() ? cantidadIngresada : "0"
                     };
 
                     myModel.addRow(nuevaFila);
@@ -358,7 +373,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                         String capitalizedText = originalText.substring(0, 4).toUpperCase() + originalText.substring(4).toLowerCase();
                         jComboSelectAccountTitle.addItem(capitalizedText);
                     } else if (queryResult.getString(1).length() >= 4) {
-                        originalText = "     " + originalText; // Agrega dos espacios iniciales
+                        originalText = "     " + originalText; // Agrega cuatro espacios iniciales
                         String capitalizedText = originalText.substring(0, 6).toUpperCase() + originalText.substring(6).toLowerCase();
                         jComboSelectAccountTitle.addItem(capitalizedText);
                     } else {
@@ -452,22 +467,69 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
-        char c = evt.getKeyChar();
-        String currentText = jTextField1.getText();
+    private void btnAddNewRegistryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewRegistryActionPerformed
+        btnAddNewRegistry.setFocusPainted(false);
 
-        if (!((c >= '0' && c <= '9') || (c == '.' && currentText.indexOf('.') == -1) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)) {
-            evt.consume(); // Consume el evento si no es un número, si ya hay un punto o si es una tecla de borrado
-        }
-    }//GEN-LAST:event_jTextField1KeyTyped
+        DefaultTableModel myModel = (DefaultTableModel) jTableDaily.getModel();
+        Object[] newEmptyRow = new Object[]{
+                "", "", "", "", ""
+        };
+
+        myModel.addRow(newEmptyRow);
+
+    }//GEN-LAST:event_btnAddNewRegistryActionPerformed
+
+    private void btnCancellLookingForActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancellLookingForActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancellLookingForActionPerformed
 
     private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLookUpForActionPerformed
         btnLookUpFor.setFocusPainted(false);
-    }//GEN-LAST:event_btnLookUpForActionPerformed
+
+        Select s = new Select();
+        String itemLookedFor = jTextFieldLookForItem.getText().trim().toUpperCase();
+
+        if(itemLookedFor.isEmpty()){
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error: debe proveer un nombre de cuenta o codigo",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        ResultSet queryResult = s.getAccount(itemLookedFor);
+        try {
+            while (queryResult.next()) {
+                // Agrega los elementos al JComboBox utilizando getString(2) para obtener el valor de la primera columna
+                String originalText = queryResult.getString(1);
+
+                String capitalizedText = originalText.substring(0, 1).toUpperCase() + originalText.substring(1).toLowerCase();
+                DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) jComboSelectAccountTitle.getModel();
+                int elementIndex = 0;
+
+                for (int i = 0; i < jcomboSelectAccountType.getItemCount(); i++) {
+                    String account = model.getElementAt(i);
+                    if(Objects.equals(account, originalText.trim())){
+                        elementIndex = i;
+                        break;
+                    }
+                }
+
+                jComboSelectAccountTitle.setSelectedIndex(elementIndex);
+                jComboSelectAccountTitle.setEnabled(true);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddNewRegistry;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnCancellLookingFor;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLookUpFor;
     private javax.swing.JButton btnRegistry;
@@ -482,7 +544,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTableDaily;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextFieldLookForItem;
     private javax.swing.JComboBox<String> jcomboSelectAccountType;
     // End of variables declaration//GEN-END:variables
 }

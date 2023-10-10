@@ -3,9 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/dbconnectionQueries/Select.java</file>
-            <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/sistemacontable/Mayor.java</file>
-            <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/sistemacontable/IngresoPartida.java</file>
+            <file>file:/C:/Users/alexu/IdeaProjects/SistemaContable/src/sistemacontable/registrodepartidas/RegistroDePartidas.java</file>
+            <file>file:/C:/Users/alexu/IdeaProjects/SistemaContable/src/sistemacontable/librodiario/LibroDiario.java</file>
         </group>
     </open-files>
 </project-private>
