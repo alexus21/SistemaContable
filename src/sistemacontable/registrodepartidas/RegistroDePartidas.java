@@ -518,6 +518,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                 }
 
                 jComboSelectAccountTitle.setSelectedIndex(elementIndex);
+                jComboSelectAccountTitle.addItem(capitalizedText);
                 jComboSelectAccountTitle.setEnabled(true);
             }
         } catch (SQLException e) {

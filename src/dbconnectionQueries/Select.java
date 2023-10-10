@@ -21,22 +21,24 @@ public class Select {
         }
     }
 
-    public ResultSet getAccount(String value){
+    public ResultSet getAccount(String value) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
             connection = DatabaseConnection.getInstance().getConnection();
-            String myQuery = "SELECT account FROM tbl_catalogodecuentas where code = ? or account = ?";
+            // Coincidencia parcial de la busqueda, no debe ser exacta
+            String myQuery = "SELECT account FROM tbl_catalogodecuentas WHERE code LIKE ? OR account LIKE ?";
             statement = connection.prepareStatement(myQuery);
             statement.setString(1, value);
-            statement.setString(2, value);
+            statement.setString(2, "%" + value + "%"); // Agrega comodines % para coincidencias parciales
             rs = statement.executeQuery();
             return rs;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public ResultSet getAccountCode(String selected, String accountName) {
         Connection connection = null;
