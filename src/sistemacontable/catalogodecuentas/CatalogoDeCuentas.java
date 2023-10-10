@@ -2,23 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package sistemacontable;
+package sistemacontable.catalogodecuentas;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import dbconnection.DatabaseConnection;
 import dbconnectionQueries.Select;
 
 /**
  *
  * @author PC
  */
-public class Catalogo_Cuentas extends javax.swing.JPanel {
+public class CatalogoDeCuentas extends javax.swing.JPanel {
 
     /**
      * Creates new form Catalogo_Cuentas
@@ -30,7 +28,7 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
      // Instancia de DatabaseConnection
 
     
-    public Catalogo_Cuentas() {
+    public CatalogoDeCuentas() {
         initComponents();
         tableActivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tableCierre.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -380,9 +378,9 @@ public class Catalogo_Cuentas extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable tableActivos;
-    private javax.swing.JTable tableCierre;
-    private javax.swing.JTable tablePasivos;
-    private javax.swing.JTable tablePatrimonio;
+    public javax.swing.JTable tableActivos;
+    public javax.swing.JTable tableCierre;
+    public javax.swing.JTable tablePasivos;
+    public javax.swing.JTable tablePatrimonio;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,7 +1,6 @@
 package sistemacontable;
 
-import com.formdev.flatlaf.FlatLightLaf;
-
+import sistemacontable.formularioprincipal.FormularioPrincipal;
 import javax.swing.*;
 
 /**
@@ -33,18 +32,18 @@ public class Main {
                 }
             }
         } catch (ClassNotFoundException | UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
-//               new Principal("").setVisible(true);
+//                new Login().setVisible(true);
+               new FormularioPrincipal("admin").setVisible(true);
             }
         });
     }

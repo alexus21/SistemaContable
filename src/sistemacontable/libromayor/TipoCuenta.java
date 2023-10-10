@@ -1,4 +1,4 @@
-package sistemacontable;
+package sistemacontable.libromayor;
 
 public enum TipoCuenta {
     DEBER,

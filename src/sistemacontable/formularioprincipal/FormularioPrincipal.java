@@ -2,19 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package sistemacontable;
+package sistemacontable.formularioprincipal;
 
+import sistemacontable.librodiario.LibroDiario;
+import sistemacontable.registrodepartidas.RegistroDePartidas;
+import sistemacontable.catalogodecuentas.CatalogoDeCuentas;
+import sistemacontable.balance.Balance;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import javax.swing.JOptionPane;
+import sistemacontable.libromayor.LibroMayor;
 
 /**
  *
  * @author PC
  */
-public class Principal extends javax.swing.JFrame {
+public class FormularioPrincipal extends javax.swing.JFrame {
     
     //Variables a emplear para poder mover la ventana principal
     private int mouseX, mouseY;
@@ -23,7 +28,7 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
-    public Principal(String username) {
+    public FormularioPrincipal(String username) {
         initComponents();
         
        BarraTitulo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -289,7 +294,7 @@ public class Principal extends javax.swing.JFrame {
         btnIngresar.setFocusPainted(false);
         /*Ingreso_Partidas verForm = new Ingreso_Partidas ();
         verForm.setVisible(true);*/
-        IngresoPartida in = new IngresoPartida();
+        RegistroDePartidas in = new RegistroDePartidas();
         in.setSize(870, 570);
         in.setLocation(0, 0);
         
@@ -326,7 +331,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiarioActionPerformed
         btnDiario.setFocusPainted(false);
         //Instancia delpanel de libro diario
-        Libro_Diario diario = new Libro_Diario();
+        LibroDiario diario = new LibroDiario();
         diario.setSize(870, 570);
         diario.setLocation(0, 0);
         
@@ -352,7 +357,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMayorActionPerformed
         btnMayor.setFocusPainted(false);
         
-        Mayor nuevo = new Mayor();
+        LibroMayor nuevo = new LibroMayor();
         
         Point posicion = Container.getLocation();
         Dimension dim = Container.getSize();
@@ -368,7 +373,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCatalogoActionPerformed
         btnCatalogo.setFocusPainted(false);
-        Catalogo_Cuentas catalogo = new Catalogo_Cuentas();
+        CatalogoDeCuentas catalogo = new CatalogoDeCuentas();
         catalogo.setSize(870, 570);
         catalogo.setLocation(0, 0);
         
@@ -409,20 +414,21 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal("").setVisible(true);
+                new FormularioPrincipal("").setVisible(true);
             }
         });
     }

@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package sistemacontable;
+package sistemacontable.login;
 
+import sistemacontable.forgottenpassword.ForgottenPassword;
 import dbconnectionQueries.LoginQuery;
 import dbconnectionQueries.Select;
 import passwordEncryption.Hashing;
@@ -14,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.swing.*;
+import sistemacontable.formularioprincipal.FormularioPrincipal;
 
 /**
  *
@@ -232,8 +234,8 @@ public class Login extends javax.swing.JFrame {
         String password = new String(passwordChars);
 
         Select s = new Select();
-        Principal mainForm = new Principal(username);
-        sistemacontable.Login loginForm = new sistemacontable.Login();
+        FormularioPrincipal mainForm = new FormularioPrincipal(username);
+        sistemacontable.login.Login loginForm = new sistemacontable.login.Login();
 
         if(username.isEmpty() || password.isEmpty()){
             JOptionPane.showMessageDialog(null, "Error: ingresa tus credenciales", "Error", JOptionPane.ERROR_MESSAGE);
@@ -242,7 +244,7 @@ public class Login extends javax.swing.JFrame {
 
         if(username.equals("admin") && password.equals("Pa55w0rD")){
             JOptionPane.showMessageDialog(null, "Actualiza tus credenciales", "Atención", JOptionPane.INFORMATION_MESSAGE);
-            forgottenPassword fp = new forgottenPassword();
+            ForgottenPassword fp = new ForgottenPassword();
             this.dispose();
             fp.setVisible(true);
             return;
@@ -283,7 +285,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPaswordKeyPressed
 
     private void forgottenPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgottenPasswordActionPerformed
-       forgottenPassword ver = new forgottenPassword();
+       ForgottenPassword ver = new ForgottenPassword();
        ver.setVisible(true);
     }//GEN-LAST:event_forgottenPasswordActionPerformed
 

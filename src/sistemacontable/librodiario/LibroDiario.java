@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package sistemacontable;
+package sistemacontable.librodiario;
 
 import dbconnectionQueries.Select;
 
@@ -14,12 +14,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author PC
  */
-public class Libro_Diario extends javax.swing.JPanel {
+public class LibroDiario extends javax.swing.JPanel {
 
     /**
      * Creates new form Libro_Diario
      */
-    public Libro_Diario() {
+    public LibroDiario() {
         initComponents();
         cargarDatosDesdeBaseDeDatos();
         jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

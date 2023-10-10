@@ -2,27 +2,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package sistemacontable;
+package sistemacontable.registrodepartidas;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import dbconnectionQueries.Create;
 import dbconnectionQueries.Select;
 
-import java.awt.*;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import sistemacontable.libromayor.TipoCuenta;
 
 /**
  * @author PC
  */
-public class IngresoPartida extends javax.swing.JPanel {
+public class RegistroDePartidas extends javax.swing.JPanel {
     
 
     // JPopupMenu para mostrar el texto completo
@@ -87,7 +88,7 @@ public class IngresoPartida extends javax.swing.JPanel {
     /**
      * Creates new form IngresoPar
      */
-    public IngresoPartida () {
+    public RegistroDePartidas () {
         initComponents();
         resetData();
 
@@ -122,10 +123,8 @@ public class IngresoPartida extends javax.swing.JPanel {
         jcomboSelectAccountType = new javax.swing.JComboBox<>();
         jComboSelectAccountTitle = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
         jTextField1 = new javax.swing.JTextField();
+        btnLookUpFor = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -143,7 +142,22 @@ public class IngresoPartida extends javax.swing.JPanel {
             new String [] {
                 "Fecha", "Titulo", "Codigo", "Debe", "Haber"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTableDaily);
 
         jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 680, 420));
@@ -158,7 +172,7 @@ public class IngresoPartida extends javax.swing.JPanel {
                 btnCancelarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 340, 150, 40));
+        jPanel3.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 430, 150, 40));
 
         btnGuardar.setBackground(new java.awt.Color(71, 102, 121));
         btnGuardar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -171,7 +185,7 @@ public class IngresoPartida extends javax.swing.JPanel {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(702, 408, 150, 40));
+        jPanel3.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 500, 150, 40));
 
         btnRegistry.setBackground(new java.awt.Color(71, 102, 121));
         btnRegistry.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -184,7 +198,7 @@ public class IngresoPartida extends javax.swing.JPanel {
                 btnRegistryActionPerformed(evt);
             }
         });
-        jPanel3.add(btnRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 290, 150, 40));
+        jPanel3.add(btnRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 380, 150, 40));
 
         jSeparator1.setForeground(new java.awt.Color(0, 102, 102));
         jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 48, 990, 10));
@@ -224,29 +238,29 @@ public class IngresoPartida extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(213, 219, 231));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel2.setText("Montos");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 6, -1, 28));
-
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Deber");
-        jPanel2.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
-
-        buttonGroup1.add(jRadioButton3);
-        jRadioButton3.setText("Haber");
-        jPanel2.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
-
         jTextField1.setBackground(new java.awt.Color(213, 219, 231));
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dato"));
+        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar cuenta o codigo"));
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField1KeyTyped(evt);
             }
         });
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 90, 60));
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 50));
 
         jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 60, 156, -1));
+
+        btnLookUpFor.setBackground(new java.awt.Color(71, 102, 121));
+        btnLookUpFor.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnLookUpFor.setForeground(new java.awt.Color(255, 255, 255));
+        btnLookUpFor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
+        btnLookUpFor.setText("Buscar");
+        btnLookUpFor.setEnabled(false);
+        btnLookUpFor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLookUpForActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnLookUpFor, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 120, 150, 40));
 
         add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 865, 567));
     }// </editor-fold>//GEN-END:initComponents
@@ -296,8 +310,8 @@ public class IngresoPartida extends javax.swing.JPanel {
                             formattedDate,
                             account.trim(),
                             code,
-                            jRadioButton1.isSelected() ? cantidadIngresada : "0",
-                            jRadioButton3.isSelected() ? cantidadIngresada : "0"
+//                            jRadioButton1.isSelected() ? cantidadIngresada : "0",
+//                            jRadioButton3.isSelected() ? cantidadIngresada : "0"
                     };
 
                     myModel.addRow(nuevaFila);
@@ -447,22 +461,24 @@ public class IngresoPartida extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jTextField1KeyTyped
 
+    private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLookUpForActionPerformed
+        btnLookUpFor.setFocusPainted(false);
+    }//GEN-LAST:event_btnLookUpForActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnLookUpFor;
     private javax.swing.JButton btnRegistry;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> jComboSelectAccountTitle;
     private com.toedter.calendar.JDateChooser jDateChooser;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTableDaily;

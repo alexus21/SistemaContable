@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package sistemacontable;
+package sistemacontable.libromayor;
 
 import dbconnectionQueries.Select1;
 import java.sql.ResultSet;
@@ -20,12 +20,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author angel
  */
-public class Mayor extends javax.swing.JPanel {
+public class LibroMayor extends javax.swing.JPanel {
 
     /**
      * Creates new form Mayor
      */
-    public Mayor() {
+    public LibroMayor() {
         initComponents();
         createAndShowGUI();
     }
@@ -110,11 +110,25 @@ private void createAndShowGUI() {
 
         }catch (SQLException ignored){
         } catch (Exception ex) {
-            Logger.getLogger(Mayor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LibroMayor.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
         /*// Agregar 20 tablas
+        for (int i = 1; i <= 20; i++) {
+            JTable table = createTable();
+            JScrollPane scrollPane = new JScrollPane(table);
+
+            // Configura el tamaño preferido del área visible de la tabla
+            table.setPreferredScrollableViewportSize(table.getPreferredSize());
+
+            panel.add(scrollPane);
+        }
+
+        frame.add(new JScrollPane(panel));
+
+
+        /* // Agregar 20 tablas
         for (int i = 1; i <= 20; i++) {
             JTable table = createTable();
             JScrollPane scrollPane = new JScrollPane(table);
