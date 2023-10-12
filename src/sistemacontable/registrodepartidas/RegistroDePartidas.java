@@ -179,7 +179,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnGuardar.setBackground(new java.awt.Color(71, 102, 121));
         btnGuardar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cancelar.png"))); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setEnabled(false);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -249,7 +249,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnLookUpFor.setBackground(new java.awt.Color(71, 102, 121));
         btnLookUpFor.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnLookUpFor.setForeground(new java.awt.Color(255, 255, 255));
-        btnLookUpFor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
+        btnLookUpFor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
         btnLookUpFor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLookUpForActionPerformed(evt);
@@ -260,14 +260,14 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnAddNewRegistry.setBackground(new java.awt.Color(71, 102, 121));
         btnAddNewRegistry.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnAddNewRegistry.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddNewRegistry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
+        btnAddNewRegistry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/new-file.png"))); // NOI18N
         btnAddNewRegistry.setText("Nuevo asiento");
         btnAddNewRegistry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddNewRegistryActionPerformed(evt);
             }
         });
-        jPanel3.add(btnAddNewRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 270, 150, 40));
+        jPanel3.add(btnAddNewRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 270, -1, 40));
 
         btnCancellLookingFor.setBackground(new java.awt.Color(71, 102, 121));
         btnCancellLookingFor.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -283,7 +283,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnGetTypes.setBackground(new java.awt.Color(71, 102, 121));
         btnGetTypes.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnGetTypes.setForeground(new java.awt.Color(255, 255, 255));
-        btnGetTypes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
+        btnGetTypes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search.png"))); // NOI18N
         btnGetTypes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGetTypesActionPerformed(evt);
