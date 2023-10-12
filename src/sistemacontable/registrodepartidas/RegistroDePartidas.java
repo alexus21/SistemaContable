@@ -483,8 +483,10 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancellLookingForActionPerformed
 
-    private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLookUpForActionPerformed
+    private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {
         btnLookUpFor.setFocusPainted(false);
+        jComboSelectAccountTitle.setEnabled(true);
+        jComboSelectAccountTitle.removeAllItems();
 
         Select s = new Select();
         String itemLookedFor = jTextFieldLookForItem.getText().trim().toUpperCase();
@@ -507,17 +509,9 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
                 String capitalizedText = originalText.substring(0, 1).toUpperCase() + originalText.substring(1).toLowerCase();
                 DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) jComboSelectAccountTitle.getModel();
-                int elementIndex = 0;
 
-                for (int i = 0; i < jcomboSelectAccountType.getItemCount(); i++) {
-                    String account = model.getElementAt(i);
-                    if(Objects.equals(account, originalText.trim())){
-                        elementIndex = i;
-                        break;
-                    }
-                }
+                System.out.println(s.findAccountType(originalText));
 
-                jComboSelectAccountTitle.setSelectedIndex(elementIndex);
                 jComboSelectAccountTitle.addItem(capitalizedText);
                 jComboSelectAccountTitle.setEnabled(true);
             }

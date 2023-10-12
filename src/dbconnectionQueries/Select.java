@@ -73,6 +73,61 @@ public class Select {
         }
     }
 
+    public String findAccountType(String account) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            connection = DatabaseConnection.getInstance().getConnection();
+
+            // Consulta en la tabla tbl_cuentasdeactivo
+            String activoQuery = "SELECT COUNT(*) FROM tbl_cuentasdeactivo WHERE nombre = ?";
+            statement = connection.prepareStatement(activoQuery);
+            statement.setString(1, account);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return "tbl_cuentasdeactivo";
+            }
+
+            // Consulta en la tabla tbl_cuentasdepasivo
+            String pasivoQuery = "SELECT COUNT(*) FROM tbl_cuentasdepasivo WHERE nombre = ?";
+            statement = connection.prepareStatement(pasivoQuery);
+            statement.setString(1, account);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return "tbl_cuentasdepasivo";
+            }
+
+            // Consulta en la tabla tbl_cuentasdepatrimonio
+            String patrimonioQuery = "SELECT COUNT(*) FROM tbl_cuentasdepatrimonio WHERE nombre = ?";
+            statement = connection.prepareStatement(patrimonioQuery);
+            statement.setString(1, account);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return "tbl_cuentasdepatrimonio";
+            }
+
+            // Consulta en la tabla tbl_cuentasdecierre
+            String cierreQuery = "SELECT COUNT(*) FROM tbl_cuentasdecierre WHERE nombre = ?";
+            statement = connection.prepareStatement(cierreQuery);
+            statement.setString(1, account);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return "tbl_cuentasdecierre";
+            }
+
+            // Si no se encuentra en ninguna tabla, puedes retornar un valor predeterminado o lanzar una excepción.
+            return "No encontrado";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public ResultSet loadAccountsToGeneralBook(){
         Connection connection = null;
         PreparedStatement statement = null;
@@ -81,22 +136,6 @@ public class Select {
             connection = DatabaseConnection.getInstance().getConnection();
             String myQuery = "SELECT * FROM tbl_dailybook ORDER BY cuenta";
             statement = connection.prepareStatement(myQuery);
-            rs = statement.executeQuery();
-            return rs;
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public ResultSet getSumFromDebit(String account){
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet rs = null;
-        try{
-            connection = DatabaseConnection.getInstance().getConnection();
-            String myQuery = "SELECT SUM(CAST(debe AS numeric)) FROM tbl_dailybook WHERE cuenta = ?";
-            statement = connection.prepareStatement(myQuery);
-            statement.setString(1, account);
             rs = statement.executeQuery();
             return rs;
         }catch(Exception e){
