@@ -126,6 +126,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnLookUpFor = new javax.swing.JButton();
         btnAddNewRegistry = new javax.swing.JButton();
         btnCancellLookingFor = new javax.swing.JButton();
+        btnGetTypes = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -234,7 +235,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                 jComboSelectAccountTitleActionPerformed(evt);
             }
         });
-        jPanel3.add(jComboSelectAccountTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 360, 40));
+        jPanel3.add(jComboSelectAccountTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, 270, 40));
 
         jPanel2.setBackground(new java.awt.Color(213, 219, 231));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -278,6 +279,17 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             }
         });
         jPanel3.add(btnCancellLookingFor, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 130, 70, 40));
+
+        btnGetTypes.setBackground(new java.awt.Color(71, 102, 121));
+        btnGetTypes.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnGetTypes.setForeground(new java.awt.Color(255, 255, 255));
+        btnGetTypes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
+        btnGetTypes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGetTypesActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnGetTypes, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, 70, 40));
 
         add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 865, 567));
     }// </editor-fold>//GEN-END:initComponents
@@ -350,49 +362,6 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnRegistryActionPerformed
-
-    private void jcomboSelectAccountTypeActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcomboSelectAccountTypeActionPerformed
-        if (jcomboSelectAccountType.getSelectedIndex() != 0) {
-            jComboSelectAccountTitle.setRenderer(new CustomComboBoxRenderer());
-            Object selectedObject = jcomboSelectAccountType.getSelectedItem();
-            String selected = selectedObject.toString();
-            Select s = new Select();
-            ResultSet queryResult = s.getAccounts(selected);
-
-            // Habilita el JComboBox
-            jComboSelectAccountTitle.setEnabled(true);
-            // Borra los elementos existentes en el JComboBox
-            jComboSelectAccountTitle.removeAllItems();
-
-            try {
-                while (queryResult.next()) {
-                    // Agrega los elementos al JComboBox utilizando getString(2) para obtener el valor de la primera columna
-                    String originalText = queryResult.getString(2);
-                    if (queryResult.getString(1).length() == 2) {
-                        originalText = "   " + originalText; // Agrega dos espacios iniciales
-                        String capitalizedText = originalText.substring(0, 4).toUpperCase() + originalText.substring(4).toLowerCase();
-                        jComboSelectAccountTitle.addItem(capitalizedText);
-                    } else if (queryResult.getString(1).length() >= 4) {
-                        originalText = "     " + originalText; // Agrega cuatro espacios iniciales
-                        String capitalizedText = originalText.substring(0, 6).toUpperCase() + originalText.substring(6).toLowerCase();
-                        jComboSelectAccountTitle.addItem(capitalizedText);
-                    } else {
-                        String capitalizedText = originalText.substring(0, 1).toUpperCase() + originalText.substring(1).toLowerCase();
-                        jComboSelectAccountTitle.addItem(capitalizedText);
-                    }
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            // Deshabilita el JComboBox y borra los elementos
-            jComboSelectAccountTitle.setEnabled(false);
-            jComboSelectAccountTitle.removeAllItems();
-            btnRegistry.setEnabled(false);
-            btnGuardar.setEnabled(false);
-            jComboSelectAccountTitle.setRenderer((list, value, index, isSelected, cellHasFocus) -> null);
-        }
-    }//GEN-LAST:event_jcomboSelectAccountTypeActionPerformed
 
     private void jComboSelectAccountTitleActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSelectAccountTitleActionPerformed
         if (jComboSelectAccountTitle.getSelectedIndex() == 0) {
@@ -480,8 +449,57 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddNewRegistryActionPerformed
 
     private void btnCancellLookingForActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancellLookingForActionPerformed
-        // TODO add your handling code here:
+        btnCancellLookingFor.setFocusPainted(false);
+        jTextFieldLookForItem.setText("");
     }//GEN-LAST:event_btnCancellLookingForActionPerformed
+
+    private void btnGetTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetTypesActionPerformed
+        btnGetTypes.setFocusPainted(false);
+        if (jcomboSelectAccountType.getSelectedIndex() != 0) {
+            jComboSelectAccountTitle.setRenderer(new CustomComboBoxRenderer());
+            Object selectedObject = jcomboSelectAccountType.getSelectedItem();
+            String selected = selectedObject.toString();
+            Select s = new Select();
+            ResultSet queryResult = s.getAccounts(selected);
+
+            // Habilita el JComboBox
+            jComboSelectAccountTitle.setEnabled(true);
+            // Borra los elementos existentes en el JComboBox
+            jComboSelectAccountTitle.removeAllItems();
+
+            try {
+                while (queryResult.next()) {
+                    // Agrega los elementos al JComboBox utilizando getString(2) para obtener el valor de la primera columna
+                    String originalText = queryResult.getString(2);
+                    if (queryResult.getString(1).length() == 2) {
+                        originalText = "   " + originalText; // Agrega dos espacios iniciales
+                        String capitalizedText = originalText.substring(0, 4).toUpperCase() + originalText.substring(4).toLowerCase();
+                        jComboSelectAccountTitle.addItem(capitalizedText);
+                    } else if (queryResult.getString(1).length() >= 4) {
+                        originalText = "     " + originalText; // Agrega cuatro espacios iniciales
+                        String capitalizedText = originalText.substring(0, 6).toUpperCase() + originalText.substring(6).toLowerCase();
+                        jComboSelectAccountTitle.addItem(capitalizedText);
+                    } else {
+                        String capitalizedText = originalText.substring(0, 1).toUpperCase() + originalText.substring(1).toLowerCase();
+                        jComboSelectAccountTitle.addItem(capitalizedText);
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            // Deshabilita el JComboBox y borra los elementos
+            jComboSelectAccountTitle.setEnabled(false);
+            jComboSelectAccountTitle.removeAllItems();
+            btnRegistry.setEnabled(false);
+            btnGuardar.setEnabled(false);
+            jComboSelectAccountTitle.setRenderer((list, value, index, isSelected, cellHasFocus) -> null);
+        }
+    }//GEN-LAST:event_btnGetTypesActionPerformed
+
+    private void jcomboSelectAccountTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcomboSelectAccountTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcomboSelectAccountTypeActionPerformed
 
     private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {
         btnLookUpFor.setFocusPainted(false);
@@ -525,6 +543,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     private javax.swing.JButton btnAddNewRegistry;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCancellLookingFor;
+    private javax.swing.JButton btnGetTypes;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLookUpFor;
     private javax.swing.JButton btnRegistry;
