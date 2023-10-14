@@ -506,31 +506,26 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         jComboSelectAccountTitle.setEnabled(true);
         jComboSelectAccountTitle.removeAllItems();
 
-        Select s = new Select();
         String itemLookedFor = jTextFieldLookForItem.getText().trim().toUpperCase();
 
-        if(itemLookedFor.isEmpty()){
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Error: debe proveer un nombre de cuenta o codigo",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
+        if (itemLookedFor.isEmpty()) {
+            showError("Error: debe proveer un nombre de cuenta o código");
             return;
         }
 
+        Select s = new Select();
         ResultSet queryResult = s.getAccount(itemLookedFor);
+
         try {
             while (queryResult.next()) {
-                // Agrega los elementos al JComboBox utilizando getString(2) para obtener el valor de la primera columna
                 String originalText = queryResult.getString(1);
+                String capitalizedText = capitalizeFirst(originalText);
 
-                String capitalizedText = originalText.substring(0, 1).toUpperCase() + originalText.substring(1).toLowerCase();
-                DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) jComboSelectAccountTitle.getModel();
-
-                System.out.println(s.findAccountType(originalText));
+                String type = s.findAccountType(originalText);
+                updateAccountTypeSelection(type);
 
                 jComboSelectAccountTitle.addItem(capitalizedText);
+//                jComboSelectAccountTitle.setSelectedIndex(jComboSelectAccountTitle.getItemCount() - 1);
                 jComboSelectAccountTitle.setEnabled(true);
             }
         } catch (SQLException e) {
@@ -538,6 +533,33 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         }
     }
 
+    private void showError(String message) {
+        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private String capitalizeFirst(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
+    }
+
+    private void updateAccountTypeSelection(String type) {
+        switch (type) {
+            case "tbl_cuentadeactivo":
+                jcomboSelectAccountType.setSelectedItem("Activo");
+                break;
+            case "tbl_cuentasdepasivo":
+                jcomboSelectAccountType.setSelectedItem("Pasivo");
+                break;
+            case "tbl_cuentadepatrimonio":
+                jcomboSelectAccountType.setSelectedItem("Patrimonio");
+                break;
+            case "tbl_cuentasdecierre":
+                jcomboSelectAccountType.setSelectedItem("Cierre");
+                break;
+            default:
+                jcomboSelectAccountType.setSelectedItem("Seleccionar tipo de cuenta");
+                break;
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddNewRegistry;

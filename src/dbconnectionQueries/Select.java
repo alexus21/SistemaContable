@@ -81,9 +81,9 @@ public class Select {
             connection = DatabaseConnection.getInstance().getConnection();
 
             // Consulta en la tabla tbl_cuentasdeactivo
-            String activoQuery = "SELECT COUNT(*) FROM tbl_cuentasdeactivo WHERE nombre = ?";
+            String activoQuery = "SELECT * FROM tbl_cuentasdeactivo WHERE nombre LIKE ?";
             statement = connection.prepareStatement(activoQuery);
-            statement.setString(1, account);
+            statement.setString(1, "%" + account + "%");
             rs = statement.executeQuery();
 
             if (rs.next()) {
@@ -91,9 +91,9 @@ public class Select {
             }
 
             // Consulta en la tabla tbl_cuentasdepasivo
-            String pasivoQuery = "SELECT COUNT(*) FROM tbl_cuentasdepasivo WHERE nombre = ?";
+            String pasivoQuery = "SELECT * FROM tbl_cuentasdepasivo WHERE nombre LIKE ?";
             statement = connection.prepareStatement(pasivoQuery);
-            statement.setString(1, account);
+            statement.setString(1, "%" + account + "%");
             rs = statement.executeQuery();
 
             if (rs.next()) {
@@ -101,9 +101,9 @@ public class Select {
             }
 
             // Consulta en la tabla tbl_cuentasdepatrimonio
-            String patrimonioQuery = "SELECT COUNT(*) FROM tbl_cuentasdepatrimonio WHERE nombre = ?";
+            String patrimonioQuery = "SELECT * FROM tbl_cuentasdepatrimonio WHERE nombre LIKE ?";
             statement = connection.prepareStatement(patrimonioQuery);
-            statement.setString(1, account);
+            statement.setString(1, "%" + account + "%");
             rs = statement.executeQuery();
 
             if (rs.next()) {
@@ -111,9 +111,9 @@ public class Select {
             }
 
             // Consulta en la tabla tbl_cuentasdecierre
-            String cierreQuery = "SELECT COUNT(*) FROM tbl_cuentasdecierre WHERE nombre = ?";
+            String cierreQuery = "SELECT * FROM tbl_cuentasdecierre WHERE nombre LIKE ?";
             statement = connection.prepareStatement(cierreQuery);
-            statement.setString(1, account);
+            statement.setString(1, "%" + account + "%");
             rs = statement.executeQuery();
 
             if (rs.next()) {
@@ -126,7 +126,6 @@ public class Select {
             throw new RuntimeException(e);
         }
     }
-
 
     public ResultSet loadAccountsToGeneralBook(){
         Connection connection = null;
