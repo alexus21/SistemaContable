@@ -522,7 +522,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                 String capitalizedText = capitalizeFirst(originalText);
 
                 String type = s.findAccountType(originalText);
-                updateAccountTypeSelection(type);
+//                updateAccountTypeSelection(type);
 
                 jComboSelectAccountTitle.addItem(capitalizedText);
 //                jComboSelectAccountTitle.setSelectedIndex(jComboSelectAccountTitle.getItemCount() - 1);
