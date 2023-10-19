@@ -81,7 +81,7 @@ private void createAndShowGUI() {
 
             if (rs.next()){
                 do {
-                    JTable table = createTable(rs.getString("cuenta"));
+                    JTable table = createTable(new Mayor(rs.getString("codigo"), rs.getString("cuenta")));
 
                     // Crear un renderizador personalizado para centrar los datos
                     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -143,36 +143,39 @@ private void createAndShowGUI() {
         frame.setVisible(true);*/
     }
     
-    private static JTable createTable(String nombreCuenta) throws Exception {
+    private static JTable createTable(Mayor cuenta) throws Exception {
 
         try {
             Select1 select = new Select1();
 
-            ResultSet rs = select.obtenerDeberHaberPorCuenta(nombreCuenta);
+            ResultSet rs = select.obtenerDeberHaberPorCuenta(cuenta.getCuenta());
 
             List<Double> listaDeber = new ArrayList<>();
             List<Double> listaHaber = new ArrayList<>();
+            List<String> listaDatos = new ArrayList<>();
+            String data;
 
             if (rs.next()){
                 do {
+                    Mayor mayorr = new Mayor();
                     double deber = rs.getDouble("debe");
                     double haber = rs.getDouble("haber");
-
 
                     if (deber != 0.0){
                         listaDeber.add(deber);
                     }
+
                     if (haber != 0){
                         listaHaber.add(haber);
-
                     }
                 }while (rs.next());
             }
+            rs.close();
 
-            int mayor = Math.max(listaDeber.size(), listaHaber.size());
+            int mayorr = Math.max(listaDeber.size(), listaHaber.size());
 
 
-            String[] columnNames = {nombreCuenta, ""};
+            String[] columnNames = {cuenta.getCuenta(), ""};
             DefaultTableModel model = new DefaultTableModel(null, columnNames){
                 @Override
                 public boolean isCellEditable (int row, int column) {
@@ -184,7 +187,7 @@ private void createAndShowGUI() {
 
             model.addRow(new Object[]{"Debe", "Haber"});
 
-            for (int i = 0; i < mayor; i++) {
+            for (int i = 0; i < mayorr; i++) {
                 String[] strings = new String[]{"", ""};
                 model.addRow(strings);
             }
@@ -195,7 +198,7 @@ private void createAndShowGUI() {
 
             model.addRow(new Object[]{"Suma", "Suma"});
 
-            double totalDeber, totalHaber;
+            double totalDeber, totalHaber, total;
             DecimalFormat format = new DecimalFormat("#.00");
 
             totalDeber = listaDeber.stream().mapToDouble(aDouble -> aDouble).sum();
@@ -203,19 +206,17 @@ private void createAndShowGUI() {
 
             model.addRow(new Object[]{"$" + format.format(totalDeber), "$" + format.format(totalHaber)});
 
-            double diferencia = Math.abs(totalDeber - totalHaber);
+            model.addRow(new Object[]{"Total", "Total"});
 
-            if (totalDeber > totalHaber){
-                model.addRow(new Object[]{"Total", ""});
-                model.addRow(new Object[]{"$" + format.format(diferencia), ""});
-            }else if (totalHaber > totalDeber){
-                model.addRow(new Object[]{"", "Total"});
-                model.addRow(new Object[]{"", "$" + format.format(diferencia)});
+            char dataa = cuenta.getCodigo().charAt(0);
+
+            if (dataa == '1' || dataa == '4'){
+                total = totalDeber - totalHaber;
+                model.addRow(new Object[]{total, ""});
             }else{
-                model.addRow(new Object[]{"Total", "Total"});
-                model.addRow(new Object[]{"$00.00", "$00.00"});
+                total = totalHaber - totalDeber;
+                model.addRow(new Object[]{"", total});
             }
-
 
 
 

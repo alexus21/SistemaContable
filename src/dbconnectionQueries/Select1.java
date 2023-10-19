@@ -19,7 +19,7 @@ public class Select1 {
         resetearValores();
 
         try {
-            String myQuery ="SELECT DISTINCT cuenta from tbl_dailybook";
+            String myQuery ="SELECT DISTINCT cuenta, codigo from tbl_dailybook";
 
             preparedStatement = connection.prepareStatement(myQuery);
             return  preparedStatement.executeQuery();
@@ -31,7 +31,7 @@ public class Select1 {
     public ResultSet obtenerDeberHaberPorCuenta(String nombreCuenta){
         resetearValores();
         try {
-            String myQuery = "SELECT debe, haber FROM tbl_dailybook WHERE (debe <> '0' OR haber <> '0') AND cuenta = '" + nombreCuenta + "'";
+            String myQuery = "SELECT debe, haber, codigo FROM tbl_dailybook WHERE (debe <> '0' OR haber <> '0') AND cuenta = '" + nombreCuenta + "'";
             preparedStatement = connection.prepareStatement(myQuery);
             return preparedStatement.executeQuery();
         }catch (Exception ignored){
