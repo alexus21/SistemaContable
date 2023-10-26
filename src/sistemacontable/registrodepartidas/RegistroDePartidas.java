@@ -12,6 +12,7 @@ import sistemacontable.libromayor.TipoCuenta;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -212,6 +213,16 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
         jDateChooser.setBackground(new java.awt.Color(71, 102, 121));
         jDateChooser.setForeground(new java.awt.Color(255, 255, 255));
+        jDateChooser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jDateChooserMouseClicked(evt);
+            }
+        });
+        jDateChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooserPropertyChange(evt);
+            }
+        });
         jPanel3.add(jDateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 130, 40));
 
         jcomboSelectAccountType.setBackground(new java.awt.Color(71, 102, 121));
@@ -242,6 +253,11 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
         jTextFieldLookForItem.setBackground(new java.awt.Color(213, 219, 231));
         jTextFieldLookForItem.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar cuenta o codigo"));
+        jTextFieldLookForItem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldLookForItemKeyPressed(evt);
+            }
+        });
         jPanel2.add(jTextFieldLookForItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 60));
 
         jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 60, 156, -1));
@@ -500,7 +516,21 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcomboSelectAccountTypeActionPerformed
 
-    private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jTextFieldLookForItemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldLookForItemKeyPressed
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER){
+            eventoBuscar();
+        }
+    }//GEN-LAST:event_jTextFieldLookForItemKeyPressed
+
+    private void jDateChooserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooserMouseClicked
+        System.out.println("Hola Mundo");
+    }//GEN-LAST:event_jDateChooserMouseClicked
+
+    private void jDateChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooserPropertyChange
+        System.out.println("Hola");
+    }//GEN-LAST:event_jDateChooserPropertyChange
+
+    private void eventoBuscar(){
         btnLookUpFor.setFocusPainted(false);
 
         String itemLookedFor = jTextFieldLookForItem.getText().trim().toUpperCase();
@@ -537,6 +567,10 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {
+        eventoBuscar();
     }
 
 

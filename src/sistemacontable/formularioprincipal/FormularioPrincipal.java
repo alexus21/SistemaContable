@@ -8,10 +8,10 @@ import sistemacontable.librodiario.LibroDiario;
 import sistemacontable.registrodepartidas.RegistroDePartidas;
 import sistemacontable.catalogodecuentas.CatalogoDeCuentas;
 import sistemacontable.balance.Balance;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Point;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import sistemacontable.libromayor.LibroMayor;
 
@@ -43,6 +43,16 @@ public class FormularioPrincipal extends javax.swing.JFrame {
             });
 
         lblUsername.setText(username);
+    }
+
+    private void resetearInicio(){
+        List<Component> components = new ArrayList<>();
+
+        components.add(jLabel6);
+        components.add(jPanel3);
+        components.add(jPanel5);
+
+        components.forEach(data -> Container.add(data));
     }
 
     /**
@@ -471,7 +481,7 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         btnInicio.setFocusPainted(false);
         Container.removeAll();
-        Container.add(jLabel5, BorderLayout.CENTER);
+        resetearInicio();
         Container.revalidate();
         Container.repaint();
     }//GEN-LAST:event_btnInicioActionPerformed
