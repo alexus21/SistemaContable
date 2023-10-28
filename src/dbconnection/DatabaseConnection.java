@@ -11,7 +11,7 @@ public class DatabaseConnection {
 
     private final String server = "jdbc:postgresql://localhost:5432/db_catalogoDeCuentas";
     private final String user = "postgres";
-    private final String password = "1234";
+    private final String password = "123456789";
 
     // Constructor privado para evitar la creación de instancias desde fuera de la clase
     private DatabaseConnection() {
