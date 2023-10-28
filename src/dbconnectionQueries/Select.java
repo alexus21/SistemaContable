@@ -30,7 +30,7 @@ public class Select {
             // Coincidencia parcial de la busqueda, no debe ser exacta
             String myQuery = "SELECT account FROM tbl_catalogodecuentas WHERE code LIKE ? OR account LIKE ?";
             statement = connection.prepareStatement(myQuery);
-            statement.setString(1, value);
+            statement.setString(1, "%" + value + "%");
             statement.setString(2, "%" + value + "%"); // Agrega comodines % para coincidencias parciales
             rs = statement.executeQuery();
             return rs;
