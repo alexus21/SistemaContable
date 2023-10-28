@@ -28,7 +28,7 @@ public class Select {
         try {
             connection = DatabaseConnection.getInstance().getConnection();
             // Coincidencia parcial de la busqueda, no debe ser exacta
-            String myQuery = "SELECT account FROM tbl_catalogodecuentas WHERE code LIKE ? OR account LIKE ?";
+            String myQuery = "SELECT * FROM tbl_catalogodecuentas WHERE code LIKE ? OR account LIKE ?";
             statement = connection.prepareStatement(myQuery);
             statement.setString(1, "%" + value + "%");
             statement.setString(2, "%" + value + "%"); // Agrega comodines % para coincidencias parciales
@@ -73,10 +73,11 @@ public class Select {
         }
     }
 
-    public String findAccountType(String account) {
+    public String findAccountType(String title) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
+        String account = title.toUpperCase();
         try {
             connection = DatabaseConnection.getInstance().getConnection();
 
@@ -87,7 +88,7 @@ public class Select {
             rs = statement.executeQuery();
 
             if (rs.next()) {
-                return "tbl_cuentasdeactivo";
+                return "Activo";
             }
 
             // Consulta en la tabla tbl_cuentasdepasivo
@@ -97,7 +98,7 @@ public class Select {
             rs = statement.executeQuery();
 
             if (rs.next()) {
-                return "tbl_cuentasdepasivo";
+                return "Pasivo";
             }
 
             // Consulta en la tabla tbl_cuentasdepatrimonio
@@ -107,7 +108,7 @@ public class Select {
             rs = statement.executeQuery();
 
             if (rs.next()) {
-                return "tbl_cuentasdepatrimonio";
+                return "Patrimonio";
             }
 
             // Consulta en la tabla tbl_cuentasdecierre
@@ -117,7 +118,7 @@ public class Select {
             rs = statement.executeQuery();
 
             if (rs.next()) {
-                return "tbl_cuentasdecierre";
+                return "Cierre";
             }
 
             // Si no se encuentra en ninguna tabla, puedes retornar un valor predeterminado o lanzar una excepción.

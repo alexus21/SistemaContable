@@ -33,6 +33,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     public boolean isNumber (String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
+    private boolean searchButtonWasPressed = false;
 
     static class CustomComboBoxRenderer extends DefaultListCellRenderer {
         @Override
@@ -370,10 +371,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                 System.out.println(sqlException.getMessage());
             }
         }else {
-            JOptionPane.showMessageDialog(null,
-                    "Faltan campos por llenar",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            showError("Faltan campos por llenar");
         }
 
 
@@ -385,11 +383,11 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             btnGuardar.setEnabled(false);
             return;
         }
+
         btnRegistry.setEnabled(true);
         btnGuardar.setEnabled(true);
         showTextComboBox(50);
-
-    }//GEN-LAST:event_jComboSelectAccountTitleActionPerformed
+    }
 
     private static List<String []> obtenerRegistros(JTable table){
         List<String []> lista = new ArrayList<>();
@@ -440,7 +438,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         double[] sumas = totalPorCuentas(lista);
 
         if (sumas[0] != sumas[1]){
-            JOptionPane.showMessageDialog(null, "La sumatoria de las cuentas debe ser igual", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La sumatoria de las cuentas debe ser igual", "Atención", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -508,7 +506,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             jComboSelectAccountTitle.setEnabled(false);
             btnRegistry.setEnabled(false);
             btnGuardar.setEnabled(false);
-            JOptionPane.showMessageDialog(null, "Seleccione un tipo de cuenta", "Error", JOptionPane.ERROR_MESSAGE);
+            showError("Seleccione un tipo de cuenta");
         }
     }//GEN-LAST:event_btnGetTypesActionPerformed
 
@@ -527,7 +525,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     }//GEN-LAST:event_jDateChooserMouseClicked
 
     private void jDateChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooserPropertyChange
-        System.out.println("Hola");
+//        System.out.println("Hola");
     }//GEN-LAST:event_jDateChooserPropertyChange
 
     private void eventoBuscar(){
@@ -548,31 +546,37 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             jComboSelectAccountTitle.removeAllItems();
 
             boolean cuentaEncontrada = false; // Variable para controlar si se encontró una cuenta
+            List<String> codes = new ArrayList<String>();
 
             while (queryResult.next()) {
                 jComboSelectAccountTitle.setEnabled(true);
-                String originalText = queryResult.getString(1);
+                String originalText = queryResult.getString(2);
+                String code = queryResult.getString(1);
+                codes.add(code);
                 String capitalizedText = capitalizeFirst(originalText);
                 jComboSelectAccountTitle.addItem(capitalizedText);
                 cuentaEncontrada = true; // Se encontró al menos una cuenta
             }
 
+            updateAccountTypeSelection(codes);
+
             if (!cuentaEncontrada) {
                 jComboSelectAccountTitle.setEnabled(false);
                 btnRegistry.setEnabled(false);
                 btnGuardar.setEnabled(false);
-                JOptionPane.showMessageDialog(null, "No se encontró la cuenta", "Error", JOptionPane.ERROR_MESSAGE);
+                showError("No se encontró la cuenta");
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        searchButtonWasPressed = true;
     }
 
     private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {
         eventoBuscar();
     }
-
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
@@ -582,24 +586,16 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
-    private void updateAccountTypeSelection(String type) {
-        switch (type) {
-            case "tbl_cuentadeactivo":
-                jcomboSelectAccountType.setSelectedItem("Activo");
-                break;
-            case "tbl_cuentasdepasivo":
-                jcomboSelectAccountType.setSelectedItem("Pasivo");
-                break;
-            case "tbl_cuentadepatrimonio":
-                jcomboSelectAccountType.setSelectedItem("Patrimonio");
-                break;
-            case "tbl_cuentasdecierre":
-                jcomboSelectAccountType.setSelectedItem("Cierre");
-                break;
-            default:
-                jcomboSelectAccountType.setSelectedItem("Seleccionar tipo de cuenta");
-                break;
-        }
+    private void updateAccountTypeSelection(List<String> account) {
+        String initialCode = account.get(0).substring(0, 1);
+        System.out.println(initialCode);
+        switch (initialCode) {
+            case "1", "4" -> jcomboSelectAccountType.setSelectedIndex(1);
+            case "2", "5" -> jcomboSelectAccountType.setSelectedIndex(2);
+            case "3" -> jcomboSelectAccountType.setSelectedIndex(3);
+            case "6" -> jcomboSelectAccountType.setSelectedIndex(4);
+            default -> jcomboSelectAccountType.setSelectedIndex(0); // Valor por defecto
+        };
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
