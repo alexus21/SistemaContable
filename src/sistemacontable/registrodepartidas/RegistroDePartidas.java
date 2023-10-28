@@ -384,6 +384,40 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             return;
         }
 
+        if(searchButtonWasPressed){
+            String itemLookedFor = (String) jComboSelectAccountTitle.getSelectedItem();
+            Select s = new Select();
+
+            if (itemLookedFor == null) {
+                return;
+            }
+
+            if(itemLookedFor.isEmpty()) {
+                jComboSelectAccountTitle.setEnabled(false);
+                showError("Error: debe proveer un nombre de cuenta o código");
+                return;
+            }
+
+            ResultSet queryResult = s.findAccountType(itemLookedFor.toUpperCase());
+
+            try {
+                List<String> codes = new ArrayList<String>();
+
+                while (queryResult.next()) {
+                    String originalText = queryResult.getString(2);
+                    String code = queryResult.getString(1);
+                    codes.add(code);
+                    String capitalizedText = capitalizeFirst(originalText);
+                    jComboSelectAccountTitle.addItem(capitalizedText);
+                }
+
+                updateAccountTypeSelection(codes);
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         btnRegistry.setEnabled(true);
         btnGuardar.setEnabled(true);
         showTextComboBox(50);
@@ -514,6 +548,10 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcomboSelectAccountTypeActionPerformed
 
+    private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {
+        eventoBuscar();
+    }
+
     private void jTextFieldLookForItemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldLookForItemKeyPressed
         if (evt.getKeyChar() == KeyEvent.VK_ENTER){
             eventoBuscar();
@@ -530,21 +568,24 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
     private void eventoBuscar(){
         btnLookUpFor.setFocusPainted(false);
+        jComboSelectAccountTitle.removeAllItems();
 
-        String itemLookedFor = jTextFieldLookForItem.getText().trim().toUpperCase();
+        String itemLookedFor = jTextFieldLookForItem.getText().trim();
 
-        if (itemLookedFor.isEmpty()) {
+        if (itemLookedFor == null) {
+            return;
+        }
+
+        if(itemLookedFor.isEmpty()) {
             jComboSelectAccountTitle.setEnabled(false);
             showError("Error: debe proveer un nombre de cuenta o código");
             return;
         }
 
         Select s = new Select();
-        ResultSet queryResult = s.getAccount(itemLookedFor);
+        ResultSet queryResult = s.getAccount(itemLookedFor.toUpperCase());
 
         try {
-            jComboSelectAccountTitle.removeAllItems();
-
             boolean cuentaEncontrada = false; // Variable para controlar si se encontró una cuenta
             List<String> codes = new ArrayList<String>();
 
@@ -560,6 +601,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
             updateAccountTypeSelection(codes);
 
+
             if (!cuentaEncontrada) {
                 jComboSelectAccountTitle.setEnabled(false);
                 btnRegistry.setEnabled(false);
@@ -571,11 +613,8 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             throw new RuntimeException(e);
         }
 
+        jTextFieldLookForItem.setText("");
         searchButtonWasPressed = true;
-    }
-
-    private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {
-        eventoBuscar();
     }
 
     private void showError(String message) {
@@ -588,12 +627,11 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
     private void updateAccountTypeSelection(List<String> account) {
         String initialCode = account.get(0).substring(0, 1);
-        System.out.println(initialCode);
         switch (initialCode) {
-            case "1", "4" -> jcomboSelectAccountType.setSelectedIndex(1);
-            case "2", "5" -> jcomboSelectAccountType.setSelectedIndex(2);
-            case "3" -> jcomboSelectAccountType.setSelectedIndex(3);
-            case "6" -> jcomboSelectAccountType.setSelectedIndex(4);
+            case "1", "4" -> jcomboSelectAccountType.setSelectedIndex(1); //Activo
+            case "2", "5" -> jcomboSelectAccountType.setSelectedIndex(2); //Pasivo
+            case "3" -> jcomboSelectAccountType.setSelectedIndex(3); //Patrimonio
+            case "6" -> jcomboSelectAccountType.setSelectedIndex(4); //Cierre
             default -> jcomboSelectAccountType.setSelectedIndex(0); // Valor por defecto
         };
     }

@@ -73,56 +73,19 @@ public class Select {
         }
     }
 
-    public String findAccountType(String title) {
+    public ResultSet findAccountType(String value) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
-        String account = title.toUpperCase();
+        System.out.println(value);
         try {
             connection = DatabaseConnection.getInstance().getConnection();
-
-            // Consulta en la tabla tbl_cuentasdeactivo
-            String activoQuery = "SELECT * FROM tbl_cuentasdeactivo WHERE nombre LIKE ?";
-            statement = connection.prepareStatement(activoQuery);
-            statement.setString(1, "%" + account + "%");
+            // Coincidencia parcial de la busqueda, no debe ser exacta
+            String myQuery = "SELECT * FROM tbl_catalogodecuentas WHERE account = ?";
+            statement = connection.prepareStatement(myQuery);
+            statement.setString(1, value);
             rs = statement.executeQuery();
-
-            if (rs.next()) {
-                return "Activo";
-            }
-
-            // Consulta en la tabla tbl_cuentasdepasivo
-            String pasivoQuery = "SELECT * FROM tbl_cuentasdepasivo WHERE nombre LIKE ?";
-            statement = connection.prepareStatement(pasivoQuery);
-            statement.setString(1, "%" + account + "%");
-            rs = statement.executeQuery();
-
-            if (rs.next()) {
-                return "Pasivo";
-            }
-
-            // Consulta en la tabla tbl_cuentasdepatrimonio
-            String patrimonioQuery = "SELECT * FROM tbl_cuentasdepatrimonio WHERE nombre LIKE ?";
-            statement = connection.prepareStatement(patrimonioQuery);
-            statement.setString(1, "%" + account + "%");
-            rs = statement.executeQuery();
-
-            if (rs.next()) {
-                return "Patrimonio";
-            }
-
-            // Consulta en la tabla tbl_cuentasdecierre
-            String cierreQuery = "SELECT * FROM tbl_cuentasdecierre WHERE nombre LIKE ?";
-            statement = connection.prepareStatement(cierreQuery);
-            statement.setString(1, "%" + account + "%");
-            rs = statement.executeQuery();
-
-            if (rs.next()) {
-                return "Cierre";
-            }
-
-            // Si no se encuentra en ninguna tabla, puedes retornar un valor predeterminado o lanzar una excepción.
-            return "No encontrado";
+            return rs;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
