@@ -370,7 +370,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnRegistryActionPerformed
 
-    private void jComboSelectAccountTitleActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSelectAccountTitleActionPerformed
+    private void jComboSelectAccountTitleActionPerformed (java.awt.event.ActionEvent evt) {                                                         
         if (jComboSelectAccountTitle.getSelectedIndex() == 0) {
             btnRegistry.setEnabled(false);
             btnGuardar.setEnabled(false);
@@ -621,11 +621,11 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     private void updateAccountTypeSelection(List<String> account) {
         String initialCode = account.get(0).substring(0, 1);
         switch (initialCode) {
-            case "1", "4" -> jcomboSelectAccountType.setSelectedIndex(1); //Activo
+           /* case "1", "4" -> jcomboSelectAccountType.setSelectedIndex(1); //Activo
             case "2", "5" -> jcomboSelectAccountType.setSelectedIndex(2); //Pasivo
             case "3" -> jcomboSelectAccountType.setSelectedIndex(3); //Patrimonio
             case "6" -> jcomboSelectAccountType.setSelectedIndex(4); //Cierre
-            default -> jcomboSelectAccountType.setSelectedIndex(0); // Valor por defecto
+            default -> jcomboSelectAccountType.setSelectedIndex(0); // Valor por defecto*/
         };
     }
 
