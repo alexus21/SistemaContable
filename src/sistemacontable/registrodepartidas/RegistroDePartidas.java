@@ -11,12 +11,12 @@ import sistemacontable.libromayor.TipoCuenta;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,18 +34,6 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
     private boolean searchButtonWasPressed = false;
-
-    static class CustomComboBoxRenderer extends DefaultListCellRenderer {
-        @Override
-        public Component getListCellRendererComponent (JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            String text = (String) value;
-            int maxLength = 50; // Longitud máxima deseada para la vista en el combo box
-            if (text.length() > maxLength) {
-                text = text.substring(0, maxLength) + "..."; // Acorta el texto y agrega puntos suspensivos
-            }
-            return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
-        }
-    }
 
     private void showTextComboBox (int maxLength) {
         new Thread(new Runnable() {
@@ -76,13 +64,18 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
         model = new DefaultTableModel(null, new String[]{
                 "Fecha", "Cuenta", "Código", "Debe", "Haber"
-        }){
-//            @Override
-//            public boolean isCellEditable (int row, int column) {
-//                return false;
-//            }
-        };
+        });
 
+        jDateChooser.setDate(new Date());
+        jcomboSelectAccountType.setSelectedIndex(0);
+        jComboSelectAccountTitle.removeAllItems();
+        jComboSelectAccountTitle.setEnabled(false);
+        btnGuardar.setEnabled(false);
+        btnRegistry.setEnabled(false);
+
+        jTableDaily.setModel(model);
+
+        jTableDaily.setRowHeight(30);
         jTableDaily.setModel(model);
     }
 
@@ -328,7 +321,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd, MMMM, yyyy");
 
         if (jDateChooser.getDate() == null) {
-            JOptionPane.showMessageDialog(null, "Seleccione una fecha", "Error", JOptionPane.ERROR_MESSAGE);
+            showError("Seleccione una fecha");
             return;
         }
 
@@ -343,7 +336,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         String cantidadIngresada = jTextFieldLookForItem.getText();
 
         if (dateFormat.format(jDateChooser.getDate()).isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Seleccione una fecha", "Error", JOptionPane.ERROR_MESSAGE);
+            showError("Seleccione una fecha");
             return;
         }
 
@@ -549,12 +542,12 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     }//GEN-LAST:event_jcomboSelectAccountTypeActionPerformed
 
     private void btnLookUpForActionPerformed(java.awt.event.ActionEvent evt) {
-        eventoBuscar();
+        lookOutForAccount();
     }
 
     private void jTextFieldLookForItemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldLookForItemKeyPressed
         if (evt.getKeyChar() == KeyEvent.VK_ENTER){
-            eventoBuscar();
+            lookOutForAccount();
         }
     }//GEN-LAST:event_jTextFieldLookForItemKeyPressed
 
@@ -566,7 +559,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 //        System.out.println("Hola");
     }//GEN-LAST:event_jDateChooserPropertyChange
 
-    private void eventoBuscar(){
+    private void lookOutForAccount(){
         btnLookUpFor.setFocusPainted(false);
         jComboSelectAccountTitle.removeAllItems();
 
