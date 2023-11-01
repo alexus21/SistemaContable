@@ -31,11 +31,22 @@ public class Select1 {
     public ResultSet obtenerDeberHaberPorCuenta(String nombreCuenta){
         resetearValores();
         try {
-            String myQuery = "SELECT debe, haber, codigo FROM tbl_dailybook WHERE (debe <> '0' OR haber <> '0') AND cuenta = '" + nombreCuenta + "'";
+            String myQuery = "SELECT debe, haber, codigo FROM tbl_dailybook WHERE cuenta = '" + nombreCuenta + "'";
             preparedStatement = connection.prepareStatement(myQuery);
             return preparedStatement.executeQuery();
         }catch (Exception ignored){
             throw new RuntimeException();
+        }
+    }
+
+    public ResultSet obtenerCodigosCuentas(String nombreCuenta){
+        resetearValores();
+        try {
+            String myQuery = "SELECT * FROM tbl_catalogodecuentas WHERE account LIKE '" + nombreCuenta + "%'";
+            preparedStatement = connection.prepareStatement(myQuery);
+            return preparedStatement.executeQuery();
+        } catch (Exception ignored) {
+            throw new RuntimeException(ignored.getMessage());
         }
     }
 }

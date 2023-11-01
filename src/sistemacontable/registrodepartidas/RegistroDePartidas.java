@@ -7,6 +7,7 @@ package sistemacontable.registrodepartidas;
 import com.toedter.calendar.JTextFieldDateEditor;
 import dbconnectionQueries.Create;
 import dbconnectionQueries.Select;
+import dbconnectionQueries.Select1;
 import sistemacontable.libromayor.TipoCuenta;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,10 +31,6 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     // JPopupMenu para mostrar el texto completo
 
     private DefaultTableModel model = null;
-
-    public boolean isNumber (String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");
-    }
     private boolean searchButtonWasPressed = false;
 
     private void showTextComboBox (int maxLength) {
@@ -91,6 +89,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         jDateChooser.setMaxSelectableDate(date);
         JTextFieldDateEditor editor = (JTextFieldDateEditor) jDateChooser.getDateEditor();
         editor.setEditable(false);
+        jRadioButton1.setSelected(true);
     }
 
     /**
@@ -122,7 +121,11 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnAddNewRegistry = new javax.swing.JButton();
         btnCancellLookingFor = new javax.swing.JButton();
         btnGetTypes = new javax.swing.JButton();
+        txtValor = new javax.swing.JTextField();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
 
+        setEnabled(false);
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(213, 219, 231));
@@ -189,7 +192,6 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnRegistry.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorrar.png"))); // NOI18N
         btnRegistry.setText("Registrar");
-        btnRegistry.setEnabled(false);
         btnRegistry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistryActionPerformed(evt);
@@ -272,12 +274,13 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         btnAddNewRegistry.setForeground(new java.awt.Color(255, 255, 255));
         btnAddNewRegistry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/new-file.png"))); // NOI18N
         btnAddNewRegistry.setText("Nuevo asiento");
+        btnAddNewRegistry.setEnabled(false);
         btnAddNewRegistry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddNewRegistryActionPerformed(evt);
             }
         });
-        jPanel3.add(btnAddNewRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 270, -1, 40));
+        jPanel3.add(btnAddNewRegistry, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 320, -1, 40));
 
         btnCancellLookingFor.setBackground(new java.awt.Color(71, 102, 121));
         btnCancellLookingFor.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -300,6 +303,23 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             }
         });
         jPanel3.add(btnGetTypes, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, 70, 40));
+
+        txtValor.setBackground(new java.awt.Color(213, 219, 231));
+        txtValor.setBorder(javax.swing.BorderFactory.createTitledBorder("Ingresa el valor"));
+        txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtValorKeyTyped(evt);
+            }
+        });
+        jPanel3.add(txtValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 250, 150, 60));
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Deber");
+        jPanel3.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 190, -1, -1));
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Haber");
+        jPanel3.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 220, -1, -1));
 
         add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 865, 567));
     }// </editor-fold>//GEN-END:initComponents
@@ -330,10 +350,10 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         Object selectedObject = jcomboSelectAccountType.getSelectedItem();
         String selected = selectedObject.toString();
         String account = (String) jComboSelectAccountTitle.getSelectedItem();
-        String code = "";
+        String code;
         ResultSet rs = s.getAccountCode(selected.toLowerCase(), account.toUpperCase().trim());
 
-        String cantidadIngresada = jTextFieldLookForItem.getText();
+        String cantidadIngresada = txtValor.getText();
 
         if (dateFormat.format(jDateChooser.getDate()).isEmpty()) {
             showError("Seleccione una fecha");
@@ -349,6 +369,8 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                             formattedDate,
                             account.trim(),
                             code,
+                            jRadioButton1.isSelected() ? cantidadIngresada : "0",
+                            jRadioButton1.isSelected() ? "0" : cantidadIngresada
                     };
 
                     myModel.addRow(nuevaFila);
@@ -370,7 +392,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnRegistryActionPerformed
 
-    private void jComboSelectAccountTitleActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSelectAccountTitleActionPerformed
+    private void jComboSelectAccountTitleActionPerformed (java.awt.event.ActionEvent evt) {                                                         
         if (jComboSelectAccountTitle.getSelectedIndex() == 0) {
             btnRegistry.setEnabled(false);
             btnGuardar.setEnabled(false);
@@ -480,12 +502,49 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     private void btnAddNewRegistryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewRegistryActionPerformed
         btnAddNewRegistry.setFocusPainted(false);
 
-        DefaultTableModel myModel = (DefaultTableModel) jTableDaily.getModel();
+        /*DefaultTableModel myModel = (DefaultTableModel) jTableDaily.getModel();
         Object[] newEmptyRow = new Object[]{
                 "", "", "", "", ""
         };
 
-        myModel.addRow(newEmptyRow);
+        myModel.addRow(newEmptyRow);*/
+
+        /*JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(RegistroDePartidas.this);
+        ObtenerDatos2 modal = new ObtenerDatos2(frame, "Datos Faltantes", true);
+        modal.setLocationRelativeTo(frame);
+        modal.setVisible(true);
+        System.out.println(ObtenerDatos2.datosVarios[0]);
+        System.out.println(ObtenerDatos2.datosVarios[1]);
+
+        DefaultTableModel myModel = (DefaultTableModel) jTableDaily.getModel();
+
+        String cuentaBuscar = String.valueOf(jComboSelectAccountTitle.getSelectedItem()).toUpperCase().trim();
+        Select1 seect = new Select1();
+        ResultSet rs = seect.obtenerCodigosCuentas(cuentaBuscar);
+        System.out.println(cuentaBuscar);
+        String codigo = "";
+
+        try {
+            if (rs.next()) {
+                codigo = rs.getString("code");
+                System.out.println(codigo);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        String valor = ObtenerDatos2.datosVarios[1];
+
+        switch (ObtenerDatos2.datosVarios[0]) {
+            case "Deber":
+                myModel.addRow(new Object[]{jDateChooser.getDate(), jComboSelectAccountTitle.getSelectedItem(), codigo,
+                valor, ""});
+                break;
+            case "Haber":
+                myModel.addRow(new Object[]{jDateChooser.getDate(), jComboSelectAccountTitle.getSelectedItem(), codigo,
+                        "", valor});
+        }*/
+
 
     }//GEN-LAST:event_btnAddNewRegistryActionPerformed
 
@@ -559,6 +618,24 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 //        System.out.println("Hola");
     }//GEN-LAST:event_jDateChooserPropertyChange
 
+    private void txtValorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyTyped
+        char c = evt.getKeyChar();
+        String currentText = txtValor.getText();
+
+        if (!(Character.isDigit(c) || c == '.')) evt.consume();
+        else if (c == '.' && currentText.contains(".")) {
+            evt.consume();
+        } else if (c == '.' && !currentText.isEmpty() && currentText.indexOf('.') == currentText.length() - 1) {
+            evt.consume();
+
+        }else if (currentText.indexOf('.') != -1) {
+            int dotIndex = currentText.indexOf('.');
+            if (currentText.length() - dotIndex > 4) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_txtValorKeyTyped
+
     private void lookOutForAccount(){
         btnLookUpFor.setFocusPainted(false);
         jComboSelectAccountTitle.removeAllItems();
@@ -580,7 +657,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
         try {
             boolean cuentaEncontrada = false; // Variable para controlar si se encontró una cuenta
-            List<String> codes = new ArrayList<String>();
+            List<String> codes = new ArrayList<>();
 
             while (queryResult.next()) {
                 jComboSelectAccountTitle.setEnabled(true);
@@ -620,13 +697,30 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
     private void updateAccountTypeSelection(List<String> account) {
         String initialCode = account.get(0).substring(0, 1);
+        //Activo
+        //Pasivo
+        //Patrimonio
+        //Cierre
+        // Valor por defecto
         switch (initialCode) {
-            case "1", "4" -> jcomboSelectAccountType.setSelectedIndex(1); //Activo
-            case "2", "5" -> jcomboSelectAccountType.setSelectedIndex(2); //Pasivo
-            case "3" -> jcomboSelectAccountType.setSelectedIndex(3); //Patrimonio
-            case "6" -> jcomboSelectAccountType.setSelectedIndex(4); //Cierre
-            default -> jcomboSelectAccountType.setSelectedIndex(0); // Valor por defecto
-        };
+            case "1":
+            case "4":
+                jcomboSelectAccountType.setSelectedIndex(1);
+                break;
+            case "2":
+            case "5":
+                jcomboSelectAccountType.setSelectedIndex(2);
+                break;
+            case "3":
+                jcomboSelectAccountType.setSelectedIndex(3);
+                break;
+            case "6":
+                jcomboSelectAccountType.setSelectedIndex(4);
+                break;
+            default:
+                jcomboSelectAccountType.setSelectedIndex(0);
+                break;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -645,10 +739,13 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTableDaily;
     private javax.swing.JTextField jTextFieldLookForItem;
     private javax.swing.JComboBox<String> jcomboSelectAccountType;
+    private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 }
