@@ -698,7 +698,12 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     }
 
     private void updateAccountTypeSelection(List<String> account) {
-        String initialCode = account.get(0).substring(0, 1);
+        String initialCode;
+        try {
+            initialCode = account.get(0).substring(0, 1);
+        } catch (Exception exception) {
+            initialCode = "0";
+        }
         //Activo
         //Pasivo
         //Patrimonio

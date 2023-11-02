@@ -4,6 +4,12 @@
  */
 package sistemacontable.balance;
 
+import sistemacontable.libromayor.Mayor;
+
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 /**
  *
  * @author EstudianteFMO
@@ -13,8 +19,25 @@ public class Balance extends javax.swing.JPanel {
     /**
      * Creates new form Balance
      */
-    public Balance() {
+    public Balance(List<Mayor> listaCuentas) {
         initComponents();
+        cargaDeDatos(listaCuentas);
+
+
+    }
+
+    private void cargaDeDatos(List<Mayor> listaCuentas) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        for (Mayor fila : listaCuentas) {
+            model.addRow(new Object[]{fila.getCodigo(), fila.getCuenta(), fila.getDeber(), fila.getHaber()});
+        }
+
+        double totalDeber = listaCuentas.stream().mapToDouble(Mayor::getDeber).sum();
+        double totalHaber = listaCuentas.stream().mapToDouble(Mayor::getHaber).sum();
+
+        model.addRow(new Object[]{"", "", "Total", "Total"});
+        model.addRow(new Object[]{"", "", totalDeber, totalHaber});
     }
 
     /**
@@ -47,13 +70,10 @@ public class Balance extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(213, 219, 231));
 
         jTable1.setBackground(new java.awt.Color(213, 219, 231));
-        jTable1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "N° de cuenta", "Concepto", "Debe", "Haber"
@@ -67,6 +87,8 @@ public class Balance extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);

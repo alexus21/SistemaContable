@@ -22,6 +22,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class LibroMayor extends javax.swing.JPanel {
 
+    private List<Mayor> datosPorCuenta = new ArrayList<>();
+
     /**
      * Creates new form Mayor
      */
@@ -143,7 +145,7 @@ private void createAndShowGUI() {
         frame.setVisible(true);*/
     }
     
-    private static JTable createTable(Mayor cuenta) throws Exception {
+    private JTable createTable (Mayor cuenta) throws Exception {
 
         try {
             Select1 select = new Select1();
@@ -175,7 +177,7 @@ private void createAndShowGUI() {
             int mayorr = Math.max(listaDeber.size(), listaHaber.size());
 
 
-            String[] columnNames = {cuenta.getCuenta(), ""};
+            String[] columnNames = {cuenta.getCuenta(), cuenta.getCodigo()};
             DefaultTableModel model = new DefaultTableModel(null, columnNames){
                 @Override
                 public boolean isCellEditable (int row, int column) {
@@ -208,17 +210,21 @@ private void createAndShowGUI() {
 
             model.addRow(new Object[]{"Total", "Total"});
 
+            Mayor totalPorCuentaMayor = new Mayor(cuenta.getCodigo(), cuenta.getCuenta());
+
             char dataa = cuenta.getCodigo().charAt(0);
 
-            if (dataa == '1' || dataa == '4'){
+            if (dataa == '1' || dataa == '4' || dataa == '6'){
                 total = totalDeber - totalHaber;
+                totalPorCuentaMayor.setDeber(total);
                 model.addRow(new Object[]{total, ""});
             }else{
                 total = totalHaber - totalDeber;
+                totalPorCuentaMayor.setHaber(total);
                 model.addRow(new Object[]{"", total});
             }
 
-
+            datosPorCuenta.add(totalPorCuentaMayor);
 
             return new JTable(model);
 
@@ -226,6 +232,10 @@ private void createAndShowGUI() {
             System.err.println(exception.getMessage());
         }
             throw new RuntimeException();
+    }
+
+    public List<Mayor> ejecutarLibroMayor(){
+        return datosPorCuenta;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

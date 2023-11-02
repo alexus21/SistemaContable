@@ -2,12 +2,22 @@ package sistemacontable.libromayor;
 
 public class Mayor {
     private String codigo;
+    private String cuenta;
     private double deber;
     private double haber;
 
-    String cuenta;
 
     public Mayor() {
+    }
+
+    @Override
+    public String toString () {
+        return "Mayor{" +
+                "codigo='" + codigo + '\'' +
+                ", cuenta=" + cuenta +
+                ", deber=" + deber +
+                ", haber='" + haber + '\'' +
+                '}';
     }
 
     public Mayor(String codigo, String cuenta) {
@@ -15,10 +25,11 @@ public class Mayor {
         this.cuenta = cuenta;
     }
 
-    public Mayor(String codigo, double deber, double haber) {
+    public Mayor (String codigo, String cuenta, double deber, double haber) {
         this.codigo = codigo;
         this.deber = deber;
         this.haber = haber;
+        this.cuenta = cuenta;
     }
 
     public String getCuenta() {

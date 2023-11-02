@@ -2,9 +2,11 @@ package dbconnectionQueries;
 
 
 import dbconnection.DatabaseConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import sistemacontable.libromayor.Mayor;
+
+import java.sql.*;
+import java.util.List;
+import java.util.Queue;
 
 public class Select1 {
 
@@ -47,6 +49,44 @@ public class Select1 {
             return preparedStatement.executeQuery();
         } catch (Exception ignored) {
             throw new RuntimeException(ignored.getMessage());
+        }
+    }
+
+    public void guardarCuentasEnLibroMayor(List<Mayor> mayor) {
+
+        resetearValores();
+
+        try (PreparedStatement pstmt = connection.prepareStatement("TRUNCATE tbl_libromayor")) {
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        try (PreparedStatement pstmt = connection.prepareStatement("ALTER SEQUENCE tbl_libromayor_idlibro_seq RESTART WITH 1")){
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        String myQuery = "INSERT INTO tbl_libromayor(codigo, cuenta, debe, haber) VALUES (?, ?, ?, ?)";
+
+        if (mayor.isEmpty()) return;
+
+        for (Mayor fila : mayor) {
+            try {
+                preparedStatement = connection.prepareStatement(myQuery);
+
+                preparedStatement.setString(1, fila.getCodigo());
+                preparedStatement.setString(2, fila.getCuenta());
+                preparedStatement.setDouble(3, fila.getDeber());
+                preparedStatement.setDouble(4, fila.getHaber());
+
+                preparedStatement.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

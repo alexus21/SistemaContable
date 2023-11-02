@@ -4,7 +4,9 @@
  */
 package sistemacontable.formularioprincipal;
 
+import dbconnectionQueries.Select1;
 import sistemacontable.librodiario.LibroDiario;
+import sistemacontable.libromayor.Mayor;
 import sistemacontable.registrodepartidas.RegistroDePartidas;
 import sistemacontable.catalogodecuentas.CatalogoDeCuentas;
 import sistemacontable.balance.Balance;
@@ -30,8 +32,11 @@ public class FormularioPrincipal extends javax.swing.JFrame {
      */
     public FormularioPrincipal(String username) {
         initComponents();
-        
-       BarraTitulo.addMouseListener(new java.awt.event.MouseAdapter() {
+
+        cargarBalance();
+
+
+        BarraTitulo.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mousePressed(java.awt.event.MouseEvent evt) {
                     formMousePressed(evt);
                 }
@@ -43,6 +48,19 @@ public class FormularioPrincipal extends javax.swing.JFrame {
             });
 
         lblUsername.setText(username);
+    }
+
+    private List<Mayor> cargarBalance () {
+        List<Mayor> mayor = new LibroMayor().ejecutarLibroMayor();
+        for (Mayor dato : mayor) {
+            System.out.println(dato.toString());
+        }
+
+        Select1 select1 = new Select1();
+
+        select1.guardarCuentasEnLibroMayor(mayor);
+
+        return mayor;
     }
 
     private void resetearInicio(){
@@ -450,7 +468,7 @@ public class FormularioPrincipal extends javax.swing.JFrame {
 
     private void btnBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBalanceActionPerformed
         btnBalance.setFocusPainted(false);
-        Balance b = new Balance();
+        Balance b = new Balance(cargarBalance());
         b.setSize(870, 570);
         b.setLocation(0, 0);
         
