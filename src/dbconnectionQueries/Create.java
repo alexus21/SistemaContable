@@ -6,35 +6,73 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Create {
 
-    public void saveDaily(String[] rows){
+    public void saveDaily(List<String[]> rows, String descripcion, String fecha){
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
 
-        String myQuery = "INSERT INTO \"tbl_dailybook\"(" +
-                "fecha, " +
-                "cuenta, " +
-                "codigo," +
-                "debe, " +
-                "haber) VALUES(?, ?, ?, ?, ?)";
+        String consulta = "INSERT INTO tbl_partida (fecha, descripcion) VALUES (?, ?)";
 
         try {
             connection = DatabaseConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(myQuery);
+            statement = connection.prepareStatement(consulta);
 
-            int j = 0;
+            statement.setString(1, fecha);
+            statement.setString(2, descripcion);
 
-            for (String row : rows) {
-                j++;
-                statement.setString(j, row);
+            int rowsAffecteds = statement.executeUpdate();
+            System.out.println(rowsAffecteds == 1 ? "1 fila afectada" : rowsAffecteds + "filas afectadas");
+            if (rowsAffecteds >= 1) {
+                System.out.println("Se creó la partida");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        consulta = "SELECT * FROM tbl_partida ORDER BY idPartida DESC LIMIT 1";
+        int idPartida = 0;
+
+        try {
+            connection = DatabaseConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(consulta);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                idPartida = rs.getInt("idPartida");
             }
 
-            // Ejecutar la consulta de inserción utilizando executeUpdate
-            int rowsAffected = statement.executeUpdate();
-            System.out.println(rowsAffected + " filas afectadas por la inserción.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        String myQuery = "INSERT INTO \"tbl_dailybook\"(" +
+                "cuenta," +
+                "codigo," +
+                "debe, " +
+                "haber, " +
+                "idpartida) VALUES(?, ?, ?, ?, ?)";
+
+        try {
+            for(String[] row: rows){
+
+                connection = DatabaseConnection.getInstance().getConnection();
+                statement = connection.prepareStatement(myQuery);
+                System.out.println(row.length);
+
+                for (int i = 0; i < row.length; i++) {
+                    statement.setString(i + 1, row[i]);
+                }
+                statement.setInt(5, idPartida);
+
+                // Ejecutar la consulta de inserción utilizando executeUpdate
+                int rowsAffected = statement.executeUpdate();
+                System.out.println(rowsAffected + " filas afectadas por la inserción.");
+                statement.close();
+            }
         }
         catch (SQLException e) {
             e.printStackTrace();

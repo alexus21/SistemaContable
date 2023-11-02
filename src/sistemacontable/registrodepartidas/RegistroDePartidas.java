@@ -337,16 +337,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         Select s = new Select();
         DefaultTableModel myModel = (DefaultTableModel) jTableDaily.getModel();
 
-        // Crea un formato de fecha personalizado
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd, MMMM, yyyy");
-
-        if (jDateChooser.getDate() == null) {
-            showError("Seleccione una fecha");
-            return;
-        }
-
         // Formatea la fecha como una cadena en el formato deseado
-        String formattedDate = dateFormat.format(jDateChooser.getDate());
         Object selectedObject = jcomboSelectAccountType.getSelectedItem();
         String selected = selectedObject.toString();
         String account = (String) jComboSelectAccountTitle.getSelectedItem();
@@ -355,18 +346,13 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
         String cantidadIngresada = txtValor.getText();
 
-        if (dateFormat.format(jDateChooser.getDate()).isEmpty()) {
-            showError("Seleccione una fecha");
-            return;
-        }
-
-        if (!Objects.equals(formattedDate, "") && !Objects.equals(cantidadIngresada, "")){
+        if (!Objects.equals(cantidadIngresada, "")){
             try {
                 while (rs.next()){
                     code = rs.getString(1);
 
                     Object [] nuevaFila = new Object[]{
-                            formattedDate,
+                            "",
                             account.trim(),
                             code,
                             jRadioButton1.isSelected() ? cantidadIngresada : "0",
@@ -442,9 +428,9 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         List<String []> lista = new ArrayList<>();
 
         for (int i = 0; i < table.getRowCount(); i++) {
-            String [] data = new String[table.getColumnCount()];
-            for (int j = 0; j < table.getColumnCount(); j++) {
-                data[j] = (String) table.getValueAt(i, j);
+            String [] data = new String[table.getColumnCount() - 1];
+            for (int j = 0; j < table.getColumnCount() - 1; j++) {
+                data[j] = (String) table.getValueAt(i, j + 1);
             }
             lista.add(data);
         }
@@ -471,8 +457,8 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         double sum1 = 0, sum2 = 0;
 
         for (String[] value : lista) {
-            sum1 += Double.parseDouble(value[3]);
-            sum2 += Double.parseDouble(value[4]);
+            sum1 += Double.parseDouble(value[2]);
+            sum2 += Double.parseDouble(value[3]);
         }
 
         return new double[]{sum1, sum2};
@@ -491,9 +477,25 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             return;
         }
 
-        for (String[] strings : lista) {
-            new Create().saveDaily(strings);
+        if (jDateChooser.getDate() == null) {
+            showError("Seleccione una fecha");
+            return;
         }
+
+        // Crea un formato de fecha personalizado
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd, MMMM, yyyy");
+        String formattedDate = dateFormat.format(jDateChooser.getDate());
+
+        String message = JOptionPane.showInputDialog(null, "Ingrese la descripción de la partida");
+
+        if (message.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese la descripción");
+            return;
+        }
+
+        new Create().saveDaily(lista,
+                message,
+                formattedDate);
 
         resetData();
 
