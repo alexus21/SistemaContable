@@ -214,7 +214,7 @@ private void createAndShowGUI() {
 
             char dataa = cuenta.getCodigo().charAt(0);
 
-            if (dataa == '1' || dataa == '4' || dataa == '6'){
+            if (dataa == '1' || dataa == '4'){
                 total = totalDeber - totalHaber;
                 totalPorCuentaMayor.setDeber(total);
                 model.addRow(new Object[]{total, ""});

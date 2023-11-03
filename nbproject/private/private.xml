@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/sistemacontable/formularioprincipal/FormularioPrincipal.java</file>
-            <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/sistemacontable/registrodepartidas/ObtenerDatos.java</file>
+            <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/sistemacontable/libromayor/Mayor.java</file>
             <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/dbconnectionQueries/Select.java</file>
-            <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/sistemacontable/registrodepartidas/ObtenerDatos2.java</file>
             <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/sistemacontable/registrodepartidas/RegistroDePartidas.java</file>
+            <file>file:/C:/Users/angel/IdeaProjects/SistemaContable/src/sistemacontable/balance/Balance.java</file>
         </group>
     </open-files>
 </project-private>

@@ -56,6 +56,40 @@ public class Select {
         }
     }
 
+    public ResultSet cargarPartidas() {
+        Connection connection = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
+        try {
+            connection = DatabaseConnection.getInstance().getConnection();
+            pst = connection.prepareStatement("SELECT * FROM tbl_partida");
+            rs = pst.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet cargarLibroDiarioPorPartida(int idPartida) {
+        Connection connection = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
+        String consulta = "SELECT * FROM tbl_dailybook WHERE idpartida = ?";
+
+        try {
+            connection = DatabaseConnection.getInstance().getConnection();
+            pst = connection.prepareStatement(consulta);
+            pst.setInt(1, idPartida);
+
+            rs = pst.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ResultSet loadDailyBook() {
         Connection connection = null;
         PreparedStatement statement = null;

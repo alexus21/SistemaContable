@@ -7,6 +7,9 @@ package sistemacontable.librodiario;
 import dbconnectionQueries.Select;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,7 +24,7 @@ public class LibroDiario extends javax.swing.JPanel {
      */
     public LibroDiario() {
         initComponents();
-        cargarDatosDesdeBaseDeDatos();
+        cargarDatosDeLibroDiario();
         jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
@@ -160,6 +163,56 @@ public class LibroDiario extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cargarDatosDeLibroDiario() {
+        Select s = new Select();
+
+        ResultSet rs = s.cargarPartidas();
+
+        Partida partida = new Partida();
+        LibroDiarioClass libro = new LibroDiarioClass();
+        List<Partida> listaPartidas = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        try {
+            while (rs.next()) {
+
+                ResultSet rsCuentas = s.cargarLibroDiarioPorPartida(rs.getInt("idpartida"));
+                List<LibroDiarioClass> listaCuentas = new ArrayList<>();
+
+                while (rsCuentas.next()) {
+                    listaCuentas.add(new LibroDiarioClass(rsCuentas.getString(1),
+                            rsCuentas.getInt(2), rsCuentas.getDouble(3),
+                            rsCuentas.getDouble(4), rs.getInt("idPartida")));
+                }
+
+                if (listaCuentas.isEmpty()) {
+                    continue;
+                }
+                listaPartidas.add(new Partida(rs.getInt("idpartida"), rs.getString("fecha"),
+                        rs.getString("descripcion"), listaCuentas));
+            }
+        } catch (SQLException sqlException) {
+            throw new RuntimeException();
+        }
+
+        if (listaPartidas.isEmpty()) return;
+
+        double totalDeber = 0, totalHaber = 0;
+
+        for (Partida filaEncabezado : listaPartidas) {
+            model.addRow(new Object[]{filaEncabezado.getFecha(), "Partida #" + filaEncabezado.getIdPartida()});
+            for (LibroDiarioClass cuenta : filaEncabezado.getListaCuentas()) {
+                model.addRow(new Object[]{"", cuenta.getHaber() > 0 ? "      " + cuenta.getCuenta(): cuenta.getCuenta(),
+                cuenta.getCodigo(), "$" + cuenta.getDeber(),"$" + cuenta.getHaber()});
+                totalDeber += cuenta.getDeber();
+                totalHaber += cuenta.getHaber();
+            }
+            model.addRow(new Object[]{"Descripcion", filaEncabezado.getDescripcion()});
+        }
+        model.addRow(new Object[]{"Total", "", "", "$" + totalDeber, "$" + totalHaber});
+
+    }
+
     private void cargarDatosDesdeBaseDeDatos() {
         try {
             Select s = new Select();
@@ -169,17 +222,16 @@ public class LibroDiario extends javax.swing.JPanel {
             // Llena la tabla con los datos de la base de datos
 //            int i = 0;
             while (rs.next()) {
-                String fecha = rs.getString(1);
-                String cuenta = rs.getString(2);
-                String codigo = rs.getString(3);
-                String debe = rs.getString(4);
-                String haber = rs.getString(5);
+                String cuenta = rs.getString(1);
+                String codigo = rs.getString(2);
+                String debe = rs.getString(3);
+                String haber = rs.getString(4);
                 
                 if(haber != null && Double.parseDouble(haber)>0){
                     cuenta = "      "+ cuenta;
                 }
                 Object[] fila = {
-                    fecha,
+                    "",
                     cuenta,
                     codigo,
                     debe,

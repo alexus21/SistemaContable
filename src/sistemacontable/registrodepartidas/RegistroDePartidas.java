@@ -26,6 +26,8 @@ import java.util.Objects;
  * @author PC
  */
 public class RegistroDePartidas extends javax.swing.JPanel {
+
+    private double deberSuma = 0, haberSuma = 0;
     
 
     // JPopupMenu para mostrar el texto completo
@@ -359,7 +361,15 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                             jRadioButton1.isSelected() ? "0" : cantidadIngresada
                     };
 
+                    if (myModel.getRowCount() > 0){
+                        if (myModel.getValueAt(myModel.getRowCount() - 1, 1).toString().equals("Total")) {
+                            myModel.removeRow(myModel.getRowCount() - 1);
+                        }
+                    }
+
                     myModel.addRow(nuevaFila);
+                    deberSuma += jRadioButton1.isSelected() ? Double.parseDouble(cantidadIngresada) : 0;
+                    haberSuma += jRadioButton1.isSelected() ? 0 : Double.parseDouble(cantidadIngresada);
                     jTableDaily.setRowHeight(30);
 
                     jDateChooser.setDate(null);
@@ -367,6 +377,8 @@ public class RegistroDePartidas extends javax.swing.JPanel {
                     jComboSelectAccountTitle.setEnabled(false);
                     btnRegistry.setEnabled(false);
                     btnGuardar.setEnabled(true);
+
+                    myModel.addRow(new Object[]{"", "Total", "", deberSuma, haberSuma});
                 }
             }catch (SQLException sqlException){
                 System.out.println(sqlException.getMessage());
@@ -427,7 +439,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
     private static List<String []> obtenerRegistros(JTable table){
         List<String []> lista = new ArrayList<>();
 
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             String [] data = new String[table.getColumnCount() - 1];
             for (int j = 0; j < table.getColumnCount() - 1; j++) {
                 data[j] = (String) table.getValueAt(i, j + 1);
