@@ -4,6 +4,7 @@
  */
 package sistemacontable.formularioprincipal;
 
+import dbconnectionQueries.Create;
 import dbconnectionQueries.Select1;
 import sistemacontable.librodiario.LibroDiario;
 import sistemacontable.libromayor.Mayor;
@@ -12,9 +13,14 @@ import sistemacontable.catalogodecuentas.CatalogoDeCuentas;
 import sistemacontable.balance.Balance;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+
 import sistemacontable.libromayor.LibroMayor;
 
 /**
@@ -26,14 +32,59 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     //Variables a emplear para poder mover la ventana principal
     private int mouseX, mouseY;
     private int windowX, windowY;
+    private long initialTime, endTime;
+    private long tiempoTranscurrido = 0;
+    private int horas = 0, minutos = 0, segundos = 0;
+    private String username;
 
     /**
      * Creates new form Principal
      */
     public FormularioPrincipal(String username) {
+        this.username = username;
+        initialTime = System.currentTimeMillis();
         initComponents();
 
         cargarBalance();
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                String text = "";
+                tiempoTranscurrido++;
+                long restante = tiempoTranscurrido;
+                int extra = -1;
+
+                if (restante / 3600 >= 1) {
+                    horas = (int) (restante / 3600);
+                    text = horas + " h, ";
+                    extra = (int) (restante - ((restante / 3600) * 3600));
+                    restante = extra;
+                }else{
+                    horas = 0;
+                }
+
+                if (restante / 60 >= 1) {
+                    minutos = (int) (restante / 60);
+                    text += minutos + " m, ";
+                    extra = (int) (restante - ((restante / 60) * 60));
+                    restante = extra;
+                } if (horas != 0) {
+                    text += "0 m, ";
+                    minutos = 0;
+                }
+                text += restante + " s";
+                segundos = (int) restante;
+                jLabel13.setText("Tiempo transcurrido: " + text);
+
+                Date fecha = new Date((System.currentTimeMillis() - initialTime - 18*3600*1000));
+
+                SimpleDateFormat formato = new SimpleDateFormat("HH:mm:ss");
+                String fechaFormateada = formato.format(fecha);
+            }
+        });
+
+        timer.start();
 
 
         BarraTitulo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -52,10 +103,6 @@ public class FormularioPrincipal extends javax.swing.JFrame {
 
     private List<Mayor> cargarBalance () {
         List<Mayor> mayor = new LibroMayor().ejecutarLibroMayor();
-        for (Mayor dato : mayor) {
-            System.out.println(dato.toString());
-        }
-
         Select1 select1 = new Select1();
 
         select1.guardarCuentasEnLibroMayor(mayor);
@@ -97,6 +144,7 @@ public class FormularioPrincipal extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         lblUsername = new javax.swing.JLabel();
         btnMinimizar = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         Container = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -278,6 +326,11 @@ public class FormularioPrincipal extends javax.swing.JFrame {
             }
         });
         BarraTitulo.add(btnMinimizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 10, 40, 30));
+
+        jLabel13.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("Tiempo transcurrido: ");
+        BarraTitulo.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 650, 20));
 
         jPanel1.add(BarraTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1130, 50));
 
@@ -461,7 +514,28 @@ public class FormularioPrincipal extends javax.swing.JFrame {
         int confirmation = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea cerrar el formulario?", "Cerrar Formulario", JOptionPane.YES_NO_OPTION);
         //Verificando la decision del usuario
         if(confirmation == JOptionPane.YES_OPTION){
+            System.out.println(horas + " h, " + minutos + " m, " + segundos + " s");
+
+            Date fecha = new Date();
+            fecha.setTime(initialTime);// Tu objeto Date
+
+            // Define el formato deseado para la fecha y hora.
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            // Convierte la fecha en una cadena con el formato especificado.
+            String fechaYHoraFormateada = formato.format(fecha);
+            System.out.println(tiempoTranscurrido + " hola");
+            String tiempoActivo = new SimpleDateFormat("HH:mm:ss").format(new Date(tiempoTranscurrido * 1000 - 18*3600*1000));
+            System.out.println(tiempoActivo);
+
+            // Imprime la fecha y hora en el formato deseado.
+            System.out.println("Fecha y hora formateada: " + fechaYHoraFormateada);
+            System.out.println();
+
+            Create create = new Create();
+            create.insertarRegistroPorUsuario(new RegistroUsuariosClass(this.username, initialTime, tiempoTranscurrido*1000-18*3600*1000));
             System.exit(0);
+
         }
     
     }//GEN-LAST:event_btnSalirActionPerformed
@@ -598,6 +672,7 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -1,14 +1,34 @@
 package dbconnectionQueries;
 
 import dbconnection.DatabaseConnection;
+import sistemacontable.formularioprincipal.RegistroUsuariosClass;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.xml.crypto.Data;
+import java.sql.*;
 import java.util.List;
 
 public class Create {
+
+    public void insertarRegistroPorUsuario(RegistroUsuariosClass registro) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        String consulta = "INSERT INTO tbl_registrousuarios(usuario, fecha, actividad) VALUES (?, ?, ?)";
+
+        try {
+            connection = DatabaseConnection.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(consulta);
+
+            preparedStatement.setString(1, registro.getUsuario());
+            preparedStatement.setTimestamp(2, new Timestamp(registro.getFecha()));
+            preparedStatement.setTime(3, new Time(registro.getActividad()));
+
+            System.out.println("Filas afectadas: " + preparedStatement.executeUpdate());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void saveDaily(List<String[]> rows, String descripcion, String fecha){
         Connection connection = null;
