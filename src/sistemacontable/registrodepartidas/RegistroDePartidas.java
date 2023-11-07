@@ -92,6 +92,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         JTextFieldDateEditor editor = (JTextFieldDateEditor) jDateChooser.getDateEditor();
         editor.setEditable(false);
         jRadioButton1.setSelected(true);
+        jTableDaily.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     /**
@@ -158,6 +159,11 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTableDaily.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTableDailyKeyPressed(evt);
             }
         });
         jScrollPane2.setViewportView(jTableDaily);
@@ -309,6 +315,9 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         txtValor.setBackground(new java.awt.Color(213, 219, 231));
         txtValor.setBorder(javax.swing.BorderFactory.createTitledBorder("Ingresa el valor"));
         txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtValorKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtValorKeyTyped(evt);
             }
@@ -335,7 +344,7 @@ public class RegistroDePartidas extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void btnRegistryActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistryActionPerformed
+    private void registrarFilas(){
         Select s = new Select();
         DefaultTableModel myModel = (DefaultTableModel) jTableDaily.getModel();
 
@@ -386,7 +395,10 @@ public class RegistroDePartidas extends javax.swing.JPanel {
         }else {
             showError("Faltan campos por llenar");
         }
+    }
 
+    private void btnRegistryActionPerformed (java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistryActionPerformed
+        registrarFilas();
 
     }//GEN-LAST:event_btnRegistryActionPerformed
 
@@ -649,6 +661,29 @@ public class RegistroDePartidas extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_txtValorKeyTyped
+
+    private void jTableDailyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableDailyKeyPressed
+        if (jTableDaily.getSelectedRowCount() >= 1) {
+            if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+                if (jTableDaily.getSelectedRow() != model.getRowCount() - 1) {
+                    DefaultTableModel modelo = (DefaultTableModel) jTableDaily.getModel();
+                    System.out.println("Deber: " + deberSuma + ", Haber" + haberSuma);
+                    deberSuma -= Double.parseDouble((String) model.getValueAt(jTableDaily.getSelectedRow(), 3));
+                    haberSuma -= Double.parseDouble((String) model.getValueAt(jTableDaily.getSelectedRow(), 4));
+                    System.out.println("Deber: " + deberSuma + ", Haber" + haberSuma);
+                    model.removeRow(jTableDaily.getSelectedRow());
+                    model.setValueAt(deberSuma, modelo.getRowCount() - 1, 3);
+                    model.setValueAt(haberSuma, modelo.getRowCount() - 1, 4);
+                }
+            }
+        }
+    }//GEN-LAST:event_jTableDailyKeyPressed
+
+    private void txtValorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            registrarFilas();
+        }
+    }//GEN-LAST:event_txtValorKeyPressed
 
     private void lookOutForAccount(){
         btnLookUpFor.setFocusPainted(false);
